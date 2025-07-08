@@ -9,9 +9,9 @@
 
     <Style x:Key="CardTitleStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Padding" Value="12 8"/>
+        <Setter Property="Padding" Value="18 10"/>
     </Style>
 
     <Style x:Key="CardSeparatorStyle" TargetType="Border">
@@ -20,6 +20,6 @@
         <Setter Property="Margin" Value="0 0 0 15"/>
     </Style>
 
-    <GridLength x:Key="CardGapWidth">30</GridLength>
-    <GridLength x:Key="CardGapHeight">20</GridLength>
+    <GridLength x:Key="CardGapWidth">60</GridLength>
+    <GridLength x:Key="CardGapHeight">50</GridLength>
 </ResourceDictionary>

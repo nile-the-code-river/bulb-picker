@@ -1,0 +1,109 @@
+﻿<Window x:Class="BulbPicker.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BulbPicker.App"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Title="MainWindow" Height="450" Width="800">
+    
+    <Grid Background="{StaticResource InnerBlack}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!--Title Bar-->
+        <Grid Grid.Row="0" Background="{StaticResource OuterBlack}">
+            <!--Title-->
+            <TextBlock Text="Bulb Picker"
+                       Foreground="{StaticResource Yellow}" 
+                       VerticalAlignment="Center" 
+                       Margin="10,0"/>
+
+            <!-- Control Buttons -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button Content="✕"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontSize="12"
+                        FontWeight="ExtraBold"
+                        Padding="10 0"
+                        Foreground="{StaticResource Yellow}"/>
+            </StackPanel>
+        </Grid>
+
+        <!--Content-->
+        <Grid Grid.Row="1" Margin="30 20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="{StaticResource CardGapWidth}"/>
+                <ColumnDefinition Width="3.5*"/>
+                <ColumnDefinition Width="{StaticResource CardGapWidth}"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Viewer & App Config-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="{StaticResource CardGapHeight}" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                
+                <Border Grid.Row="0"
+                        Style="{StaticResource CardStyle}" >
+                    <StackPanel>
+                        <TextBlock Text="Viewer" Style="{StaticResource CardTitleStyle}"/>
+                        <Border Style="{StaticResource CardSeparatorStyle}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2"
+                        Style="{StaticResource CardStyle}" >
+                    <StackPanel>
+                        <TextBlock Text="App Config" Style="{StaticResource CardTitleStyle}"/>
+                        <Border Style="{StaticResource CardSeparatorStyle}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!--Cameras-->
+            <Border Grid.Column="2"
+                    Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
+                    <Border Style="{StaticResource CardSeparatorStyle}"/>
+                </StackPanel>
+            </Border>
+
+            <!--Robot Arms & Logs-->
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="{StaticResource CardGapHeight}" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"
+                        Style="{StaticResource CardStyle}" >
+                    <StackPanel>
+                        <TextBlock Text="Robot Arms" Style="{StaticResource CardTitleStyle}"/>
+                        <Border Style="{StaticResource CardSeparatorStyle}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2"
+                        Style="{StaticResource CardStyle}" >
+                    <StackPanel>
+                        <TextBlock Text="History" Style="{StaticResource CardTitleStyle}"/>
+                        <Border Style="{StaticResource CardSeparatorStyle}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>

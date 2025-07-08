@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--Background Color-->
+    <SolidColorBrush x:Key="OuterBlack" Color="#161618" />
+    <SolidColorBrush x:Key="InnerBlack" Color="#353439" />
+    <SolidColorBrush x:Key="CardGray" Color="#49494F" />
+    <SolidColorBrush x:Key="CardBorderGray" Color="#636364" />
+
+    <!--Letter & Component Color-->
+    <SolidColorBrush x:Key="Yellow" Color="#F6E683" />
+    <SolidColorBrush x:Key="Green" Color="#54F519" />
+    <SolidColorBrush x:Key="Cyan" Color="#51FFF3" />
+    <SolidColorBrush x:Key="Red" Color="#FA7C7C" />
+    <SolidColorBrush x:Key="Orange" Color="#FF9C91" />
+</ResourceDictionary> 

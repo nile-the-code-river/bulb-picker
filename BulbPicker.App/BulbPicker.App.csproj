@@ -8,4 +8,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Basler.Pylon">
+      <HintPath>..\..\..\..\Program Files\Basler\pylon 8\Development\Assemblies\Basler.Pylon\net8.0\x64\Basler.Pylon.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

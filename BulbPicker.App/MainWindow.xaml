@@ -39,11 +39,13 @@
                         <Button Content="✖"
                         Background="Transparent"
                         BorderThickness="0"
-                        FontSize="14"
+                        FontSize="16"
                         FontWeight="ExtraBold"
-                        Padding="0 5 25 0"
+                        Margin="0 5 25 0"
+                        Cursor="Hand"
                         VerticalAlignment="Center"
-                        Foreground="{StaticResource Yellow}"/>
+                        Foreground="{StaticResource Yellow}"
+                        Click="Button_Click_1"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -89,6 +91,22 @@
                     <StackPanel>
                         <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
                         <Border Style="{StaticResource CardSeparatorStyle}"/>
+
+                        <Button Background="Blue" Foreground="White" Height="100" Click="Button_Click_2">
+                            <TextBlock Text="Connect" />
+                        </Button>
+                        
+                        <Button Height="100" Click="Button_Click">
+                            <TextBlock Text="Test Camera" />
+                        </Button>
+
+                        <Border Background="ForestGreen">
+                            <Image Name="CameraImage"
+                               Stretch="Uniform"
+                               Margin="10"
+                                   Height="300"
+                               />
+                        </Border>
                     </StackPanel>
                 </Border>
 

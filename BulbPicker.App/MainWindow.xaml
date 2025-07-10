@@ -92,21 +92,30 @@
                         <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
                         <Border Style="{StaticResource CardSeparatorStyle}"/>
 
-                        <Button Background="Blue" Foreground="White" Height="100" Click="Button_Click_2">
-                            <TextBlock Text="Connect" />
-                        </Button>
-                        
-                        <Button Height="100" Click="Button_Click">
-                            <TextBlock Text="Test Camera" />
-                        </Button>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                        <Border Background="ForestGreen">
-                            <Image Name="CameraImage"
-                               Stretch="Uniform"
-                               Margin="10"
-                                   Height="300"
-                               />
-                        </Border>
+                            <StackPanel Grid.Column="0">
+                                <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
+                                    <TextBlock Text="Camera 1"
+                                       Style="{StaticResource CameraTitleStyle}"/>
+                                    <Button Content="Connect"
+                                    Style="{StaticResource CameraConnectButtonStyle}" 
+                                    Click="CameraConnect_Click"/>
+                                </DockPanel>
+
+                                <Border Background="Black">
+                                    <Image Name="CameraImage"
+                                       Stretch="Uniform"
+                                       Margin="10"
+                                           Height="300"
+                                       />
+                                </Border>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Border>
 

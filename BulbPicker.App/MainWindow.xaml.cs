@@ -15,9 +15,6 @@ namespace BulbPicker.App
     {
         private Camera camera = null;
         private DispatcherTimer captureTimer = null;
-        private readonly object bufferLock = new object();
-        private Queue<BitmapSource> imageBuffer = new Queue<BitmapSource>();
-        private const int MAX_BUFFER_SIZE = 10; // 최대 10장까지 버퍼링
 
         public MainWindow()
         {
@@ -37,69 +34,14 @@ namespace BulbPicker.App
             AutoOneShot();
         }
 
-        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-            {
-                WindowState = WindowState == WindowState.Maximized
-                    ? WindowState.Normal
-                    : WindowState.Maximized;
-            }
-            else DragMove();
-        }
-
-
-        // 수동 캡쳐 (기존 기능 유지)
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (camera == null) return;
-            try
-            {
-                if (!camera.IsOpen)
-                {
-                    camera.Open();
-                }
-
-                if (!camera.StreamGrabber.IsGrabbing)
-                {
-                    camera.StreamGrabber.Start();
-                }
-
-                IGrabResult result = camera.StreamGrabber.RetrieveResult(5000, TimeoutHandling.ThrowException);
-
-                if (result.GrabSucceeded)
-                {
-                    byte[] buffer = result.PixelData as byte[];
-                    int stride = result.Width;
-                    BitmapSource bitmap = BitmapSource.Create(
-                        result.Width,
-                        result.Height,
-                        96, 96,
-                        PixelFormats.Gray8,
-                        null,
-                        buffer,
-                        stride);
-                    CameraImage.Source = bitmap;
-                }
-
-                result.Dispose();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-
-        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void CameraConnect_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // UI 업데이트 - 연결 중 표시
                 var button = sender as Button;
                 if (button != null)
                 {
-                    button.Content = "연결 중...";
+                    button.Content = "Connecting...";
                     button.IsEnabled = false;
                 }
 
@@ -117,19 +59,9 @@ namespace BulbPicker.App
                     camera.CameraOpened += Configuration.AcquireSingleFrame;
                     camera.Open();
 
-                    // 혹시 grabbing 중이면 멈추기
-                    if (camera.StreamGrabber.IsGrabbing)
-                    {
-                        camera.StreamGrabber.Stop();
-                    }
-
-                    //camera.Parameters[PLCamera.BslScalingFactor].SetValue(2.5);
-                    //camera.Parameters[PLCamera.TriggerMode].SetValue(PLCamera.TriggerMode.Off);
+                    if (camera.StreamGrabber.IsGrabbing) camera.StreamGrabber.Stop();
                 });
 
-                MessageBox.Show("Camera opened successfully");
-
-                // 카메라 연결 완료 후 자동 캡쳐 시작
                 StartAutoCapture();
             }
             catch (Exception ex)
@@ -138,11 +70,10 @@ namespace BulbPicker.App
             }
             finally
             {
-                // UI 복원
                 var button = sender as Button;
                 if (button != null)
                 {
-                    button.Content = "Connect"; // 원래 버튼 텍스트로 변경
+                    button.Content = "Connected";
                     button.IsEnabled = true;
                 }
             }
@@ -175,22 +106,9 @@ namespace BulbPicker.App
                         buffer,
                         stride);
 
-                    // UI 업데이트 (메인 스레드에서)
                     Dispatcher.Invoke(() =>
                     {
                         CameraImage.Source = bitmap;
-
-                        // 버퍼에 이미지 추가
-                        lock (bufferLock)
-                        {
-                            imageBuffer.Enqueue(bitmap);
-
-                            // 버퍼 크기 제한
-                            if (imageBuffer.Count > MAX_BUFFER_SIZE)
-                            {
-                                imageBuffer.Dequeue();
-                            }
-                        }
                     });
                 }
 
@@ -211,10 +129,7 @@ namespace BulbPicker.App
             {
                 try
                 {
-                    // 타이머 시작 (StreamGrabber는 AutoOneShot에서 매번 제어)
                     captureTimer.Start();
-
-                    MessageBox.Show("Auto capture started (1 frame per second)");
                 }
                 catch (Exception ex)
                 {
@@ -222,6 +137,7 @@ namespace BulbPicker.App
                 }
             }
         }
+
         private void StopAutoCapture()
         {
             captureTimer?.Stop();
@@ -230,6 +146,18 @@ namespace BulbPicker.App
             {
                 camera.StreamGrabber.Stop();
             }
+        }
+
+        //------------------------------------------------------------------------------------------
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                WindowState = WindowState == WindowState.Maximized
+                    ? WindowState.Normal
+                    : WindowState.Maximized;
+            }
+            else DragMove();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e) => Close();

@@ -3,34 +3,32 @@
     <!--Connection Toggle Button (Checkbox)-->
     <!--StreamingBox-->
     <!--Offset-->
-    <Style x:Key="CameraTitlePanelStyle" TargetType="StackPanel">
-        <Setter Property="Orientation" Value="Horizontal"/>
+    <Style x:Key="CameraTitlePanelStyle" TargetType="DockPanel">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="10"/>
     </Style>
 
     <Style x:Key="CameraTitleStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="16"/>
-        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="0,0,10,0"/>
-        <Setter Property="Foreground" Value="#FF333333"/>
+        <Setter Property="Foreground" Value="{StaticResource Yellow}"/>
     </Style>
 
     <Style x:Key="CameraConnectButtonStyle" TargetType="Button">
         <Setter Property="Height" Value="30"/>
-        <Setter Property="MinWidth" Value="80"/>
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="MinWidth" Value="100"/>
         <Setter Property="Background" Value="#FF4A90E2"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Margin" Value="5,0"/>
-        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="Padding" Value="10"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4">
+                                CornerRadius="5">
                         <ContentPresenter HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
                     </Border>

@@ -45,7 +45,7 @@
                         Cursor="Hand"
                         VerticalAlignment="Center"
                         Foreground="{StaticResource Yellow}"
-                        Click="Button_Click_1"/>
+                        Click="Close_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>

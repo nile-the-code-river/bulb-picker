@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BulbPicker.App"
+        xmlns:views="clr-namespace:BulbPicker.App.Views"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -68,56 +69,13 @@
                         <RowDefinition Height="4*" />
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0"
-                        Style="{StaticResource CardStyle}" >
-                        <StackPanel>
-                            <TextBlock Text="Viewer" Style="{StaticResource CardTitleStyle}"/>
-                            <Border Style="{StaticResource CardSeparatorStyle}"/>
-                        </StackPanel>
-                    </Border>
+                    <views:DummyCardControl Grid.Row="0" />
 
-                    <Border Grid.Row="2"
-                        Style="{StaticResource CardStyle}" >
-                        <StackPanel>
-                            <TextBlock Text="App Config" Style="{StaticResource CardTitleStyle}"/>
-                            <Border Style="{StaticResource CardSeparatorStyle}"/>
-                        </StackPanel>
-                    </Border>
+                    <views:DummyCardControl Grid.Row="2" />
                 </Grid>
 
                 <!--Cameras-->
-                <Border Grid.Column="2"
-                    Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
-                        <Border Style="{StaticResource CardSeparatorStyle}"/>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel Grid.Column="0">
-                                <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
-                                    <TextBlock Text="Camera 1"
-                                       Style="{StaticResource CameraTitleStyle}"/>
-                                    <Button Content="Connect"
-                                    Style="{StaticResource CameraConnectButtonStyle}" 
-                                    Click="CameraConnect_Click"/>
-                                </DockPanel>
-
-                                <Border Background="Black">
-                                    <Image Name="CameraImage"
-                                       Stretch="Uniform"
-                                       Margin="10"
-                                           Height="300"
-                                       />
-                                </Border>
-                            </StackPanel>
-                        </Grid>
-                    </StackPanel>
-                </Border>
+                <views:CameraControl Grid.Column="2" />
 
                 <!--Robot Arms & Logs-->
                 <Grid Grid.Column="4">
@@ -127,21 +85,9 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0"
-                        Style="{StaticResource CardStyle}" >
-                        <StackPanel>
-                            <TextBlock Text="Robot Arms" Style="{StaticResource CardTitleStyle}"/>
-                            <Border Style="{StaticResource CardSeparatorStyle}"/>
-                        </StackPanel>
-                    </Border>
+                    <views:DummyCardControl Grid.Row="0" />
 
-                    <Border Grid.Row="2"
-                        Style="{StaticResource CardStyle}" >
-                        <StackPanel>
-                            <TextBlock Text="History" Style="{StaticResource CardTitleStyle}"/>
-                            <Border Style="{StaticResource CardSeparatorStyle}"/>
-                        </StackPanel>
-                    </Border>
+                    <views:DummyCardControl Grid.Row="2" />
                 </Grid>
 
             </Grid>

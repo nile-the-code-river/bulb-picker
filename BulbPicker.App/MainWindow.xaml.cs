@@ -108,7 +108,7 @@ namespace BulbPicker.App
 
                     Dispatcher.Invoke(() =>
                     {
-                        CameraImage.Source = bitmap;
+                        //CameraImage.Source = bitmap;
                     });
                 }
 

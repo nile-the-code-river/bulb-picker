@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace BulbPicker.App.Views
 {
     /// <summary>
-    /// Interaction logic for CameraControl.xaml
+    /// Interaction logic for CamerasControl.xaml
     /// </summary>
-    public partial class CameraControl : UserControl
+    public partial class CamerasControl : UserControl
     {
-        public CameraControl()
+        public CamerasControl()
         {
             InitializeComponent();
         }

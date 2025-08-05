@@ -75,7 +75,7 @@
                 </Grid>
 
                 <!--Cameras-->
-                <views:CameraControl Grid.Column="2" />
+                <views:CamerasControl Grid.Column="2" />
 
                 <!--Robot Arms & Logs-->
                 <Grid Grid.Column="4">

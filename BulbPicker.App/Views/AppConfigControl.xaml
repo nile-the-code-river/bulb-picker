@@ -6,7 +6,27 @@
              xmlns:local="clr-namespace:BulbPicker.App.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <Border Style="{StaticResource CardStyle}" >
+        <StackPanel>
+            <TextBlock Text="App Config" Style="{StaticResource CardTitleStyle}"/>
+            <Border Style="{StaticResource CardSeparatorStyle}"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                    FontSize="20"
+                    Text="Offsets"
+                    Foreground="{StaticResource Yellow}" />
+                
+                <TextBlock Grid.Column="1"
+                    FontSize="20"
+                    Text="FPS, etc"
+                    Foreground="{StaticResource Yellow}" />
+            </Grid>
+        </StackPanel>
+    </Border>
 </UserControl>

@@ -71,7 +71,7 @@
 
                     <views:ViewerControl Grid.Row="0" />
 
-                    <views:DummyCardControl Grid.Row="2" />
+                    <views:AppConfigControl Grid.Row="2" />
                 </Grid>
 
                 <!--Cameras-->
@@ -85,9 +85,9 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <views:DummyCardControl Grid.Row="0" />
+                    <views:RobotArmsControl Grid.Row="0" />
 
-                    <views:DummyCardControl Grid.Row="2" />
+                    <views:LogsControl Grid.Row="2" />
                 </Grid>
 
             </Grid>

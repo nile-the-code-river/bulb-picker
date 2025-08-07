@@ -4,14 +4,50 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
+             xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="600">
+
+    <UserControl.DataContext>
+        <vm:CamerasViewModel />
+    </UserControl.DataContext>
 
     <Border Style="{StaticResource CardStyle}">
         <StackPanel>
             <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 
+            <!--Camera-->
+            <ItemsControl>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Width="250">
+                            <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource CameraTitleStyle}" />
+                                <Button Command="{Binding ConnectCommand}" Style="{StaticResource CameraConnectButtonStyle}" />
+                            </DockPanel>
+
+                            <Border Background="Black" Height="250" Margin="0,5">
+                                <Image Source="{Binding ImageBefore}" Stretch="Uniform" Margin="10" />
+                            </Border>
+
+                            <Border Height="3px"/>
+
+                            <Border Background="Black" Height="250" Margin="0,5">
+                                <Image Source="{Binding ImageAfter}" Stretch="Uniform" Margin="10" />
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            <!--Cameras-->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -29,18 +65,15 @@
 
                     <!--TODO: stylize (2 imgs)-->
                     <Border Background="Black">
-                        <Image Name="CameraImage11"
-                               Stretch="Uniform"
+                        <Image Stretch="Uniform"
                                Margin="10"
                                Height="250" />
                     </Border>
 
-
                     <Border Height="3px"/>
 
                     <Border Background="Black">
-                        <Image Name="CameraImage12"
-                               Stretch="Uniform"
+                        <Image Stretch="Uniform"
                                Margin="10"
                                Height="250" />
                     </Border>
@@ -56,13 +89,39 @@
 
                     <!--TODO: stylize (2 imgs)-->
                     <Border Background="Black">
-                        <Image Name="CameraImage21"
-                               Stretch="Uniform"
+                        <Image Stretch="Uniform"
+                               Margin="10"
+                               Height="250" />
+                    </Border>
+                    <Border Height="3px"/>
+
+                    <Border Background="Black">
+                        <Image Stretch="Uniform"
                                Margin="10"
                                Height="250" />
                     </Border>
                 </StackPanel>
             </Grid>
+            
+            <!--Offsets-->
+            <StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="x offset"
+                               Foreground="White"/>
+                    <Button>◀</Button>
+                    <Slider Width="100" />
+                    <Button>▶</Button>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="y offset"
+                               Foreground="White" />
+                    <Button>◀</Button>
+                    <Slider Width="100" />
+                    <Button>▶</Button>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Border>
 </UserControl>

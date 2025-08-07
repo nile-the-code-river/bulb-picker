@@ -4,9 +4,53 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             mc:Ignorable="d">
+
+    <Border Style="{StaticResource CardStyle}">
+        <StackPanel>
+            <TextBlock Text="Viewer" Style="{StaticResource CardTitleStyle}"/>
+            <Border Style="{StaticResource CardSeparatorStyle}"/>
+
+            <Grid Margin="0 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <!--From Camera 1-->
+                <StackPanel Grid.Column="0">
+                    <Border Background="Black">
+                        <Image Name="CameraImage11"
+                                   Stretch="Uniform"
+                                   Width="200"
+                                   Height="200" />
+                    </Border>
+
+                    <Border Background="Black">
+                        <Image Name="CameraImage12"
+                                   Stretch="Uniform"
+                                   Width="200"
+                                   Height="200" />
+                    </Border>
+                </StackPanel>
+
+                <!--From Camera 2-->
+                <StackPanel Grid.Column="1">
+                    <Border Background="Black">
+                        <Image Name="CameraImage21"
+                                   Stretch="Uniform"
+                                   Width="200"
+                                   Height="200" />
+                    </Border>
+
+                    <Border Background="Black">
+                        <Image Name="CameraImage22"
+                                   Stretch="Uniform"
+                                   Width="200"
+                                   Height="200" />
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Border>
 </UserControl>

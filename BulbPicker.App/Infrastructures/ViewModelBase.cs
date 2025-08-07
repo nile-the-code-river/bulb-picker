@@ -8,5 +8,6 @@ namespace BulbPicker.App.Infrastructures
 {
     class ViewModelBase
     {
+
     }
 }

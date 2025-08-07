@@ -18,7 +18,7 @@
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 
             <!--Camera-->
-            <ItemsControl>
+            <ItemsControl ItemsSource="{Binding Cameras}" HorizontalAlignment="Center">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -27,19 +27,20 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Width="250">
+                        <StackPanel Width="250" Margin="0 0 5 0">
                             <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
-                                <TextBlock Text="{Binding Name}" Style="{StaticResource CameraTitleStyle}" />
-                                <Button Command="{Binding ConnectCommand}" Style="{StaticResource CameraConnectButtonStyle}" />
+                                <TextBlock Text="{Binding CameraNumber}" Style="{StaticResource CameraTitleStyle}" />
+                                <Button Style="{StaticResource CameraConnectButtonStyle}" />
+                                <!--Command="{Binding ConnectCommand}"-->
                             </DockPanel>
 
-                            <Border Background="Black" Height="250" Margin="0,5">
+                            <Border Background="Black" Height="250">
                                 <Image Source="{Binding ImageBefore}" Stretch="Uniform" Margin="10" />
                             </Border>
 
-                            <Border Height="3px"/>
+                            <Border Height="5"/>
 
-                            <Border Background="Black" Height="250" Margin="0,5">
+                            <Border Background="Black" Height="250">
                                 <Image Source="{Binding ImageAfter}" Stretch="Uniform" Margin="10" />
                             </Border>
                         </StackPanel>
@@ -47,64 +48,9 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             
-            <!--Cameras-->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="3px" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <!--1st Camera-->
-                <StackPanel Grid.Column="0">
-                    <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
-                        <TextBlock Text="Camera 1"
-                                   Style="{StaticResource CameraTitleStyle}"/>
-                        <Button Style="{StaticResource CameraConnectButtonStyle}" />
-                    </DockPanel>
-
-                    <!--TODO: stylize (2 imgs)-->
-                    <Border Background="Black">
-                        <Image Stretch="Uniform"
-                               Margin="10"
-                               Height="250" />
-                    </Border>
-
-                    <Border Height="3px"/>
-
-                    <Border Background="Black">
-                        <Image Stretch="Uniform"
-                               Margin="10"
-                               Height="250" />
-                    </Border>
-                </StackPanel>
-
-                <!--2nd Camera-->
-                <StackPanel Grid.Column="2">
-                    <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
-                        <TextBlock Text="Camera 2"
-                                   Style="{StaticResource CameraTitleStyle}"/>
-                        <Button Style="{StaticResource CameraConnectButtonStyle}" />
-                    </DockPanel>
-
-                    <!--TODO: stylize (2 imgs)-->
-                    <Border Background="Black">
-                        <Image Stretch="Uniform"
-                               Margin="10"
-                               Height="250" />
-                    </Border>
-                    <Border Height="3px"/>
-
-                    <Border Background="Black">
-                        <Image Stretch="Uniform"
-                               Margin="10"
-                               Height="250" />
-                    </Border>
-                </StackPanel>
-            </Grid>
             
             <!--Offsets-->
-            <StackPanel>
+            <StackPanel HorizontalAlignment="Center">
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="x offset"

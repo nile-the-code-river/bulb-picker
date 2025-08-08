@@ -1,25 +1,34 @@
 ﻿using Basler.Pylon;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace BulbPicker.App.Models
 {
-    class BaslerCamera
+    public class BaslerCamera : INotifyPropertyChanged
     {
-        public Camera Camera { get; init; }
+        private Camera _camera;
+        public Camera Camera
+        {
+            get => _camera;
+            set
+            {
+                _camera = value;
+                IPAddress = value?.CameraInfo?.GetValueOrDefault("IpAddress", "0");
+            }
+        }
+        public string? IPAddress { get; private set; }
         //private PixelDataConverter converter = new PixelDataConverter();
-        public string CameraNumber { get; init; }
+        //public string CameraNumber { get; init; }
         //public bool IsGrabbing { get; set; }
         //public int AxisOffsetX { get; set; }
         //public int AxisOffsetY { get; set; }
         public Bitmap ImageBefore { get; set; }
         public Bitmap ImageAfter { get; set; }
 
-        public BaslerCamera(string cameraNumber)
+        public BaslerCamera()
         {
-            CameraNumber = cameraNumber;
-            //Camera = new Camera(cameraNumber);
-            // add events
         }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

@@ -20,7 +20,7 @@ namespace BulbPicker.App.Models
         public RobotArmState State { get; private set; }
 
         // Socket
-        // write down commands keywords like SO, RN, RS,ERR
+        // write down commands keywords like (1) SO, (2) RN, (3) RS,ERR
 
         public RobotArm(string ip)
         {

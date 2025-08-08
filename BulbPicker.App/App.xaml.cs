@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using BulbPicker.App.Services;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 
@@ -9,6 +10,8 @@ namespace BulbPicker.App
     /// </summary>
     public partial class App : Application
     {
+        public static CameraService CameraService { get; } = CameraService.Instance;
+
     }
 
 }

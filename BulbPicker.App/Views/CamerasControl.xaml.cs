@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BulbPicker.App.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace BulbPicker.App.Views
         public CamerasControl()
         {
             InitializeComponent();
+            DataContext = new CamerasViewModel(App.CameraService);
         }
     }
 }

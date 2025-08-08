@@ -5,17 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
              xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=vm:CamerasViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="1000" d:DesignWidth="600">
-
-    <UserControl.DataContext>
-        <vm:CamerasViewModel />
-    </UserControl.DataContext>
-
     <Border Style="{StaticResource CardStyle}">
         <StackPanel>
             <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
+
+            <!-- Loading -->
+            <TextBlock Text="Is Loading"
+                       Foreground="White"
+                       Visibility="{Binding IsLoading}" />
 
             <!--Camera-->
             <ItemsControl ItemsSource="{Binding Cameras}" HorizontalAlignment="Center">
@@ -29,7 +30,7 @@
                     <DataTemplate>
                         <StackPanel Width="250" Margin="0 0 5 0">
                             <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
-                                <TextBlock Text="{Binding CameraNumber}" Style="{StaticResource CameraTitleStyle}" />
+                                <TextBlock Text="{Binding IPAddress}" Style="{StaticResource CameraTitleStyle}" />
                                 <Button Style="{StaticResource CameraConnectButtonStyle}" />
                                 <!--Command="{Binding ConnectCommand}"-->
                             </DockPanel>

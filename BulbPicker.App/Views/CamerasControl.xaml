@@ -31,13 +31,13 @@
                         <StackPanel Width="250" Margin="0 0 5 0">
                             <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
                                 <TextBlock Text="{Binding IPAddress}" Style="{StaticResource CameraTitleStyle}" />
-                                <Button Style="{StaticResource CameraConnectButtonStyle}" />
-                                <!--Command="{Binding ConnectCommand}"-->
+                                <Button Style="{StaticResource CameraConnectButtonStyle}"
+                                        Command="{Binding TestCommand}"/>
                             </DockPanel>
 
-                            <Border Background="Black" Height="250">
+                            <!--<Border Background="Black" Height="250">
                                 <Image Source="{Binding ImageBefore}" Stretch="Uniform" Margin="10" />
-                            </Border>
+                            </Border>-->
 
                             <Border Height="5"/>
 

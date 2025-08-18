@@ -5,21 +5,21 @@
         <Setter Property="BorderBrush" Value="{StaticResource CardBorderGray}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="5"/>
-        <Setter Property="Padding" Value="35 20"/>
+        <Setter Property="Padding" Value="20"/>
     </Style>
 
     <Style x:Key="CardTitleStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Margin" Value="10 -5 0 0" />
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
     <Style x:Key="CardSeparatorStyle" TargetType="Border">
         <Setter Property="Height" Value="1"/>
         <Setter Property="Background" Value="{StaticResource CardBorderGray}"/>
-        <Setter Property="Margin" Value="-35 20 -35 10"/>
+        <Setter Property="Margin" Value="-20 15"/>
     </Style>
 
-    <GridLength x:Key="CardGapWidth">60</GridLength>
-    <GridLength x:Key="CardGapHeight">50</GridLength>
+    <GridLength x:Key="CardGap">20</GridLength>
 </ResourceDictionary>

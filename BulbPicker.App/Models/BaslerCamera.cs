@@ -18,6 +18,8 @@ namespace BulbPicker.App.Models
 {
     public class BaslerCamera : INotifyPropertyChanged
     {
+        public byte Index { get; set; } = 0;
+
         private Camera _camera;
         public Camera Camera
         {
@@ -29,17 +31,16 @@ namespace BulbPicker.App.Models
                 value.Open();
             }
         }
-        public string? IPAddress { get; private set; }
-        public Bitmap ImageBefore { get; set; }
+        public string? IPAddress { get; private set; } = "000.000.000.000";
 
-        private BitmapSource _imageAfter;
-        public BitmapSource ImageAfter
+        private BitmapSource _oneShotImage;
+        public BitmapSource OneShotImage
         {
-            get => _imageAfter;
+            get => _oneShotImage;
             set
             {
-                _imageAfter = value;
-                OnPropertyChanged(nameof(ImageAfter));
+                _oneShotImage = value;
+                OnPropertyChanged(nameof(OneShotImage));
             }
         }
 
@@ -87,7 +88,7 @@ namespace BulbPicker.App.Models
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        ImageAfter = bitmap;
+                        OneShotImage = bitmap;
                     });
                 }
 

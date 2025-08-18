@@ -9,7 +9,6 @@
                 <ResourceDictionary Source="Styles/UIColors.xaml" />
                 <ResourceDictionary Source="Styles/Card.xaml" />
                 <ResourceDictionary Source="Styles/Camera.xaml" />
-                <ResourceDictionary Source="Styles/RobotArm.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

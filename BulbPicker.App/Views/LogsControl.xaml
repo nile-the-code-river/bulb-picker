@@ -5,15 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="470" d:DesignWidth="600">
     <Border Style="{StaticResource CardStyle}" >
-        <StackPanel>
-            <TextBlock Text="Logs" Style="{StaticResource CardTitleStyle}"/>
-            <Border Style="{StaticResource CardSeparatorStyle}"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
             <StackPanel>
-                <TextBlock Text="asdsf" Foreground="White" />
+                <TextBlock Text="Logs" Style="{StaticResource CardTitleStyle}"/>
+                <Border Style="{StaticResource CardSeparatorStyle}"/>
             </StackPanel>
-        </StackPanel>
+
+            
+            <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible"
+                     Grid.Row="1"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     
+                     Foreground="White">
+                <ListBoxItem>Test 1</ListBoxItem>
+                <ListBoxItem>Test 2</ListBoxItem>
+                <ListBoxItem>Test 3</ListBoxItem>
+                <ListBoxItem>Test 4</ListBoxItem>
+                <ListBoxItem>Test 5</ListBoxItem>
+                <ListBoxItem>Test 6</ListBoxItem>
+            </ListBox>
+        </Grid>
     </Border>
 </UserControl>

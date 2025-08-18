@@ -7,68 +7,42 @@
              xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:CamerasViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="1000" d:DesignWidth="600">
+             d:DesignHeight="940" d:DesignWidth="600">
     <Border Style="{StaticResource CardStyle}">
         <StackPanel>
             <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 
-            <!-- Loading -->
-            <TextBlock Text="Is Loading"
-                       Foreground="White"
-                       Visibility="{Binding IsLoading}" />
-
             <!--Camera-->
-            <ItemsControl ItemsSource="{Binding Cameras}" HorizontalAlignment="Center">
+            <ItemsControl ItemsSource="{Binding Cameras}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
+                        <UniformGrid Columns="2" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Width="250" Margin="0 0 5 0">
-                            <DockPanel Style="{StaticResource CameraTitlePanelStyle}">
-                                <TextBlock Text="{Binding IPAddress}" Style="{StaticResource CameraTitleStyle}" />
+                        <StackPanel Margin="15">
+                            <DockPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Index, StringFormat='Camera {0}'}" />
+                                    <TextBlock Text="{Binding IPAddress}" />
+                                </StackPanel>
                                 <Button Style="{StaticResource CameraConnectButtonStyle}"
                                         Command="{Binding TestCommand}"/>
                             </DockPanel>
 
-                            <!--<Border Background="Black" Height="250">
-                                <Image Source="{Binding ImageBefore}" Stretch="Uniform" Margin="10" />
-                            </Border>-->
-
-                            <Border Height="5"/>
-
-                            <Border Background="Black" Height="250">
-                                <Image Source="{Binding ImageAfter}" Stretch="Uniform" Margin="10" />
+                            <Border Background="Black"
+                                    Height="250"
+                                    Width="250">
+                                <Image Source="{Binding OneShotImage}"
+                                       Stretch="Uniform"/>
                             </Border>
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            
-            
-            <!--Offsets-->
-            <StackPanel HorizontalAlignment="Center">
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="x offset"
-                               Foreground="White"/>
-                    <Button>◀</Button>
-                    <Slider Width="100" />
-                    <Button>▶</Button>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="y offset"
-                               Foreground="White" />
-                    <Button>◀</Button>
-                    <Slider Width="100" />
-                    <Button>▶</Button>
-                </StackPanel>
-            </StackPanel>
         </StackPanel>
     </Border>
 </UserControl>

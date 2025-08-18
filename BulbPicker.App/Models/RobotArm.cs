@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace BulbPicker.App.Models
 {
-    enum RobotArmState
+    public enum RobotArmState
     {
         On,
         Off,
         Running
     }
 
-    class RobotArm
+    public class RobotArm
     {
         public string IPAddress { get; set; }
         public string Port { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BulbPicker.App.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,8 @@ namespace BulbPicker.App.ViewModels
 {
     class RobotArmsViewModel
     {
+        const string TEST_IP = "000.000.000.000";
+        public List<RobotArm> RobotArms { get; set; }
+            = new List<RobotArm>() { new RobotArm(TEST_IP), new RobotArm(TEST_IP), new RobotArm(TEST_IP), new RobotArm(TEST_IP) };
     }
 }

@@ -53,42 +53,42 @@
             </Border>
 
             <!--Content-->
-            <Grid Grid.Row="1" Margin="60 30 60 40" Grid.Column="1">
+            <Grid Grid.Row="1" Margin="40 30" Grid.Column="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2.5*"/>
-                    <ColumnDefinition Width="{StaticResource CardGapWidth}"/>
-                    <ColumnDefinition Width="3.5*"/>
-                    <ColumnDefinition Width="{StaticResource CardGapWidth}"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="600"/>
+                    <ColumnDefinition Width="{StaticResource CardGap}"/>
+                    <ColumnDefinition Width="600"/>
+                    <ColumnDefinition Width="{StaticResource CardGap}"/>
+                    <ColumnDefinition Width="600"/>
                 </Grid.ColumnDefinitions>
 
-                <!--Viewer & App Config-->
+                <!--Cameras-->
                 <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="5*" />
-                        <RowDefinition Height="{StaticResource CardGapHeight}" />
-                        <RowDefinition Height="4*" />
-                    </Grid.RowDefinitions>
-
-                    <views:ViewerControl Grid.Row="0" />
-
-                    <views:AppConfigControl Grid.Row="2" />
+                    <views:CamerasControl />
                 </Grid>
 
-                <!--Cameras-->
-                <views:CamerasControl Grid.Column="2" />
+                <!--Composite Images & Log-->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="{StaticResource CardGap}" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                <!--Robot Arms & Logs-->
+                    <views:CompositeImagesControl />
+                    <views:LogsControl Grid.Row="2" />
+                </Grid>
+                
+                <!--Robot Arms & App Config-->
                 <Grid Grid.Column="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="{StaticResource CardGapHeight}" />
+                        <RowDefinition Height="{StaticResource CardGap}" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <views:RobotArmsControl Grid.Row="0" />
-
-                    <views:LogsControl Grid.Row="2" />
+                    <views:RobotArmsControl />
+                    <views:AppConfigControl Grid.Row="2" />
                 </Grid>
 
             </Grid>

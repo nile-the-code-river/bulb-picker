@@ -4,29 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
+             xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:AppConfigViewModel/>
+    </UserControl.DataContext>
+    
     <Border Style="{StaticResource CardStyle}" >
         <StackPanel>
-            <TextBlock Text="App Config" Style="{StaticResource CardTitleStyle}"/>
+            <TextBlock Text="Application Configuration" Style="{StaticResource CardTitleStyle}"/>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <TextBlock Text="SCARA Position Offsets" />
 
-                <TextBlock Grid.Column="0"
-                    FontSize="20"
-                    Text="Offsets"
-                    Foreground="{StaticResource Yellow}" />
+            <ItemsControl ItemsSource="{Binding RobotArms}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="2" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
                 
-                <TextBlock Grid.Column="1"
-                    FontSize="20"
-                    Text="FPS, etc"
-                    Foreground="{StaticResource Yellow}" />
-            </Grid>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="SCARA 1"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="X"/>
+                                <TextBox Width="100" />
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Y" />
+                                <TextBox Width="100" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
     </Border>
 </UserControl>

@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/UIColors.xaml" />
+                <ResourceDictionary Source="Styles/General.xaml" />
                 <ResourceDictionary Source="Styles/Card.xaml" />
                 <ResourceDictionary Source="Styles/Camera.xaml" />
             </ResourceDictionary.MergedDictionaries>

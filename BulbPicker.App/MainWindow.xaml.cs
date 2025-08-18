@@ -36,9 +36,6 @@ namespace BulbPicker.App
         }
         private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
-
-
-
         ////////
         //private Camera camera = null;
         //private DispatcherTimer captureTimer = null;

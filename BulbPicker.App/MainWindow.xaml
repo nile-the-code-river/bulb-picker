@@ -14,7 +14,7 @@
         Height="1080" Width="1920">
 
     <Border CornerRadius="5"
-            Background="{StaticResource InnerBlack}">
+            Background="{StaticResource BackgroundGray}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
@@ -23,7 +23,7 @@
 
             <!--Title Bar-->
             <Border Grid.Row="0"
-                    Background="{StaticResource OuterBlack}" 
+                    Background="{StaticResource HeaderGray}" 
                     CornerRadius="5 5 0 0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid>
@@ -55,11 +55,11 @@
             <!--Content-->
             <Grid Grid.Row="1" Margin="40 30" Grid.Column="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="600"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="{StaticResource CardGap}"/>
-                    <ColumnDefinition Width="600"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="{StaticResource CardGap}"/>
-                    <ColumnDefinition Width="600"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Cameras-->

@@ -25,7 +25,7 @@
                 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="{StaticResource CardBorderGray}"
+                        <Border Background="{StaticResource CardLightGray}"
                                 Height="76px"
                                 Margin="0 10 0 0"
                                 CornerRadius="5">

@@ -2,6 +2,7 @@
 using BulbPicker.App.Models;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace BulbPicker.App.Services
@@ -45,6 +46,8 @@ namespace BulbPicker.App.Services
             });
 
             cameras.ForEach(Cameras.Add);
+
+            MessageBox.Show("Camera Finding Sequence Ended");
         }
 
 

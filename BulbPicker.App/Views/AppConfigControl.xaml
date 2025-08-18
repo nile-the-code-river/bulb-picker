@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BulbPicker.App.Views"
              xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="470" d:DesignWidth="600">
     <UserControl.DataContext>
         <vm:AppConfigViewModel/>
     </UserControl.DataContext>

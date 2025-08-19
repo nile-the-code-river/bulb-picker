@@ -17,13 +17,13 @@
                 <TextBlock Text="Logs" Style="{StaticResource CardTitleStyle}"/>
                 <Border Style="{StaticResource CardSeparatorStyle}"/>
             </StackPanel>
-
             
             <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible"
                      Grid.Row="1"
                      BorderThickness="0"
                      Background="Transparent"
-                     
+                     FontSize="20"
+                     FontWeight="SemiBold"
                      Foreground="White">
                 <ListBoxItem>Test 1</ListBoxItem>
                 <ListBoxItem>Test 2</ListBoxItem>

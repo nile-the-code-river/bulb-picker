@@ -16,33 +16,62 @@
             <TextBlock Text="Application Configuration" Style="{StaticResource CardTitleStyle}"/>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 
-            <TextBlock Text="SCARA Position Offsets" />
+            <StackPanel Margin="10 0">
+                <TextBlock Text="SCARA Position Offsets" Style="{StaticResource MainTitleStyle}" />
 
-            <ItemsControl ItemsSource="{Binding RobotArms}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="2" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="SCARA 1"/>
+                <ItemsControl ItemsSource="{Binding RobotArms}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="X"/>
-                                <TextBox Width="100" />
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0 10">
+                                <TextBlock Text="SCARA 1"
+                                           FontSize="21"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource LightGray}"/>
+
+                                <!-- X -->
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="X"
+                                               FontSize="22"
+                                               Foreground="{StaticResource LightGray}"
+                                               FontWeight="SemiBold"
+                                               Margin="0 0 20 0"/>
+                                    <TextBox Width="100"
+                                             VerticalContentAlignment="Center"
+                                             Foreground="White"
+                                             FontSize="16"
+                                             Background="{StaticResource CardLightGray}"
+                                             BorderThickness="0"
+                                             Padding="8 5"/>
+                                </StackPanel>
+
+                                <!-- Y -->
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="10">
+                                    <TextBlock Text="Y"
+                                               FontSize="22"
+                                               Foreground="{StaticResource LightGray}"
+                                               FontWeight="SemiBold"
+                                               Margin="0 0 20 0"/>
+                                    <TextBox Width="100"
+                                             VerticalContentAlignment="Center"
+                                             Foreground="White"
+                                             FontSize="16"
+                                             Background="{StaticResource CardLightGray}"
+                                             BorderThickness="0"
+                                             Padding="8 5"/>
+                                </StackPanel>
                             </StackPanel>
-                            
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Y" />
-                                <TextBox Width="100" />
-                            </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
         </StackPanel>
     </Border>
 </UserControl>

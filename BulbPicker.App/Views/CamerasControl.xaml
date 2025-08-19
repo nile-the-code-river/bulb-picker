@@ -26,10 +26,12 @@
                         <StackPanel Margin="15">
                             <DockPanel>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Index, StringFormat='Camera {0}'}" />
-                                    <TextBlock Text="{Binding IPAddress}" />
+                                    <TextBlock Text="{Binding Index, StringFormat='Camera {0}'}"
+                                               Style="{StaticResource MainTitleStyle}"/>
+                                    <TextBlock Text="{Binding IPAddress}"
+                                               Style="{StaticResource SubTitleStyle}"/>
                                 </StackPanel>
-                                <Button Style="{StaticResource CameraConnectButtonStyle}"
+                                <Button Style="{StaticResource RunButtonStyle}"
                                         Command="{Binding TestCommand}"/>
                             </DockPanel>
 

@@ -15,4 +15,17 @@
     <SolidColorBrush x:Key="Cyan" Color="#51FFF3" />
     <SolidColorBrush x:Key="Red" Color="#FA7C7C" />
     <SolidColorBrush x:Key="LightGray" Color="#EEECE1" />
+
+    <Style x:Key="MainTitleStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource Yellow}"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style x:Key="SubTitleStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource LightGray}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Margin" Value="0 0 0 8" />
+    </Style>
 </ResourceDictionary>

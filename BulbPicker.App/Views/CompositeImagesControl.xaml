@@ -19,8 +19,10 @@
             <UniformGrid Columns="2">
                 <!--First Row-->
                 <StackPanel Margin="15">
-                    <TextBlock Text="First Row" />
-                    <TextBlock Text="Camera 1 + 2" />
+                    <TextBlock Text="First Row"
+                               Style="{StaticResource MainTitleStyle}" />
+                    <TextBlock Text="Camera 1 + 2"
+                               Style="{StaticResource SubTitleStyle}" />
                     <Border Background="Black"
                             Width="250"
                             Height="250">
@@ -31,8 +33,10 @@
 
                 <!--Second Row-->
                 <StackPanel Margin="15">
-                    <TextBlock Text="Second Row" />
-                    <TextBlock Text="Camera 3 + 4" />
+                    <TextBlock Text="Second Row"
+                               Style="{StaticResource MainTitleStyle}" />
+                    <TextBlock Text="Camera 3 + 4"
+                               Style="{StaticResource SubTitleStyle}" />
                     <Border Background="Black"
                             Width="250"
                             Height="250">

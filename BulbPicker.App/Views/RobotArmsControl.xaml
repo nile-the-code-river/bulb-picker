@@ -29,22 +29,57 @@
                                 Height="76px"
                                 Margin="0 10 0 0"
                                 CornerRadius="5">
-                            <StackPanel 
-                                    Orientation="Horizontal">
-                                <Image />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <Image Source="pack://application:,,,/Assets/Images/robot-arm-icon.png"
+                                       Width="40"
+                                       Margin="25 0"/>
 
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="SCARA 1" />
-                                        <TextBlock Text="{Binding IPAddress}"/>
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding State}" />
+                                <Grid Grid.Column="1"
+                                      VerticalAlignment="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Text="SCARA 1"
+                                                   Foreground="{StaticResource Yellow}"
+                                                   FontSize="20"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Margin="15 0"
+                                                   Text="{Binding IPAddress}"
+                                                   Foreground="{StaticResource LightGray}"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"/>
+                                    </Grid>
+                                    <!--TODO: apply foreground color based on the status-->
+                                    <TextBlock Grid.Row="1"
+                                               Text="{Binding State}"
+                                               Foreground="White"
+                                               />
+                                </Grid>
+
+                                <StackPanel Grid.Column="2"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Right">
+                                    <Button Style="{StaticResource RobotArmPowerButtonStyle}" />
+                                    <Button Style="{StaticResource RunButtonStyle}"
+                                            Width="24"
+                                            Height="24"
+                                            Margin="35 0 25 0"/>
                                 </StackPanel>
-
-                                <Button>power</Button>
-
-                                <Button>Run</Button>
-                            </StackPanel>
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

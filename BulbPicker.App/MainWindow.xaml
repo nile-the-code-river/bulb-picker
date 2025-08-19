@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:BulbPicker.App"
         xmlns:views="clr-namespace:BulbPicker.App.Views"
         mc:Ignorable="d"
-        Loaded="Window_Loaded"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"

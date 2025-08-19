@@ -39,17 +39,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Basler.Pylon">
-      <HintPath>..\..\..\..\Program Files\Basler\pylon 8\Development\Assemblies\Basler.Pylon\net8.0\x64\Basler.Pylon.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Etc\FormerProjectAnalysis.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Basler.Pylon">
+      <HintPath>C:\Program Files\Basler\pylon 7\Development\Assemblies\Basler.Pylon\net8.0\x64\Basler.Pylon.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

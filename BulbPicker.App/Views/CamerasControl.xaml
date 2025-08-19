@@ -8,6 +8,10 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:CamerasViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="940" d:DesignWidth="600">
+    <UserControl.DataContext>
+        <vm:CamerasViewModel />
+    </UserControl.DataContext>
+    
     <Border Style="{StaticResource CardStyle}">
         <StackPanel>
             <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>

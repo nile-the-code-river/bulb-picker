@@ -24,7 +24,6 @@ namespace BulbPicker.App.Views
         public CamerasControl()
         {
             InitializeComponent();
-            DataContext = new CamerasViewModel(App.CameraService);
         }
     }
 }

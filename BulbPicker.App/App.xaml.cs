@@ -10,7 +10,7 @@ namespace BulbPicker.App
     /// </summary>
     public partial class App : Application
     {
-        public static CameraService CameraService { get; } = CameraService.Instance;
+        //public static CameraService CameraService { get; } = CameraService.Instance;
 
     }
 

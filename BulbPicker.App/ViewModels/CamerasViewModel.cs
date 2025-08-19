@@ -3,29 +3,38 @@ using BulbPicker.App.Infrastructures;
 using BulbPicker.App.Models;
 using BulbPicker.App.Services;
 using System.Collections.ObjectModel;
+using System.Windows.Threading;
 
 namespace BulbPicker.App.ViewModels
 {
     class CamerasViewModel : ViewModelBase
     {
-
-        private readonly CameraService _cameraService;
-        public ObservableCollection<BaslerCamera> Cameras => _cameraService.Cameras;
-        // -> INotifyPropertyChanged
-        //public bool IsLoading => Cameras.Count == 0;
-
-        // for design preview's sake
-        public CamerasViewModel() : this(App.CameraService)
+        //private ObservableCollection<BaslerCamera> _cameras;
+        public ObservableCollection<BaslerCamera> Cameras
         {
-            _cameraService.Cameras.Add(new BaslerCamera());
-            _cameraService.Cameras.Add(new BaslerCamera());
-            _cameraService.Cameras.Add(new BaslerCamera());
-            _cameraService.Cameras.Add(new BaslerCamera());
+            get; set;
+        } = new ObservableCollection<BaslerCamera>();
+        
+        // 공통 타이머
+        private DispatcherTimer captureTimer = null;
+        private void InitializeCaptureTimer()
+        {
+            captureTimer = new DispatcherTimer();
+            captureTimer.Interval = TimeSpan.FromSeconds(1);
+            captureTimer.Tick += CaptureTimer_Tick;
+        }
+        private void CaptureTimer_Tick(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
-        public CamerasViewModel(CameraService cameraService)
+        public CamerasViewModel()
         {
-            _cameraService = cameraService;
+            Test();
+        }
+        public void Test()
+        {
+            Cameras.Add(new BaslerCamera() { Camera = new Camera("21914827") });
         }
     }
 }

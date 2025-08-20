@@ -16,24 +16,33 @@ namespace BulbPicker.App.ViewModels
         } = new ObservableCollection<BaslerCamera>();
         
         // 공통 타이머
-        private DispatcherTimer captureTimer = null;
-        private void InitializeCaptureTimer()
-        {
-            captureTimer = new DispatcherTimer();
-            captureTimer.Interval = TimeSpan.FromSeconds(1);
-            captureTimer.Tick += CaptureTimer_Tick;
-        }
-        private void CaptureTimer_Tick(object? sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+        private DispatcherTimer _shotTimer;
 
         public CamerasViewModel()
         {
             Test();
+            InitializeTimer();
         }
+
+        private void InitializeTimer()
+        {
+            _shotTimer = new DispatcherTimer();
+            _shotTimer.Interval = TimeSpan.FromSeconds(1);
+            _shotTimer.Tick += _shotTimer_Tick;
+            _shotTimer.Start();
+        }
+
+        private void _shotTimer_Tick(object? sender, EventArgs e)
+        {
+            foreach (var camera in Cameras)
+            {
+                camera.TakeOneShot();
+            }
+        }
+
         public void Test()
         {
+            Cameras.Add(new BaslerCamera() { Camera = new Camera("40058520") });
             Cameras.Add(new BaslerCamera() { Camera = new Camera("21914827") });
         }
     }

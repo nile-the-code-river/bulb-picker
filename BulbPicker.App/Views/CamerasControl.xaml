@@ -32,7 +32,7 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding Index, StringFormat='Camera {0}'}"
                                                Style="{StaticResource MainTitleStyle}"/>
-                                    <TextBlock Text="{Binding IPAddress}"
+                                    <TextBlock Text="{Binding CameraNumber}"
                                                Style="{StaticResource SubTitleStyle}"/>
                                 </StackPanel>
                                 <Button Style="{StaticResource RunButtonStyle}"

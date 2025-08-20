@@ -1,7 +1,6 @@
 ﻿using Basler.Pylon;
 using BulbPicker.App.Infrastructures;
 using BulbPicker.App.Models;
-using BulbPicker.App.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
@@ -9,19 +8,25 @@ namespace BulbPicker.App.ViewModels
 {
     class CamerasViewModel : ViewModelBase
     {
-        //private ObservableCollection<BaslerCamera> _cameras;
+        private ObservableCollection<BaslerCamera> _cameras = new ObservableCollection<BaslerCamera>();
         public ObservableCollection<BaslerCamera> Cameras
         {
-            get; set;
-        } = new ObservableCollection<BaslerCamera>();
+            get => _cameras;
+            set
+            {
+                _cameras = value;
+            }
+        }
         
         // 공통 타이머
         private DispatcherTimer _shotTimer;
 
         public CamerasViewModel()
         {
-            Test();
-            InitializeTimer();
+            TestDummy();
+
+            //Test();
+            //InitializeTimer();
         }
 
         private void InitializeTimer()
@@ -38,6 +43,11 @@ namespace BulbPicker.App.ViewModels
             {
                 camera.TakeOneShot();
             }
+        }
+
+        public void TestDummy()
+        {
+            Cameras.Add(new BaslerCamera());
         }
 
         public void Test()

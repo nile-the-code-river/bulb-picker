@@ -14,7 +14,8 @@
             </Grid.RowDefinitions>
 
             <StackPanel>
-                <TextBlock Text="Logs" Style="{StaticResource CardTitleStyle}"/>
+                <TextBlock Text="Logs"
+                           Style="{StaticResource CardTitleStyle}"/>
                 <Border Style="{StaticResource CardSeparatorStyle}"/>
             </StackPanel>
             
@@ -23,7 +24,6 @@
                      BorderThickness="0"
                      Background="Transparent"
                      FontSize="20"
-                     FontWeight="SemiBold"
                      Foreground="White">
                 <ListBoxItem>Test 1</ListBoxItem>
                 <ListBoxItem>Test 2</ListBoxItem>

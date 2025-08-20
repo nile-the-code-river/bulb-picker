@@ -48,6 +48,12 @@ namespace BulbPicker.App.Models
         // TODO: Refine
         public async void TakeOneShot()
         {
+            if (Camera == null)
+            {
+                MessageBox.Show("Camera is null");
+                return;
+            }
+
             try
             {
                 var grabResult = GrabShotResult();

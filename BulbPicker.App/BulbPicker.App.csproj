@@ -48,7 +48,7 @@
 
   <ItemGroup>
     <Reference Include="Basler.Pylon">
-      <HintPath>C:\Program Files\Basler\pylon 7\Development\Assemblies\Basler.Pylon\net8.0\x64\Basler.Pylon.dll</HintPath>
+      <HintPath>Assets\Dll\Basler.Pylon.dll</HintPath>
     </Reference>
   </ItemGroup>
 

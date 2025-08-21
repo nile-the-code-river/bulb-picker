@@ -58,17 +58,24 @@
                                                    FontWeight="SemiBold"/>
                                         
                                         <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center"
                                                     Grid.Column="1">
                                             <TextBlock Margin="15 0"
                                                        Text="{Binding IP}"
                                                        Foreground="{StaticResource LightGray}"
                                                        FontSize="16"
                                                        FontWeight="SemiBold"/>
-                                            <TextBlock Margin="15 0"
-                                                       Text="{Binding Port}"
-                                                       Foreground="{StaticResource LightGray}"
-                                                       FontSize="16"
+                                            <StackPanel Margin="15 0">
+                                                <TextBlock Text="{Binding RobotArmPort}"
+                                                           Foreground="{StaticResource LightGray}"
+                                                       FontSize="12"
                                                        FontWeight="SemiBold"/>
+
+                                                <TextBlock Text="{Binding ProgramPort}"
+                                                       Foreground="{StaticResource LightGray}"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </Grid>
                                     <!--TODO: apply foreground color based on the status-->
@@ -91,6 +98,13 @@
                                             Width="24"
                                             Height="24"
                                             Margin="0 0 25 0"/>
+
+                                    <Button Content="Test"
+                                            Foreground="White"
+                                            Background="Green"
+                                            Command="{Binding TestCommand}"
+                                            Width="50"
+                                            Height="30" />
                                 </StackPanel>
                             </Grid>
                         </Border>

@@ -17,7 +17,7 @@
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 
             <StackPanel Margin="10 0">
-                <TextBlock Text="SCARA Position Offsets" Style="{StaticResource MainTitleStyle}" />
+                <TextBlock Text="Robot Arm Position Offsets" Style="{StaticResource MainTitleStyle}" />
 
                 <ItemsControl ItemsSource="{Binding RobotArms}">
                     <ItemsControl.ItemsPanel>

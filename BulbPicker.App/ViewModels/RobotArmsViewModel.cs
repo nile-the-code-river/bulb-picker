@@ -13,7 +13,7 @@ namespace BulbPicker.App.ViewModels
         const int TEST_SYS_PORT = 1000;
         const int TEST_PORT = 8011;
         public List<RobotArm> RobotArms { get; set; }
-            = new List<RobotArm>() { new RobotArm(TEST_IP, TEST_SYS_PORT, TEST_PORT) };
+            = new List<RobotArm>() { new RobotArm(TEST_IP, TEST_PORT, TEST_SYS_PORT) };
 
 
     }

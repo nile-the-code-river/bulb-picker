@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
+             xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="470" d:DesignWidth="600">
+    <UserControl.DataContext>
+        <vm:LogsViewModel />
+    </UserControl.DataContext>
+    
     <Border Style="{StaticResource CardStyle}" >
         <Grid>
             <Grid.RowDefinitions>
@@ -18,19 +23,24 @@
                            Style="{StaticResource CardTitleStyle}"/>
                 <Border Style="{StaticResource CardSeparatorStyle}"/>
             </StackPanel>
-            
+
             <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible"
                      Grid.Row="1"
                      BorderThickness="0"
                      Background="Transparent"
-                     FontSize="20"
-                     Foreground="White">
-                <ListBoxItem>Test 1</ListBoxItem>
-                <ListBoxItem>Test 2</ListBoxItem>
-                <ListBoxItem>Test 3</ListBoxItem>
-                <ListBoxItem>Test 4</ListBoxItem>
-                <ListBoxItem>Test 5</ListBoxItem>
-                <ListBoxItem>Test 6</ListBoxItem>
+                     FontSize="18"
+                     Foreground="White"
+                     ItemsSource="{Binding Logs}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding LoggedAt, StringFormat='[ {0:yyyy/MM/dd HH:mm:ss} ]'}"
+                                       Margin="0 0 10 0"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding Message}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
     </Border>

@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BulbPicker.App.Models;
+using System.Collections.ObjectModel;
 
 namespace BulbPicker.App.Services
 {
-    class LogService
+    public sealed class LogService
     {
+        private static readonly LogService _instance = new LogService();
+        public static LogService Instance => _instance;
+        private LogService() { }
+
+        private ObservableCollection<Log> _logs = new ObservableCollection<Log>();
+        public ObservableCollection<Log> Logs
+        {
+            get => _logs;
+            set => _logs = value;
+        }
+
+        public void AddLog(Log log) => Logs.Add(log);
     }
 }

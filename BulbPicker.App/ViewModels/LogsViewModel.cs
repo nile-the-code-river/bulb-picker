@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BulbPicker.App.Infrastructures;
+using BulbPicker.App.Models;
+using BulbPicker.App.Services;
+using System.Collections.ObjectModel;
 
 namespace BulbPicker.App.ViewModels
 {
     class LogsViewModel
     {
+        public ObservableCollection<Log> Logs => LogService.Instance.Logs;
     }
 }

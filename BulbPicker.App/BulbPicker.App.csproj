@@ -18,6 +18,8 @@
     <None Remove="Assets\Images\robot-arm-icon.png" />
     <None Remove="Assets\Images\run-button-active.png" />
     <None Remove="Assets\Images\run-button-inactive.png" />
+    <None Remove="Assets\Images\servoon-button-active.png" />
+    <None Remove="Assets\Images\servoon-button-inactive.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +36,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Images\run-button-inactive.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\servoon-button-active.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\servoon-button-inactive.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

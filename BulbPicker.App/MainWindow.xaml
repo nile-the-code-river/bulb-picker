@@ -67,7 +67,8 @@
                 </Grid>
 
                 <!--Composite Images & Log-->
-                <Grid Grid.Column="2">
+                <!-- 화면 작아서 로봇팔 테스트 용으로 일단 없앰 -->
+                <!--<Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="{StaticResource CardGap}" />
@@ -76,10 +77,11 @@
 
                     <views:CompositeImagesControl />
                     <views:LogsControl Grid.Row="2" />
-                </Grid>
+                </Grid>-->
                 
                 <!--Robot Arms & App Config-->
-                <Grid Grid.Column="4">
+                <!-- 화면 작아서 로봇팔 테스트 용으로 일단 늘림 -->
+                <Grid Grid.Column="2" Grid.ColumnSpan="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="{StaticResource CardGap}" />

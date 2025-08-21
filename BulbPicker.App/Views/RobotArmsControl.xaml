@@ -49,19 +49,27 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         
                                         <TextBlock Text="SCARA 1"
                                                    Foreground="{StaticResource Yellow}"
                                                    FontSize="20"
                                                    FontWeight="SemiBold"/>
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="15 0"
-                                                   Text="{Binding IPAddress}"
-                                                   Foreground="{StaticResource LightGray}"
-                                                   FontSize="16"
-                                                   FontWeight="SemiBold"/>
+                                        
+                                        <StackPanel Orientation="Horizontal"
+                                                    Grid.Column="1">
+                                            <TextBlock Margin="15 0"
+                                                       Text="{Binding IP}"
+                                                       Foreground="{StaticResource LightGray}"
+                                                       FontSize="16"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Margin="15 0"
+                                                       Text="{Binding Port}"
+                                                       Foreground="{StaticResource LightGray}"
+                                                       FontSize="16"
+                                                       FontWeight="SemiBold"/>
+                                        </StackPanel>
                                     </Grid>
                                     <!--TODO: apply foreground color based on the status-->
                                     <TextBlock Grid.Row="1"
@@ -73,11 +81,16 @@
                                 <StackPanel Grid.Column="2"
                                             Orientation="Horizontal"
                                             HorizontalAlignment="Right">
-                                    <Button Style="{StaticResource RobotArmPowerButtonStyle}" />
+                                    <Button Style="{StaticResource RobotArmConnectButtonStyle}"
+                                            Command="{Binding PowerButtonCommand}"/>
+                                    <Button Style="{StaticResource RobotArmServoOnButtonStyle}"
+                                            Command="{Binding ServoOnCommand}"
+                                            Margin="35 0"/>
                                     <Button Style="{StaticResource RunButtonStyle}"
+                                            Command="{Binding RunCommand}"
                                             Width="24"
                                             Height="24"
-                                            Margin="35 0 25 0"/>
+                                            Margin="0 0 25 0"/>
                                 </StackPanel>
                             </Grid>
                         </Border>

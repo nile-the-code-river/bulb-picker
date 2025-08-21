@@ -1,16 +1,20 @@
 ﻿using BulbPicker.App.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BulbPicker.App.ViewModels
 {
     class RobotArmsViewModel
     {
-        const string TEST_IP = "000.000.000.000";
+        // TODO: get from config file
+        public int ScaraOffsetX = 0;
+        public int ScaraOffsetY = 0;
+        public int ScaraOffsetZ = 0;
+
+        const string TEST_IP = "192.168.0.13";
+        const int TEST_SYS_PORT = 1000;
+        const int TEST_PORT = 8011;
         public List<RobotArm> RobotArms { get; set; }
-            = new List<RobotArm>() { new RobotArm(TEST_IP), new RobotArm(TEST_IP), new RobotArm(TEST_IP), new RobotArm(TEST_IP) };
+            = new List<RobotArm>() { new RobotArm(TEST_IP, TEST_SYS_PORT, TEST_PORT) };
+
+
     }
 }

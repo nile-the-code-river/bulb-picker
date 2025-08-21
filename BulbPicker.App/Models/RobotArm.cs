@@ -145,7 +145,7 @@ namespace BulbPicker.App.Models
 
         private void TestMove()
         {
-            string test = "1,200.410,-500.000,107.616,1,0,0\r";
+            string test = "1,200.410,-500.000,147.616,1,0,0\r";
             test = "1," + (116.1641).ToString("0.000") + "," + (-690.9336).ToString("0.000") + "," + (139.1408).ToString("0.000") + ",1,0,0\r";
             RobotArmSocket.Send(Encoding.ASCII.GetBytes(test));
             LogService.Instance.AddLog(new Log($"{test} sent to {IP}", LogType.RobotArmPointsSent));

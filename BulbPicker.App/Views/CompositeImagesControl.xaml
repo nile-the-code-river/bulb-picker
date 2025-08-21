@@ -13,7 +13,7 @@
     
     <Border Style="{StaticResource CardStyle}" >
         <StackPanel>
-            <TextBlock Text="Composite Images" Style="{StaticResource CardTitleStyle}"/>
+            <TextBlock Text="Composite Images (from Cameras)" Style="{StaticResource CardTitleStyle}"/>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 
             <UniformGrid Columns="2">
@@ -21,7 +21,7 @@
                 <StackPanel Margin="15">
                     <TextBlock Text="First Row"
                                Style="{StaticResource MainTitleStyle}" />
-                    <TextBlock Text="Camera 1 + 2"
+                    <TextBlock Text="1st Inside + 1st Outside"
                                Style="{StaticResource SubTitleStyle}" />
                     <Border Background="Black"
                             Width="250"
@@ -35,7 +35,7 @@
                 <StackPanel Margin="15">
                     <TextBlock Text="Second Row"
                                Style="{StaticResource MainTitleStyle}" />
-                    <TextBlock Text="Camera 3 + 4"
+                    <TextBlock Text="2nd Inside + 2nd Outside"
                                Style="{StaticResource SubTitleStyle}" />
                     <Border Background="Black"
                             Width="250"

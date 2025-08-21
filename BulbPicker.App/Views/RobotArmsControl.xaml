@@ -12,105 +12,108 @@
     </UserControl.DataContext>
     
     <Border Style="{StaticResource CardStyle}" >
-        <StackPanel>
-            <TextBlock Text="Robot Arms" Style="{StaticResource CardTitleStyle}"/>
-            <Border Style="{StaticResource CardSeparatorStyle}"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Robot Arms" Style="{StaticResource CardTitleStyle}"/>
+                <Border Style="{StaticResource CardSeparatorStyle}"/>
 
-            <ItemsControl ItemsSource="{Binding RobotArms}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="1"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="{StaticResource CardLightGray}"
-                                Height="76px"
-                                Margin="0 10 0 0"
-                                CornerRadius="5">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                
-                                <Image Source="pack://application:,,,/Assets/Images/robot-arm-icon.png"
-                                       Width="40"
-                                       Margin="25 0"/>
+                <ItemsControl ItemsSource="{Binding RobotArms}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                                <Grid Grid.Column="1"
-                                      VerticalAlignment="Center">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <TextBlock Text="SCARA 1"
-                                                   Foreground="{StaticResource Yellow}"
-                                                   FontSize="20"
-                                                   FontWeight="SemiBold"/>
-                                        
-                                        <StackPanel Orientation="Horizontal"
-                                                    VerticalAlignment="Center"
-                                                    Grid.Column="1">
-                                            <TextBlock Margin="15 0"
-                                                       Text="{Binding IP}"
-                                                       Foreground="{StaticResource LightGray}"
-                                                       FontSize="16"
-                                                       FontWeight="SemiBold"/>
-                                            <StackPanel Margin="15 0">
-                                                <TextBlock Text="{Binding RobotArmPort}"
-                                                           Foreground="{StaticResource LightGray}"
-                                                       FontSize="12"
-                                                       FontWeight="SemiBold"/>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{StaticResource CardLightGray}"
+                        Height="76px"
+                        Margin="0 10 0 0"
+                        CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                                <TextBlock Text="{Binding ProgramPort}"
-                                                       Foreground="{StaticResource LightGray}"
-                                                       FontSize="12"
-                                                       FontWeight="SemiBold"/>
+                                    <Image Source="pack://application:,,,/Assets/Images/robot-arm-icon.png"
+                               Width="40"
+                               Margin="25 0"/>
+
+                                    <Grid Grid.Column="1"
+                              VerticalAlignment="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Text="{Binding Alias}"
+                                           Foreground="{StaticResource Yellow}"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"/>
+
+                                            <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center"
+                                            Grid.Column="1">
+                                                <TextBlock Margin="15 0"
+                                               Text="{Binding IP}"
+                                               Foreground="{StaticResource LightGray}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"/>
+                                                <StackPanel Margin="15 0">
+                                                    <TextBlock Text="{Binding RobotArmPort}"
+                                                   Foreground="{StaticResource LightGray}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+
+                                                    <TextBlock Text="{Binding ProgramPort}"
+                                               Foreground="{StaticResource LightGray}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Grid>
+                                        <!--TODO: apply foreground color based on the status-->
+                                        <TextBlock Grid.Row="1"
+                                       Text="{Binding State}"
+                                       Foreground="White"
+                                       />
                                     </Grid>
-                                    <!--TODO: apply foreground color based on the status-->
-                                    <TextBlock Grid.Row="1"
-                                               Text="{Binding State}"
-                                               Foreground="White"
-                                               />
+
+                                    <StackPanel Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right">
+                                        <Button Style="{StaticResource RobotArmConnectButtonStyle}"
+                                    Command="{Binding PowerButtonCommand}"/>
+                                        <Button Style="{StaticResource RobotArmServoOnButtonStyle}"
+                                    Command="{Binding ServoOnCommand}"
+                                    Margin="35 0"/>
+                                        <Button Style="{StaticResource RunButtonStyle}"
+                                    Command="{Binding RunCommand}"
+                                    Width="24"
+                                    Height="24"
+                                    Margin="0 0 25 0"/>
+
+                                        <Button Content="Test"
+                                    Foreground="White"
+                                    Background="Green"
+                                    Command="{Binding TestCommand}"
+                                    Width="50"
+                                    Height="30" />
+                                    </StackPanel>
                                 </Grid>
-
-                                <StackPanel Grid.Column="2"
-                                            Orientation="Horizontal"
-                                            HorizontalAlignment="Right">
-                                    <Button Style="{StaticResource RobotArmConnectButtonStyle}"
-                                            Command="{Binding PowerButtonCommand}"/>
-                                    <Button Style="{StaticResource RobotArmServoOnButtonStyle}"
-                                            Command="{Binding ServoOnCommand}"
-                                            Margin="35 0"/>
-                                    <Button Style="{StaticResource RunButtonStyle}"
-                                            Command="{Binding RunCommand}"
-                                            Width="24"
-                                            Height="24"
-                                            Margin="0 0 25 0"/>
-
-                                    <Button Content="Test"
-                                            Foreground="White"
-                                            Background="Green"
-                                            Command="{Binding TestCommand}"
-                                            Width="50"
-                                            Height="30" />
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
     </Border>
 </UserControl>

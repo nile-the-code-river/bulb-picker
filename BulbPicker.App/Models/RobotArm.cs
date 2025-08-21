@@ -4,11 +4,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Windows;
-using static System.Net.Mime.MediaTypeNames;
 
-// TODO: socket도 꼭 두 개여야 하나 한번 확인
-// TODO: 전반적으로 log 넣기
 namespace BulbPicker.App.Models
 {
     public enum RobotArmState
@@ -21,13 +17,14 @@ namespace BulbPicker.App.Models
 
     public class RobotArm : INotifyPropertyChanged
     {
-        public string IP { get; set; }
-        
-        public int RobotArmPort { get; set; }
+        public string Alias { get; set; } = "Alias Ex.";
+        public string IP { get; set; } = "IP Ex.";
+
+        public int RobotArmPort { get; set; } = 0;
         public IPEndPoint RobotArmIPEndPoint { get; set; }
         public Socket RobotArmSocket { get; set; }
 
-        public int ProgramPort { get; set; }
+        public int ProgramPort { get; set; } = 0;
         public IPEndPoint ProgramIPEndPoint { get; set; }
         public Socket ProgramSocket;
         
@@ -49,8 +46,9 @@ namespace BulbPicker.App.Models
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public RobotArm(string ip, int robotArmPort, int programPort)
+        public RobotArm(string alias, string ip, int robotArmPort, int programPort)
         {
+            Alias = alias;
             IP = ip;
             RobotArmPort = robotArmPort;
             ProgramPort = programPort;
@@ -116,7 +114,7 @@ namespace BulbPicker.App.Models
             {
                 ProgramSocket.Send(Encoding.ASCII.GetBytes("SO\r"));
                 State = RobotArmState.ServoOn;
-                LogService.Instance.AddLog(new Log($"{IP} ServoOn", LogType.RobotArmProgramCommandsSent));
+                LogService.Instance.AddLog(new Log($"{IP} ServoOn", LogType.RobotArmCommunication));
             }
             catch (Exception)
             {
@@ -131,7 +129,7 @@ namespace BulbPicker.App.Models
                 ProgramSocket.Send(Encoding.ASCII.GetBytes("RN\r"));
                 State = RobotArmState.Running;
                 // TODO: add a property here "Alias" as well as in BaslerCamera
-                LogService.Instance.AddLog(new Log($"{IP} now running", LogType.RobotArmProgramCommandsSent));
+                LogService.Instance.AddLog(new Log($"{IP} now running", LogType.RobotArmCommunication));
             }
             catch (Exception)
             {

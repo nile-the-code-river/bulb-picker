@@ -10,12 +10,12 @@
         // Camera Image Composition
         ImageCombined, // TODO: and saved when testing!
 
-        // Robot Arm Communication
+        // Robot Arm Commands & Data Sending
         RobotArmPointsSent,
-        RobotArmProgramCommandsSent,
+        RobotArmCommunication,
 
         // Robot Arm Offset Settings
-        ChangeSaved
+        SettingFileUpdated
     }
 
     public class Log

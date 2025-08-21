@@ -22,6 +22,28 @@
                 <TextBlock Text="Logs"
                            Style="{StaticResource CardTitleStyle}"/>
                 <Border Style="{StaticResource CardSeparatorStyle}"/>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Background="Green"
+                            Content="Con."
+                            Command="{Binding AddLog_Connected}" />
+                    <Button Background="Red"
+                            Content="Discon."
+                            Command="{Binding AddLog_Disconnected}" />
+                    <Button Background="Yellow"
+                            Content="RAPointSent"
+                            Command="{Binding AddLog_RobotArmPointSent}" />
+                    <Button Background="Cyan"
+                            Content="RACommun."
+                            Command="{Binding AddLog_RobotArmCommunication}" />
+                    <Button Background="Purple"
+                            Content="SFUpdated"
+                            Command="{Binding AddLog_SettingFileUpdated}" />
+                    <Button Background="Pink"
+                            Content="ImageCombined"
+                            Command="{Binding AddLog_ImageCombined}" />
+
+                </StackPanel>
             </StackPanel>
 
             <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible"

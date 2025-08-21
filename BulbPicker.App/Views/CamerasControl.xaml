@@ -30,7 +30,7 @@
                         <StackPanel Margin="15">
                             <DockPanel>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Index, StringFormat='Camera {0}'}"
+                                    <TextBlock Text="{Binding Alias}"
                                                Style="{StaticResource MainTitleStyle}"/>
                                     <TextBlock Text="{Binding CameraNumber}"
                                                Style="{StaticResource SubTitleStyle}"/>

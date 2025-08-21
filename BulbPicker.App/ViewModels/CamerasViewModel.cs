@@ -47,13 +47,15 @@ namespace BulbPicker.App.ViewModels
 
         public void TestDummy()
         {
-            Cameras.Add(new BaslerCamera());
+            Cameras.Add(new BaslerCamera("Dummy", null));
         }
 
         public void Test()
         {
-            Cameras.Add(new BaslerCamera() { Camera = new Camera("40058520") });
-            Cameras.Add(new BaslerCamera() { Camera = new Camera("21914827") });
+            Cameras.Add(new BaslerCamera("1st Outside", new Camera("")));
+            Cameras.Add(new BaslerCamera("1st Inside", new Camera("")));
+            Cameras.Add(new BaslerCamera("2nd Outside", new Camera("40058520")));
+            Cameras.Add(new BaslerCamera("2nd Inside", new Camera("21914827")));
         }
     }
 }

@@ -12,7 +12,7 @@ namespace BulbPicker.App.Models
 {
     public class BaslerCamera : INotifyPropertyChanged
     {
-        public byte Index { get; set; } = 0;
+        public string Alias { get; set; }
 
         private Camera _camera;
         public Camera Camera
@@ -45,7 +45,13 @@ namespace BulbPicker.App.Models
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        // TODO: Refine
+        public BaslerCamera(string alias, Camera camera)
+        {
+            Alias = alias;
+            Camera = camera;
+        }
+
+        // DEPRECATED
         public async void TakeOneShot()
         {
             if (Camera == null)

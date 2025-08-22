@@ -80,6 +80,36 @@ namespace BulbPicker.App.Models
             // empty for now
         }
 
+
+        private string _sessionDir = null;
+        private int _imageIndex = 0;
+        private readonly object _saveLock = new object();
+
+
+        private void SaveBitmapToSession(Bitmap bmp)
+        {
+            if (_sessionDir == null)
+            {
+                string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CapturedImages");
+                Directory.CreateDirectory(baseDir);
+                string sessionName = DateTime.Now.ToString("yyyyMMdd_HHmmss") + Alias;
+                _sessionDir = Path.Combine(baseDir, sessionName);
+                Directory.CreateDirectory(_sessionDir);
+                _imageIndex = 0;
+            }
+
+            int idx = System.Threading.Interlocked.Increment(ref _imageIndex) - 1;
+            string fullPath = Path.Combine(_sessionDir, $"frame_{idx:D5}.bmp");
+
+            // 원본과 메모리 연결을 끊기 위해 반드시 클론 후 저장
+            using var clone = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            lock (_saveLock)
+            {
+                clone.Save(fullPath, System.Drawing.Imaging.ImageFormat.Bmp);
+            }
+        }
+
         private void StreamGrabber_ImageGrabbed(object? sender, ImageGrabbedEventArgs e)
         {
 
@@ -97,6 +127,15 @@ namespace BulbPicker.App.Models
                     IntPtr ptrBmp = bmpData.Scan0;
                     _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                     bitmap.UnlockBits(bmpData);
+
+
+
+                    // image saving for test
+                    SaveBitmapToSession(bitmap);
+
+
+
+
 
                     var source = BitmapToImageSource(bitmap);
                     bitmap.Dispose();

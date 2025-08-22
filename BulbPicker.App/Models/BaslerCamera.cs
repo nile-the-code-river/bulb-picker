@@ -21,10 +21,9 @@ namespace BulbPicker.App.Models
             set
             {
                 _camera = value;
-                CameraNumber = value?.CameraInfo?.GetValueOrDefault("SerialNumber", "null");
             }
         }
-        public string? CameraNumber { get; private set; }
+        public string SerialNumber { get; private set; }
 
         private BitmapSource _oneShotImage;
         public BitmapSource OneShotImage
@@ -45,10 +44,55 @@ namespace BulbPicker.App.Models
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public BaslerCamera(string alias, Camera camera)
+        public BaslerCamera(string alias, string serialNumber)
         {
             Alias = alias;
-            Camera = camera;
+            SerialNumber = serialNumber;
+
+            SetUpCamera();
+        }
+
+        // TODO: make this async
+        private void SetUpCamera()
+        {
+            Camera = new Camera(SerialNumber);
+
+            Camera.CameraOpened += Configuration.AcquireContinuous;
+            Camera.CameraOpened += Camera_CameraOpened;
+
+            Camera.CameraClosed += Camera_CameraClosed;
+
+            Camera.StreamGrabber.GrabStarted += StreamGrabber_GrabStarted;
+            Camera.StreamGrabber.ImageGrabbed += StreamGrabber_ImageGrabbed;
+            Camera.StreamGrabber.GrabStopped += StreamGrabber_GrabStopped;
+
+            Camera.Open();
+        }
+
+        private void StreamGrabber_GrabStopped(object? sender, GrabStopEventArgs e)
+        {
+            // empty for now
+        }
+
+        private void StreamGrabber_ImageGrabbed(object? sender, ImageGrabbedEventArgs e)
+        {
+            // empty for now
+        }
+
+        private void StreamGrabber_GrabStarted(object? sender, EventArgs e)
+        {
+            // empty for now
+        }
+
+        private void Camera_CameraOpened(object? sender, EventArgs e)
+        {
+            // empty for now
+        }
+
+        private void Camera_CameraClosed(object? sender, EventArgs e)
+        {
+            Camera.Close();
+            Camera.Dispose();
         }
 
         // DEPRECATED

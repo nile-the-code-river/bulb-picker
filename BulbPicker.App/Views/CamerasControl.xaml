@@ -32,7 +32,7 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding Alias}"
                                                Style="{StaticResource MainTitleStyle}"/>
-                                    <TextBlock Text="{Binding CameraNumber}"
+                                    <TextBlock Text="{Binding SerialNumber}"
                                                Style="{StaticResource SubTitleStyle}"/>
                                 </StackPanel>
                                 <Button Style="{StaticResource RunButtonStyle}"

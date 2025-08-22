@@ -2,16 +2,20 @@
 using BulbPicker.App.Infrastructures;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace BulbPicker.App.Models
 {
     public class BaslerCamera : INotifyPropertyChanged
     {
+        private readonly PixelDataConverter _pixelConverter = new PixelDataConverter();
+
         public string Alias { get; set; }
 
         private Camera _camera;
@@ -25,6 +29,8 @@ namespace BulbPicker.App.Models
         }
         public string SerialNumber { get; private set; }
 
+        // TODO: change the name into TakenImage or sth
+
         private BitmapSource _oneShotImage;
         public BitmapSource OneShotImage
         {
@@ -36,7 +42,7 @@ namespace BulbPicker.App.Models
             }
         }
 
-        public RelayCommand TestCommand => new RelayCommand(execute => TakeOneShot(), canExecute => Camera != null );
+        public RelayCommand TestCommand => new RelayCommand(execute => Run(), canExecute => Camera != null );
 
         // PropertyChanged
         // TODO: Separate
@@ -76,7 +82,31 @@ namespace BulbPicker.App.Models
 
         private void StreamGrabber_ImageGrabbed(object? sender, ImageGrabbedEventArgs e)
         {
-            // empty for now
+
+            IGrabResult grabResult = e.GrabResult;
+
+            using (grabResult)
+            {
+                if (grabResult.GrabSucceeded)
+                {
+                    Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                    // Lock the bits of the bitmap.
+                    BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+                    // Place the pointer to the buffer of the bitmap.
+                    _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
+                    IntPtr ptrBmp = bmpData.Scan0;
+                    _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
+                    bitmap.UnlockBits(bmpData);
+
+                    var source = BitmapToImageSource(bitmap);
+                    bitmap.Dispose();
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        OneShotImage = source;
+                    }, System.Windows.Threading.DispatcherPriority.DataBind);
+                }
+            }
         }
 
         private void StreamGrabber_GrabStarted(object? sender, EventArgs e)
@@ -86,7 +116,19 @@ namespace BulbPicker.App.Models
 
         private void Camera_CameraOpened(object? sender, EventArgs e)
         {
-            // empty for now
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                // bin\Debug\netX → 프로젝트 루트로 올라가기
+                string projectRoot = Path.GetFullPath(Path.Combine(baseDir, @"..\..\.."));
+                string filePath = Path.Combine(projectRoot, "Assets", "Config_Temp", "camera-profile.pfs");
+
+                Camera.Parameters.Load(filePath, ParameterPath.CameraDevice);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private void Camera_CameraClosed(object? sender, EventArgs e)
@@ -95,65 +137,149 @@ namespace BulbPicker.App.Models
             Camera.Dispose();
         }
 
-        // DEPRECATED
-        public async void TakeOneShot()
+        private void Run()
         {
-            if (Camera == null)
-            {
-                MessageBox.Show("Camera is null");
-                return;
-            }
-
-            try
-            {
-                var grabResult = GrabShotResult();
-
-                using (grabResult)
-                {
-                    if (grabResult.GrabSucceeded)
-                    {
-                        byte[] buffer = grabResult.PixelData as byte[];
-                        BitmapSource bitmap = BitmapSource.Create(
-                            grabResult.Width,
-                            grabResult.Height,
-                            96, 96,
-                            PixelFormats.Gray8,
-                            null,
-                            buffer,
-                            grabResult.Width);
-
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            OneShotImage = bitmap;
-                        });
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                if(Camera.IsOpen)
-                    Camera.Close();
-
-                MessageBox.Show("Exception! {0}" + e.Message);
-            }
-        }
-
-        private IGrabResult GrabShotResult()
-        {
-            Camera.CameraOpened += Configuration.AcquireSingleFrame;
-
-            Camera.Open();
-
+            Camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
             // 
-            if (Camera.StreamGrabber.IsGrabbing) MessageBox.Show("Already Grabbing");
-
-            Camera.StreamGrabber.Start();
-            IGrabResult grabResult = Camera.StreamGrabber.RetrieveResult(5000, TimeoutHandling.ThrowException);
-            Camera.StreamGrabber.Stop();
-
-            Camera.Close();
-
-            return grabResult;
         }
+
+        private BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+                bitmapimage.Freeze();
+
+                return bitmapimage;
+            }
+        }
+
+        //// DEPRECATED
+        //public async void TakeOneShot()
+        //{
+        //    if (Camera == null)
+        //    {
+        //        MessageBox.Show("Camera is null");
+        //        return;
+        //    }
+
+        //    try
+        //    {
+        //        var grabResult = GrabShotResult();
+
+        //        using (grabResult)
+        //        {
+        //            if (grabResult.GrabSucceeded)
+        //            {
+        //                Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+        //                // Lock the bits of the bitmap.
+        //                BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+        //                // Place the pointer to the buffer of the bitmap.
+        //                _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
+        //                IntPtr ptrBmp = bmpData.Scan0;
+        //                _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
+        //                bitmap.UnlockBits(bmpData);
+
+        //                OneShotImage = bitmap;
+
+
+        //                // TODO: 전에 있던 이미지 데이터 저장하는 기능 구현해야 함
+        //                //Bitmap bitmapOld = pictureBox.Image as Bitmap;
+        //                //pictureBox.Image = bitmap;
+        //                //if (bitmapOld != null)
+        //                //{
+        //                //    // Dispose the bitmap.
+        //                //    bitmapOld.Dispose();
+        //                //}
+
+
+
+        //                //byte[] src = grabResult.PixelData as byte[];
+
+        //                //if(src == null || src.Length == 0)
+        //                //{
+        //                //    MessageBox.Show("Buffer Error");
+        //                //}
+
+        //                //var copy = new byte[src.Length];
+        //                //// Thread Safe
+        //                //Buffer.BlockCopy(src, 0, copy, 0, src.Length);
+
+        //                //// breaks here
+        //                //Application.Current.Dispatcher.Invoke(() =>
+        //                //{
+        //                //    var bmp = BitmapSource.Create(
+        //                //        grabResult.Width, grabResult.Height, 96, 96,
+        //                //        PixelFormats.Gray8, null, copy, grabResult.Width);
+        //                //    OneShotImage = bmp;
+        //                //});
+
+        //                //var conv = new PixelDataConverter { OutputPixelFormat = PixelType.BGRA8packed };
+        //                //int w = grabResult.Width, h = grabResult.Height, stride = w * 4, size = stride * h;
+        //                //var managed = new byte[size];
+        //                //conv.Convert(managed, size, grabResult);
+
+        //                //Application.Current.Dispatcher.Invoke(() =>
+        //                //{
+        //                //    var wb = new WriteableBitmap(w, h, 96, 96, PixelFormats.Bgra32, null);
+        //                //    wb.WritePixels(new Int32Rect(0, 0, w, h), managed, stride, 0);
+        //                //    wb.Freeze();
+        //                //    OneShotImage = wb;
+        //                //});
+
+        //                //byte[] buffer = grabResult.PixelData as byte[];
+        //                //BitmapSource bitmap = BitmapSource.Create(
+        //                //    grabResult.Width,
+        //                //    grabResult.Height,
+        //                //    96, 96,
+        //                //    PixelFormats.Gray8,
+        //                //    null,
+        //                //    buffer,
+        //                //    grabResult.Width);
+
+
+
+        //                //bitmap.Freeze();
+
+        //                // //breaks here
+        //                //Application.Current.Dispatcher.Invoke(() =>
+        //                //{
+        //                //    OneShotImage = bitmap;
+        //                //});
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        if(Camera.IsOpen)
+        //            Camera.Close();
+
+        //        MessageBox.Show("Exception! {0}" + e.Message);
+        //    }
+        //}
+
+        //private IGrabResult GrabShotResult()
+        //{
+        //    Camera.CameraOpened += Configuration.AcquireSingleFrame;
+
+        //    Camera.Open();
+
+        //    // 
+        //    if (Camera.StreamGrabber.IsGrabbing) MessageBox.Show("Already Grabbing");
+
+        //    Camera.StreamGrabber.Start();
+        //    IGrabResult grabResult = Camera.StreamGrabber.RetrieveResult(5000, TimeoutHandling.ThrowException);
+        //    Camera.StreamGrabber.Stop();
+
+        //    Camera.Close();
+
+        //    return grabResult;
+        //}
     }
 }

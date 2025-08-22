@@ -30,21 +30,21 @@ namespace BulbPicker.App.ViewModels
             //InitializeTimer();
         }
 
-        private void InitializeTimer()
-        {
-            _shotTimer = new DispatcherTimer();
-            _shotTimer.Interval = TimeSpan.FromSeconds(1);
-            _shotTimer.Tick += _shotTimer_Tick;
-            _shotTimer.Start();
-        }
+        //private void InitializeTimer()
+        //{
+        //    _shotTimer = new DispatcherTimer();
+        //    _shotTimer.Interval = TimeSpan.FromSeconds(1);
+        //    _shotTimer.Tick += _shotTimer_Tick;
+        //    _shotTimer.Start();
+        //}
 
-        private void _shotTimer_Tick(object? sender, EventArgs e)
-        {
-            foreach (var camera in Cameras)
-            {
-                camera.TakeOneShot();
-            }
-        }
+        //private void _shotTimer_Tick(object? sender, EventArgs e)
+        //{
+        //    foreach (var camera in Cameras)
+        //    {
+        //        camera.TakeOneShot();
+        //    }
+        //}
 
         public void TestDummy()
         {

@@ -60,4 +60,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\Config_Temp\" />
+  </ItemGroup>
+
 </Project>

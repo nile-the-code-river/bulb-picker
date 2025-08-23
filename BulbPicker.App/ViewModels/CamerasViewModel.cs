@@ -1,20 +1,15 @@
 ﻿using Basler.Pylon;
 using BulbPicker.App.Infrastructures;
 using BulbPicker.App.Models;
+using BulbPicker.App.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Threading;
 
 namespace BulbPicker.App.ViewModels
 {
-    class CamerasViewModel : ViewModelBase, INotifyPropertyChanged
+    class CamerasViewModel : ViewModelBase
     {
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string name) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
-        private int _testingDummyCount = 1; 
         public bool IsTestingDummyCamera { get; private set; } = false;
         private bool _isTestingInProgress = false;
         public bool IsTestingInProgress
@@ -51,8 +46,8 @@ namespace BulbPicker.App.ViewModels
             IsTestingDummyCamera = true;
 
             // using DummyTestCamera.cs
-            Cameras.Add(new DummyTestCamera("Outside_1st"));
-            Cameras.Add(new DummyTestCamera("Inside_1st"));
+            Cameras.Add(new DummyTestCamera("Outside_1st", BaslerCameraPosition.Outisde));
+            Cameras.Add(new DummyTestCamera("Inside_1st", BaslerCameraPosition.Inside));
         }
 
         private DispatcherTimer _dummyTestShotTimer;
@@ -86,23 +81,23 @@ namespace BulbPicker.App.ViewModels
             {
                 if(camera is DummyTestCamera dummyCamera)
                 {
-                    dummyCamera.FetchBitmapFromLocalDirectory(_testingDummyCount);
+                    dummyCamera.FetchBitmapFromLocalDirectory(GrabbedImageIndexManager.Instance.ManagedImageIndex);
                 }
             }
 
-            _testingDummyCount++;
+            GrabbedImageIndexManager.Instance.Increment();
         }
 
         public void SetUpFirstRowTest()
         {
-            Cameras.Add(new BaslerCamera("1st Outside", "40007011"));
-            Cameras.Add(new BaslerCamera("1st Inside", "40012243"));
+            Cameras.Add(new BaslerCamera("1st Outside", "40007011", BaslerCameraPosition.Outisde));
+            Cameras.Add(new BaslerCamera("1st Inside", "40012243", BaslerCameraPosition.Inside));
         }
 
         public void SetUpSecondRowTest()
         {
-            Cameras.Add(new BaslerCamera("2nd Outside", "40058520"));
-            Cameras.Add(new BaslerCamera("2nd Inside", "21914827"));
+            Cameras.Add(new BaslerCamera("2nd Outside", "40058520", BaslerCameraPosition.Outisde));
+            Cameras.Add(new BaslerCamera("2nd Inside", "21914827", BaslerCameraPosition.Inside));
         }
     }
 }

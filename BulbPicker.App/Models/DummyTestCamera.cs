@@ -6,7 +6,7 @@ namespace BulbPicker.App.Models
 {
     public class DummyTestCamera : BaslerCamera
     {
-        public DummyTestCamera(string alias) : base(alias, null) { }
+        public DummyTestCamera(string alias, BaslerCameraPosition position) : base(alias, null, position) { }
 
         public void FetchBitmapFromLocalDirectory(int fileName)
         {
@@ -18,7 +18,6 @@ namespace BulbPicker.App.Models
                 return;
             }
 
-
             string bmpFile = Path.Combine(folder, $"{fileName}.bmp");
 
             if (!File.Exists(bmpFile))
@@ -26,7 +25,6 @@ namespace BulbPicker.App.Models
                 MessageBox.Show($"{Alias} : Image file '{fileName}.bmp' not found in {folder}.");
                 return;
             }
-
 
             try
             {

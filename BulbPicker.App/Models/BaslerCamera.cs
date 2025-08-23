@@ -1,5 +1,6 @@
 ﻿using Basler.Pylon;
 using BulbPicker.App.Infrastructures;
+using BulbPicker.App.Services;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -9,24 +10,31 @@ using System.Windows.Media.Imaging;
 
 namespace BulbPicker.App.Models
 {
+    public enum BaslerCameraPosition
+    {
+        Outisde,
+        Inside
+    }
+
     public class BaslerCamera : INotifyPropertyChanged
     {
         private readonly PixelDataConverter _pixelConverter = new PixelDataConverter();
 
-        public string Alias { get; set; }
+        public string Alias { get; init; }
 
         private Camera _camera;
         public Camera Camera
         {
             get => _camera;
-            set
+            private set
             {
                 _camera = value;
             }
         }
-        public string SerialNumber { get; private set; }
 
-        // TODO: change the name into TakenImage or sth
+        public string SerialNumber { get; init; }
+
+        public BaslerCameraPosition Position { get; init; }
 
         private BitmapSource _receivedBitmapsource;
         public BitmapSource ReceivedBitmapSource
@@ -35,7 +43,9 @@ namespace BulbPicker.App.Models
             set
             {
                 _receivedBitmapsource = value;
-                // 
+
+                CompositeImageService.Instance.ReceiveBitmapSourceGrabbed(
+                    GrabbedImageIndexManager.Instance.ManagedImageIndex, Position, _receivedBitmapsource);
 
                 OnPropertyChanged(nameof(ReceivedBitmapSource));
             }
@@ -49,7 +59,7 @@ namespace BulbPicker.App.Models
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public BaslerCamera(string alias, string serialNumber)
+        public BaslerCamera(string alias, string serialNumber, BaslerCameraPosition position)
         {
             Alias = alias;
             SerialNumber = serialNumber;
@@ -57,6 +67,7 @@ namespace BulbPicker.App.Models
             // If SerialNumber is null, it is testing camera dummy
             if (SerialNumber == null) SerialNumber = "Testing Dummy";
             else SetUpCamera();
+            Position = position;
         }
 
         // TODO: make this async

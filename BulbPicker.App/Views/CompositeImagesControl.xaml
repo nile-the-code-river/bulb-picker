@@ -40,7 +40,7 @@
                     <Border Background="Black"
                             Width="250"
                             Height="250">
-                        <Image Source="{Binding FirstRowImage}"
+                        <Image Source="{Binding SecondRowImage}"
                                Stretch="Uniform"/>
                     </Border>
                 </StackPanel>

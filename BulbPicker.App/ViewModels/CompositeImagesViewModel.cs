@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BulbPicker.App.Infrastructures;
+using BulbPicker.App.Models;
+using BulbPicker.App.Services;
 using System.Windows.Media.Imaging;
 
 namespace BulbPicker.App.ViewModels
 {
-    internal class CompositeImagesViewModel
+    public class CompositeImagesViewModel : ViewModelBase
     {
         private BitmapSource _firstRowImage;
-        public BitmapSource FirstRowImage
-        {
-            get => _firstRowImage;
-            //set { _firstImage = value; OnPropertyChanged(nameof(FirstImage)); }
-        }
+        public BitmapSource FirstRowImage => CompositeImageService.Instance.TestImages.FirstOrDefault();
 
         private BitmapSource _secondRowImage;
         public BitmapSource SecondRowImage
         {
             get => _secondRowImage;
-            //set { _secondImage = value; OnPropertyChanged(nameof(SecondImage)); }
+            private set
+            {
+                _secondRowImage = value;
+                OnPropertyChanged(nameof(SecondRowImage));
+            }
         }
-
     }
 }

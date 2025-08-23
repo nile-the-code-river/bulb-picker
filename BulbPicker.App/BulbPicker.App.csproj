@@ -21,54 +21,54 @@
     <None Remove="Assets\Images\servoon-button-active.png" />
     <None Remove="Assets\Images\servoon-button-inactive.png" />
     <None Remove="Assets\MEMO.md" />
-    <None Remove="Assets\Test\Dummy1\0.bmp" />
-    <None Remove="Assets\Test\Dummy1\1.bmp" />
-    <None Remove="Assets\Test\Dummy1\10.bmp" />
-    <None Remove="Assets\Test\Dummy1\11.bmp" />
-    <None Remove="Assets\Test\Dummy1\12.bmp" />
-    <None Remove="Assets\Test\Dummy1\13.bmp" />
-    <None Remove="Assets\Test\Dummy1\14.bmp" />
-    <None Remove="Assets\Test\Dummy1\15.bmp" />
-    <None Remove="Assets\Test\Dummy1\16.bmp" />
-    <None Remove="Assets\Test\Dummy1\17.bmp" />
-    <None Remove="Assets\Test\Dummy1\18.bmp" />
-    <None Remove="Assets\Test\Dummy1\19.bmp" />
-    <None Remove="Assets\Test\Dummy1\2.bmp" />
-    <None Remove="Assets\Test\Dummy1\20.bmp" />
-    <None Remove="Assets\Test\Dummy1\21.bmp" />
-    <None Remove="Assets\Test\Dummy1\22.bmp" />
-    <None Remove="Assets\Test\Dummy1\23.bmp" />
-    <None Remove="Assets\Test\Dummy1\3.bmp" />
-    <None Remove="Assets\Test\Dummy1\4.bmp" />
-    <None Remove="Assets\Test\Dummy1\5.bmp" />
-    <None Remove="Assets\Test\Dummy1\6.bmp" />
-    <None Remove="Assets\Test\Dummy1\7.bmp" />
-    <None Remove="Assets\Test\Dummy1\8.bmp" />
-    <None Remove="Assets\Test\Dummy1\9.bmp" />
-    <None Remove="Assets\Test\Dummy2\0.bmp" />
-    <None Remove="Assets\Test\Dummy2\1.bmp" />
-    <None Remove="Assets\Test\Dummy2\10.bmp" />
-    <None Remove="Assets\Test\Dummy2\11.bmp" />
-    <None Remove="Assets\Test\Dummy2\12.bmp" />
-    <None Remove="Assets\Test\Dummy2\13.bmp" />
-    <None Remove="Assets\Test\Dummy2\14.bmp" />
-    <None Remove="Assets\Test\Dummy2\15.bmp" />
-    <None Remove="Assets\Test\Dummy2\16.bmp" />
-    <None Remove="Assets\Test\Dummy2\17.bmp" />
-    <None Remove="Assets\Test\Dummy2\18.bmp" />
-    <None Remove="Assets\Test\Dummy2\19.bmp" />
-    <None Remove="Assets\Test\Dummy2\2.bmp" />
-    <None Remove="Assets\Test\Dummy2\20.bmp" />
-    <None Remove="Assets\Test\Dummy2\21.bmp" />
-    <None Remove="Assets\Test\Dummy2\22.bmp" />
-    <None Remove="Assets\Test\Dummy2\23.bmp" />
-    <None Remove="Assets\Test\Dummy2\3.bmp" />
-    <None Remove="Assets\Test\Dummy2\4.bmp" />
-    <None Remove="Assets\Test\Dummy2\5.bmp" />
-    <None Remove="Assets\Test\Dummy2\6.bmp" />
-    <None Remove="Assets\Test\Dummy2\7.bmp" />
-    <None Remove="Assets\Test\Dummy2\8.bmp" />
-    <None Remove="Assets\Test\Dummy2\9.bmp" />
+    <None Remove="Assets\Test\Inside_1st\0.bmp" />
+    <None Remove="Assets\Test\Inside_1st\1.bmp" />
+    <None Remove="Assets\Test\Inside_1st\10.bmp" />
+    <None Remove="Assets\Test\Inside_1st\11.bmp" />
+    <None Remove="Assets\Test\Inside_1st\12.bmp" />
+    <None Remove="Assets\Test\Inside_1st\13.bmp" />
+    <None Remove="Assets\Test\Inside_1st\14.bmp" />
+    <None Remove="Assets\Test\Inside_1st\15.bmp" />
+    <None Remove="Assets\Test\Inside_1st\16.bmp" />
+    <None Remove="Assets\Test\Inside_1st\17.bmp" />
+    <None Remove="Assets\Test\Inside_1st\18.bmp" />
+    <None Remove="Assets\Test\Inside_1st\19.bmp" />
+    <None Remove="Assets\Test\Inside_1st\2.bmp" />
+    <None Remove="Assets\Test\Inside_1st\20.bmp" />
+    <None Remove="Assets\Test\Inside_1st\21.bmp" />
+    <None Remove="Assets\Test\Inside_1st\22.bmp" />
+    <None Remove="Assets\Test\Inside_1st\23.bmp" />
+    <None Remove="Assets\Test\Inside_1st\3.bmp" />
+    <None Remove="Assets\Test\Inside_1st\4.bmp" />
+    <None Remove="Assets\Test\Inside_1st\5.bmp" />
+    <None Remove="Assets\Test\Inside_1st\6.bmp" />
+    <None Remove="Assets\Test\Inside_1st\7.bmp" />
+    <None Remove="Assets\Test\Inside_1st\8.bmp" />
+    <None Remove="Assets\Test\Inside_1st\9.bmp" />
+    <None Remove="Assets\Test\Outside_1st\0.bmp" />
+    <None Remove="Assets\Test\Outside_1st\1.bmp" />
+    <None Remove="Assets\Test\Outside_1st\10.bmp" />
+    <None Remove="Assets\Test\Outside_1st\11.bmp" />
+    <None Remove="Assets\Test\Outside_1st\12.bmp" />
+    <None Remove="Assets\Test\Outside_1st\13.bmp" />
+    <None Remove="Assets\Test\Outside_1st\14.bmp" />
+    <None Remove="Assets\Test\Outside_1st\15.bmp" />
+    <None Remove="Assets\Test\Outside_1st\16.bmp" />
+    <None Remove="Assets\Test\Outside_1st\17.bmp" />
+    <None Remove="Assets\Test\Outside_1st\18.bmp" />
+    <None Remove="Assets\Test\Outside_1st\19.bmp" />
+    <None Remove="Assets\Test\Outside_1st\2.bmp" />
+    <None Remove="Assets\Test\Outside_1st\20.bmp" />
+    <None Remove="Assets\Test\Outside_1st\21.bmp" />
+    <None Remove="Assets\Test\Outside_1st\22.bmp" />
+    <None Remove="Assets\Test\Outside_1st\23.bmp" />
+    <None Remove="Assets\Test\Outside_1st\3.bmp" />
+    <None Remove="Assets\Test\Outside_1st\4.bmp" />
+    <None Remove="Assets\Test\Outside_1st\5.bmp" />
+    <None Remove="Assets\Test\Outside_1st\6.bmp" />
+    <None Remove="Assets\Test\Outside_1st\7.bmp" />
+    <None Remove="Assets\Test\Outside_1st\8.bmp" />
+    <None Remove="Assets\Test\Outside_1st\9.bmp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -96,148 +96,148 @@
     <Content Include="Assets\MEMO.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\0.bmp">
+    <Content Include="Assets\Test\Inside_1st\0.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\1.bmp">
+    <Content Include="Assets\Test\Inside_1st\1.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\10.bmp">
+    <Content Include="Assets\Test\Inside_1st\10.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\11.bmp">
+    <Content Include="Assets\Test\Inside_1st\11.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\12.bmp">
+    <Content Include="Assets\Test\Inside_1st\12.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\13.bmp">
+    <Content Include="Assets\Test\Inside_1st\13.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\14.bmp">
+    <Content Include="Assets\Test\Inside_1st\14.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\15.bmp">
+    <Content Include="Assets\Test\Inside_1st\15.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\16.bmp">
+    <Content Include="Assets\Test\Inside_1st\16.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\17.bmp">
+    <Content Include="Assets\Test\Inside_1st\17.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\18.bmp">
+    <Content Include="Assets\Test\Inside_1st\18.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\19.bmp">
+    <Content Include="Assets\Test\Inside_1st\19.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\2.bmp">
+    <Content Include="Assets\Test\Inside_1st\2.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\20.bmp">
+    <Content Include="Assets\Test\Inside_1st\20.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\21.bmp">
+    <Content Include="Assets\Test\Inside_1st\21.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\22.bmp">
+    <Content Include="Assets\Test\Inside_1st\22.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\23.bmp">
+    <Content Include="Assets\Test\Inside_1st\23.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\3.bmp">
+    <Content Include="Assets\Test\Inside_1st\3.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\4.bmp">
+    <Content Include="Assets\Test\Inside_1st\4.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\5.bmp">
+    <Content Include="Assets\Test\Inside_1st\5.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\6.bmp">
+    <Content Include="Assets\Test\Inside_1st\6.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\7.bmp">
+    <Content Include="Assets\Test\Inside_1st\7.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\8.bmp">
+    <Content Include="Assets\Test\Inside_1st\8.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy1\9.bmp">
+    <Content Include="Assets\Test\Inside_1st\9.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\0.bmp">
+    <Content Include="Assets\Test\Outside_1st\0.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\1.bmp">
+    <Content Include="Assets\Test\Outside_1st\1.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\10.bmp">
+    <Content Include="Assets\Test\Outside_1st\10.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\11.bmp">
+    <Content Include="Assets\Test\Outside_1st\11.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\12.bmp">
+    <Content Include="Assets\Test\Outside_1st\12.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\13.bmp">
+    <Content Include="Assets\Test\Outside_1st\13.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\14.bmp">
+    <Content Include="Assets\Test\Outside_1st\14.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\15.bmp">
+    <Content Include="Assets\Test\Outside_1st\15.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\16.bmp">
+    <Content Include="Assets\Test\Outside_1st\16.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\17.bmp">
+    <Content Include="Assets\Test\Outside_1st\17.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\18.bmp">
+    <Content Include="Assets\Test\Outside_1st\18.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\19.bmp">
+    <Content Include="Assets\Test\Outside_1st\19.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\2.bmp">
+    <Content Include="Assets\Test\Outside_1st\2.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\20.bmp">
+    <Content Include="Assets\Test\Outside_1st\20.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\21.bmp">
+    <Content Include="Assets\Test\Outside_1st\21.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\22.bmp">
+    <Content Include="Assets\Test\Outside_1st\22.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\23.bmp">
+    <Content Include="Assets\Test\Outside_1st\23.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\3.bmp">
+    <Content Include="Assets\Test\Outside_1st\3.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\4.bmp">
+    <Content Include="Assets\Test\Outside_1st\4.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\5.bmp">
+    <Content Include="Assets\Test\Outside_1st\5.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\6.bmp">
+    <Content Include="Assets\Test\Outside_1st\6.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\7.bmp">
+    <Content Include="Assets\Test\Outside_1st\7.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\8.bmp">
+    <Content Include="Assets\Test\Outside_1st\8.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Test\Dummy2\9.bmp">
+    <Content Include="Assets\Test\Outside_1st\9.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

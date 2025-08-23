@@ -50,14 +50,9 @@ namespace BulbPicker.App.ViewModels
         {
             IsTestingDummyCamera = true;
 
-            // Edit when controlling # of dummy cameras 
-            int dummyNum = 2;
-
-            for (int i = 0; i < dummyNum; i++)
-            {
-                // using DummyTestCamera.cs
-                Cameras.Add(new DummyTestCamera($"Dummy{i + 1}"));
-            }
+            // using DummyTestCamera.cs
+            Cameras.Add(new DummyTestCamera("Outside_1st"));
+            Cameras.Add(new DummyTestCamera("Inside_1st"));
         }
 
         private DispatcherTimer _dummyTestShotTimer;

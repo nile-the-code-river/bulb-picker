@@ -35,6 +35,8 @@ namespace BulbPicker.App.Models
             set
             {
                 _receivedBitmapsource = value;
+                // 
+
                 OnPropertyChanged(nameof(ReceivedBitmapSource));
             }
         }

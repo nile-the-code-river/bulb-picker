@@ -50,7 +50,7 @@
                      Grid.Row="1"
                      BorderThickness="0"
                      Background="Transparent"
-                     FontSize="18"
+                     FontSize="14"
                      Foreground="White"
                      ItemsSource="{Binding Logs}">
                 <ListBox.ItemTemplate>

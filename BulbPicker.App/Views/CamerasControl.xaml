@@ -6,16 +6,24 @@
              xmlns:local="clr-namespace:BulbPicker.App.Views"
              xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=vm:CamerasViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="940" d:DesignWidth="600">
     <UserControl.DataContext>
         <vm:CamerasViewModel />
     </UserControl.DataContext>
-    
+
     <Border Style="{StaticResource CardStyle}">
         <StackPanel>
             <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
+            <Button Background="DarkRed"
+                    Foreground="White"
+                    Command="{Binding RunDummyTestCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Run(Test) Dummy Cameras" />
+                    <TextBlock Text="        Running........."
+                               Visibility="{Binding IsTestingInProgress, Converter={StaticResource BoolToVisibility}}" />
+                </StackPanel>
+            </Button>
 
             <!--Camera-->
             <ItemsControl ItemsSource="{Binding Cameras}">
@@ -42,7 +50,7 @@
                             <Border Background="Black"
                                     Height="250"
                                     Width="250">
-                                <Image Source="{Binding OneShotImage}"
+                                <Image Source="{Binding ReceivedBitmapSource}"
                                        Stretch="Uniform"/>
                             </Border>
                         </StackPanel>

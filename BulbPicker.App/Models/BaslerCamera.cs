@@ -1,13 +1,10 @@
 ﻿using Basler.Pylon;
 using BulbPicker.App.Infrastructures;
-using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace BulbPicker.App.Models
@@ -31,14 +28,14 @@ namespace BulbPicker.App.Models
 
         // TODO: change the name into TakenImage or sth
 
-        private BitmapSource _oneShotImage;
-        public BitmapSource OneShotImage
+        private BitmapSource _receivedBitmapsource;
+        public BitmapSource ReceivedBitmapSource
         {
-            get => _oneShotImage;
+            get => _receivedBitmapsource;
             set
             {
-                _oneShotImage = value;
-                OnPropertyChanged(nameof(OneShotImage));
+                _receivedBitmapsource = value;
+                OnPropertyChanged(nameof(ReceivedBitmapSource));
             }
         }
 
@@ -55,7 +52,9 @@ namespace BulbPicker.App.Models
             Alias = alias;
             SerialNumber = serialNumber;
 
-            SetUpCamera();
+            // If SerialNumber is null, it is testing camera dummy
+            if (SerialNumber == null) SerialNumber = "Testing Dummy";
+            else SetUpCamera();
         }
 
         // TODO: make this async
@@ -73,6 +72,32 @@ namespace BulbPicker.App.Models
             Camera.StreamGrabber.GrabStopped += StreamGrabber_GrabStopped;
 
             Camera.Open();
+        }
+
+        private void RunDummyImageProcess()
+        {
+            new Task(() =>
+            {
+                // 1초마다 특정 폴더에서 이미지 가져와서 OneShotImage에 넣기
+            });
+        }
+
+
+        private void Camera_CameraOpened(object? sender, EventArgs e)
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                // bin\Debug\netX → 프로젝트 루트로 올라가기
+                string projectRoot = Path.GetFullPath(Path.Combine(baseDir, @"..\..\.."));
+                string filePath = Path.Combine(projectRoot, "Assets", "Config_Temp", "camera-profile.pfs");
+
+                Camera.Parameters.Load(filePath, ParameterPath.CameraDevice);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private void StreamGrabber_GrabStopped(object? sender, GrabStopEventArgs e)
@@ -129,12 +154,8 @@ namespace BulbPicker.App.Models
                     bitmap.UnlockBits(bmpData);
 
 
-
                     // image saving for test
                     SaveBitmapToSession(bitmap);
-
-
-
 
 
                     var source = BitmapToImageSource(bitmap);
@@ -142,7 +163,7 @@ namespace BulbPicker.App.Models
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        OneShotImage = source;
+                        ReceivedBitmapSource = source;
                     }, System.Windows.Threading.DispatcherPriority.DataBind);
                 }
             }
@@ -151,23 +172,6 @@ namespace BulbPicker.App.Models
         private void StreamGrabber_GrabStarted(object? sender, EventArgs e)
         {
             // empty for now
-        }
-
-        private void Camera_CameraOpened(object? sender, EventArgs e)
-        {
-            try
-            {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                // bin\Debug\netX → 프로젝트 루트로 올라가기
-                string projectRoot = Path.GetFullPath(Path.Combine(baseDir, @"..\..\.."));
-                string filePath = Path.Combine(projectRoot, "Assets", "Config_Temp", "camera-profile.pfs");
-
-                Camera.Parameters.Load(filePath, ParameterPath.CameraDevice);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
 
         private void Camera_CameraClosed(object? sender, EventArgs e)
@@ -200,7 +204,7 @@ namespace BulbPicker.App.Models
         }
 
         //// DEPRECATED
-        //public async void TakeOneShot()
+        //public async void FireOneShot()
         //{
         //    if (Camera == null)
         //    {

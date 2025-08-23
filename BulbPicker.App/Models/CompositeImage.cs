@@ -1,17 +1,16 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace BulbPicker.App.Models
 {
     public class CompositeImageFragment
     {
-        // Before Image Index: EVEN
-        // After Image Index: ODD
         public int FragmentIndex { get; init; }
-        public BitmapSource BitmapSource { get; init; }
-        public CompositeImageFragment(int fragmentIndex, BitmapSource bitmapSource)
+        public Bitmap Bitmap { get; init; }
+        public CompositeImageFragment(int fragmentIndex, Bitmap bitMap)
         {
             FragmentIndex = fragmentIndex;
-            BitmapSource = bitmapSource;
+            Bitmap = bitMap;
         }
     }
 
@@ -41,9 +40,12 @@ namespace BulbPicker.App.Models
          *  [3rd][3rd] ------ After
          */
 
-        public void AddImage(int newIndex, BaslerCameraPosition position, BitmapSource newBitmap)
+        public void AddImage(int newIndex, BaslerCameraPosition position, Bitmap newBitmap)
         {
-            CompositeImageFragment newFragment = new CompositeImageFragment(newIndex, newBitmap);
+            // 소유권 문제로 new
+            Bitmap newOwnedBitmap = new Bitmap(newBitmap);
+
+            CompositeImageFragment newFragment = new CompositeImageFragment(newIndex, newOwnedBitmap);
             
             // First 2 Rows of Images
             if(newIndex < 2)
@@ -57,6 +59,8 @@ namespace BulbPicker.App.Models
                 {
                     if (position == BaslerCameraPosition.Outisde) OutsideAfter = newFragment;
                     else InsideAfter = newFragment;
+
+                    IsAllFragmentCollected = (OutsideAfter != null && InsideAfter != null);
                 }
                 return;
             }
@@ -64,12 +68,16 @@ namespace BulbPicker.App.Models
             // Outside
             if (position == BaslerCameraPosition.Outisde)
             {
+                OutsideBefore.Bitmap.Dispose();
+
                 OutsideBefore = OutsideAfter;
                 OutsideAfter = newFragment;
             }
             // Inside
             else
             {
+                InsideBefore.Bitmap.Dispose();
+
                 InsideBefore = InsideAfter;
                 InsideAfter = newFragment;
             }

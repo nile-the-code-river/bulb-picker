@@ -43,10 +43,6 @@ namespace BulbPicker.App.Models
             set
             {
                 _receivedBitmapsource = value;
-
-                CompositeImageService.Instance.ReceiveBitmapSourceGrabbed(
-                    GrabbedImageIndexManager.Instance.ManagedImageIndex, Position, _receivedBitmapsource);
-
                 OnPropertyChanged(nameof(ReceivedBitmapSource));
             }
         }
@@ -95,7 +91,6 @@ namespace BulbPicker.App.Models
             });
         }
 
-
         private void Camera_CameraOpened(object? sender, EventArgs e)
         {
             try
@@ -128,7 +123,7 @@ namespace BulbPicker.App.Models
         {
             if (_sessionDir == null)
             {
-                string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CapturedImages");
+                string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "camera-image-capture");
                 Directory.CreateDirectory(baseDir);
                 string sessionName = DateTime.Now.ToString("yyyyMMdd_HHmmss") + Alias;
                 _sessionDir = Path.Combine(baseDir, sessionName);
@@ -136,7 +131,7 @@ namespace BulbPicker.App.Models
                 _imageIndex = 0;
             }
 
-            int idx = System.Threading.Interlocked.Increment(ref _imageIndex) - 1;
+            int idx = Interlocked.Increment(ref _imageIndex) - 1;
             string fullPath = Path.Combine(_sessionDir, $"frame_{idx:D5}.bmp");
 
             // 원본과 메모리 연결을 끊기 위해 반드시 클론 후 저장
@@ -144,8 +139,14 @@ namespace BulbPicker.App.Models
 
             lock (_saveLock)
             {
-                clone.Save(fullPath, System.Drawing.Imaging.ImageFormat.Bmp);
+                clone.Save(fullPath, ImageFormat.Bmp);
             }
+        }
+
+        protected void SendBitmapForComposition(Bitmap bitmap)
+        {
+            CompositeImageService.Instance.ReceiveBitmapGrabbed(
+                GrabbedImageIndexManager.Instance.ManagedImageIndex, Position, bitmap);
         }
 
         private void StreamGrabber_ImageGrabbed(object? sender, ImageGrabbedEventArgs e)
@@ -157,15 +158,16 @@ namespace BulbPicker.App.Models
             {
                 if (grabResult.GrabSucceeded)
                 {
-                    Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-                    // Lock the bits of the bitmap.
+                    Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format16bppGrayScale);
                     BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
-                    // Place the pointer to the buffer of the bitmap.
                     _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
                     IntPtr ptrBmp = bmpData.Scan0;
                     _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                     bitmap.UnlockBits(bmpData);
 
+
+                    // IMPT: send bitmap for composition
+                    SendBitmapForComposition(bitmap);
 
                     // image saving for test
                     SaveBitmapToSession(bitmap);
@@ -181,6 +183,24 @@ namespace BulbPicker.App.Models
                 }
             }
         }
+
+        private BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+                bitmapimage.Freeze();
+
+                return bitmapimage;
+            }
+        }
+
 
         private void StreamGrabber_GrabStarted(object? sender, EventArgs e)
         {
@@ -198,24 +218,6 @@ namespace BulbPicker.App.Models
             Camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
             // 
         }
-
-        private BitmapImage BitmapToImageSource(Bitmap bitmap)
-        {
-            using (MemoryStream memory = new MemoryStream())
-            {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-                memory.Position = 0;
-                BitmapImage bitmapimage = new BitmapImage();
-                bitmapimage.BeginInit();
-                bitmapimage.StreamSource = memory;
-                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapimage.EndInit();
-                bitmapimage.Freeze();
-
-                return bitmapimage;
-            }
-        }
-
         //// DEPRECATED
         //public async void FireOneShot()
         //{

@@ -34,10 +34,10 @@ namespace BulbPicker.App.ViewModels
         public CamerasViewModel()
         {
             // TEST for any env with dummy cameras
-            SetUpDummyTest();
+            //SetUpDummyTest();
 
             // TEST for real env (the factory) with working cameras
-            // SetUpFirstRowTest();
+            SetUpFirstRowTest();
             // SetUpSecondRowTest();
         }
 

@@ -1,4 +1,5 @@
 ﻿using Basler.Pylon;
+using BulbPicker.App.Services;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,6 +17,9 @@ namespace BulbPicker.App
         public MainWindow()
         {
             InitializeComponent();
+
+            // test
+            TestIndexManager.Instance.StartTestStopwatch();
         }
 
         //private async void Window_Loaded(object sender, RoutedEventArgs e)

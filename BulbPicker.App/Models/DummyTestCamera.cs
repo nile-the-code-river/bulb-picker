@@ -32,15 +32,12 @@ namespace BulbPicker.App.Models
                 return;
             }
 
-            // GPT
-            // 1) System.Drawing.Bitmap 으로 직접 로드(파일 잠금 해제용 클론)
-            using var loaded = (Bitmap)Image.FromFile(bmpFile); // 잠금 발생
-            using var bmp = new Bitmap(loaded);                  // 스트림/파일과 분리된 복제본
+            using var loaded = (Bitmap)Image.FromFile(bmpFile);
+            using var bmp = new Bitmap(loaded);
 
-            // 2) 조합 서비스로 전달 (소유권: 여기서 유지 → 전달 후 필요시 따로 Clone 하거나, 서비스 쪽에서 Clone)
-            SendBitmapForComposition(bmp); // 서비스가 즉시 쓰고 끝나면 여기서 dispose, 지속 보관이면 서비스가 Clone해서 보관
+            // IMPT: send bitmap for composition
+            SendBitmapForComposition(bmp);
 
-            // 3) WPF 표시가 필요하면 BitmapSource 로 변환
             var hBmp = bmp.GetHbitmap();
             try
             {

@@ -151,14 +151,15 @@ namespace BulbPicker.App.Models
 
         private void StreamGrabber_ImageGrabbed(object? sender, ImageGrabbedEventArgs e)
         {
-
             IGrabResult grabResult = e.GrabResult;
 
             using (grabResult)
             {
                 if (grabResult.GrabSucceeded)
                 {
-                    Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format16bppGrayScale);
+                    TestIndexManager.Instance.LogTestStopwatchNow();
+
+                    Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format32bppArgb);
                     BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
                     _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
                     IntPtr ptrBmp = bmpData.Scan0;
@@ -166,8 +167,12 @@ namespace BulbPicker.App.Models
                     bitmap.UnlockBits(bmpData);
 
 
-                    // IMPT: send bitmap for composition
+                    // IMPT: send bitmap for composition=
                     SendBitmapForComposition(bitmap);
+
+
+                    // TEST: save bitmap to test folder
+                    SaveGrabbedImageToTestFolder(bitmap);
 
                     // image saving for test
                     SaveBitmapToSession(bitmap);
@@ -182,6 +187,19 @@ namespace BulbPicker.App.Models
                     }, System.Windows.Threading.DispatcherPriority.DataBind);
                 }
             }
+        }
+
+        private int testImageCount = 0;
+        private void SaveGrabbedImageToTestFolder(Bitmap bitmap)
+        {
+
+            string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "camera-image-grab", TestIndexManager.Instance.ManagedDateTime.ToString("yyyyMMdd_HHmmss"), Alias);
+            Directory.CreateDirectory(saveDir);
+
+            string savePath = Path.Combine(saveDir, $"{testImageCount}.bmp");
+            bitmap.Save(savePath, ImageFormat.Bmp);
+
+            testImageCount++;
         }
 
         private BitmapImage BitmapToImageSource(Bitmap bitmap)
@@ -215,6 +233,7 @@ namespace BulbPicker.App.Models
 
         private void Run()
         {
+            // TODO: if already grabbing, return
             Camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
             // 
         }

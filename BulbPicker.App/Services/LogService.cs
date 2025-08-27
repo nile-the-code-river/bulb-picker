@@ -1,5 +1,7 @@
 ﻿using BulbPicker.App.Models;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace BulbPicker.App.Services
 {
@@ -16,6 +18,13 @@ namespace BulbPicker.App.Services
             set => _logs = value;
         }
 
-        public void AddLog(Log log) => Logs.Add(log);
+        public void AddLog(Log log)
+        {
+            // TODO: Quick fix. Need to improve
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Logs.Add(log);
+            });
+        }
     }
 }

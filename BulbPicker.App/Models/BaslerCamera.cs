@@ -186,6 +186,10 @@ namespace BulbPicker.App.Models
                         ReceivedBitmapSource = source;
                     }, System.Windows.Threading.DispatcherPriority.DataBind);
                 }
+                else
+                {
+
+                }
             }
         }
 

@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using WindowsFormsApp1;
 
 namespace BulbPicker.App.Services
 {
@@ -145,8 +146,25 @@ namespace BulbPicker.App.Services
             using var insideBefore = Snapshot(_compositImageRowBuffer.Inside);
 
             var combinedBitmap = CombineImages(outsideAfter, insideAfter, outsideBefore, insideBefore);
+
+            string modelName = "best_640";
+            string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", $"{modelName}.onnx");
+            var model = new Yolov11Onnx(modelPath);
+            // TODO: 일단은 resize 여기서 함... 바꿔야함..ㅎㅎ
+            Bitmap resized = new Bitmap(combinedBitmap, new System.Drawing.Size(640, 640));
+            var boxesValue = model.PredictBoxes(resized);
+
+            // Draw boudning box
+            var resultImage = ImageVisualizer.DrawBoxes(resized, boxesValue);
+
+            // Test: Save Images with Boudning Box
+            string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "bouding-boxes", _testFolderName);
+            Directory.CreateDirectory(saveDir);
+            string savePath = Path.Combine(saveDir, $"{_testCombinedImageIndex}.bmp");
+            resultImage.Save(savePath, ImageFormat.Bmp);
+
+            // after operation is completed
             _compositImageRowBuffer = rowImages;
-            
             _rowCount++;
         }
 
@@ -160,7 +178,7 @@ namespace BulbPicker.App.Services
                 var combinedBitmap = CombineImages(_compositeImageBuffer.OutsideAfter.Bitmap, _compositeImageBuffer.InsideAfter.Bitmap, _compositeImageBuffer.OutsideBefore.Bitmap, _compositeImageBuffer.InsideBefore.Bitmap);
 
                 // TODO: send to AI ASYNCHRONOUSLY
-
+                // TEST
                 AddToTestImages(combinedBitmap);
             }
         }

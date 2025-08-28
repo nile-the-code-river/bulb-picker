@@ -32,7 +32,7 @@ namespace BulbPicker.App.Models
             }
         }
 
-        public string SerialNumber { get; init; }
+        public string SerialNumber { get; private set; }
 
         public BaslerCameraPosition Position { get; init; }
 
@@ -69,18 +69,26 @@ namespace BulbPicker.App.Models
         // TODO: make this async
         private void SetUpCamera()
         {
-            Camera = new Camera(SerialNumber);
+            try
+            {
+                Camera = new Camera(SerialNumber);
 
-            Camera.CameraOpened += Configuration.AcquireContinuous;
-            Camera.CameraOpened += Camera_CameraOpened;
+                Camera.CameraOpened += Configuration.AcquireContinuous;
+                Camera.CameraOpened += Camera_CameraOpened;
 
-            Camera.CameraClosed += Camera_CameraClosed;
+                Camera.CameraClosed += Camera_CameraClosed;
 
-            Camera.StreamGrabber.GrabStarted += StreamGrabber_GrabStarted;
-            Camera.StreamGrabber.ImageGrabbed += StreamGrabber_ImageGrabbed;
-            Camera.StreamGrabber.GrabStopped += StreamGrabber_GrabStopped;
+                Camera.StreamGrabber.GrabStarted += StreamGrabber_GrabStarted;
+                Camera.StreamGrabber.ImageGrabbed += StreamGrabber_ImageGrabbed;
+                Camera.StreamGrabber.GrabStopped += StreamGrabber_GrabStopped;
 
-            Camera.Open();
+                Camera.Open();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(SerialNumber + " " + e.Message);
+                SerialNumber = "NOT FOUND";
+            }
         }
 
         private void RunDummyImageProcess()

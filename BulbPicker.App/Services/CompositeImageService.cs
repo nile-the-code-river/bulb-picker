@@ -70,29 +70,19 @@ namespace BulbPicker.App.Services
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (string newItem in e.NewItems)
-                    {
-                        LogService.Instance.AddLog(new Log($"Added: {newItem}", LogType.Connected));
-                    }
+                    LogService.Instance.AddLog(new Log($"Added ", LogType.Connected));
 
-                    // TODO
-                    if(_firstRowImageToCompositeQuque.Count == 2)
+                    if (_firstRowImageToCompositeQuque.Count == 2)
                     {
                         // if 2 items -> shoot to CompositeImages
                         Bitmap outside = null;
                         Bitmap inside = null;
 
-                        foreach (ImageToCompositeQuqueItem newItem in e.NewItems)
-                        {
-                            if(newItem.CameraPosition == BaslerCameraPosition.Outisde)
-                            {
-                                outside = newItem.Image;
-                            }
-                            else
-                            {
-                                inside = newItem.Image;
-                            }
-                        }
+                        ImageToCompositeQuqueItem formerItem = _firstRowImageToCompositeQuque.FirstOrDefault();
+                        ImageToCompositeQuqueItem newItem = e.NewItems[0] as ImageToCompositeQuqueItem;
+
+                        outside = formerItem.CameraPosition == BaslerCameraPosition.Outisde ? formerItem.Image : newItem.Image;
+                        inside = formerItem.CameraPosition == BaslerCameraPosition.Inside ? formerItem.Image : newItem.Image;
 
                         if(outside == null || inside == null)
                         {
@@ -100,7 +90,7 @@ namespace BulbPicker.App.Services
                             return;
                         }
 
-                        CompositeImageRowBuffer row = new CompositeImageRowBuffer(outside, inside);
+                        CompositeImageRowBuffer row = new CompositeImageRowBuffer(new Bitmap(outside), new Bitmap(inside));
                         CompositeImage_FactoryVerTest(row);
                     }
                     else if (_firstRowImageToCompositeQuque.Count == 1)
@@ -116,7 +106,7 @@ namespace BulbPicker.App.Services
                     }
                     else
                     {
-                        MessageBox.Show("Unexpected Number of Items in _firstRowImageToCompositeQuque");
+                        MessageBox.Show($"Unexpected Number of Items in _firstRowImageToCompositeQuque. Stopwatch is now {TestIndexManager.Instance.GetStopwatchMilliSecondsNow()}");
                     }
 
                     break;
@@ -128,16 +118,33 @@ namespace BulbPicker.App.Services
             }
         }
 
+
+        private static Bitmap Snapshot(Bitmap src)
+        {
+            using (var ms = new MemoryStream())
+            {
+                src.Save(ms, ImageFormat.Bmp);
+                ms.Position = 0;
+                return new Bitmap(ms);
+            }
+        }
+
         private int _rowCount = 0;
         private void CompositeImage_FactoryVerTest(CompositeImageRowBuffer rowImages)
         {
             if(_rowCount == 0)
             {
                 _compositImageRowBuffer = rowImages;
+                _rowCount++;
                 return;
             }
 
-            var combinedBitmap = CombineImages(rowImages.Outside, rowImages.Inside, _compositImageRowBuffer.Outside, _compositImageRowBuffer.Inside);
+            using var outsideAfter = Snapshot(rowImages.Outside);
+            using var insideAfter = Snapshot(rowImages.Inside);
+            using var outsideBefore = Snapshot(_compositImageRowBuffer.Outside);
+            using var insideBefore = Snapshot(_compositImageRowBuffer.Inside);
+
+            var combinedBitmap = CombineImages(outsideAfter, insideAfter, outsideBefore, insideBefore);
             _compositImageRowBuffer = rowImages;
             
             _rowCount++;

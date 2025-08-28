@@ -20,7 +20,6 @@ namespace BulbPicker.App.Services
         private TestIndexManager()
         {
             ManagedDateTime = DateTime.Now;
-
         }
 
         public void StartTestStopwatch()
@@ -38,5 +37,7 @@ namespace BulbPicker.App.Services
             long elapsedMilliseconds = _testStopWatch.ElapsedMilliseconds;
             LogService.Instance.AddLog(new Models.Log($"Stopwatch: {elapsedMilliseconds}ms", Models.LogType.ImageCombined));
         }
+
+        public string GetStopwatchMilliSecondsNow() => $"{_testStopWatch.ElapsedMilliseconds}";
     }
 }

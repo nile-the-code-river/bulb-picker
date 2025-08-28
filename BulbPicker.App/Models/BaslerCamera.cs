@@ -127,32 +127,10 @@ namespace BulbPicker.App.Models
         private readonly object _saveLock = new object();
 
 
-        private void SaveBitmapToSession(Bitmap bmp)
-        {
-            if (_sessionDir == null)
-            {
-                string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "camera-image-capture");
-                Directory.CreateDirectory(baseDir);
-                string sessionName = DateTime.Now.ToString("yyyyMMdd_HHmmss") + Alias;
-                _sessionDir = Path.Combine(baseDir, sessionName);
-                Directory.CreateDirectory(_sessionDir);
-                _imageIndex = 0;
-            }
-
-            int idx = Interlocked.Increment(ref _imageIndex) - 1;
-            string fullPath = Path.Combine(_sessionDir, $"frame_{idx:D5}.bmp");
-
-            // 원본과 메모리 연결을 끊기 위해 반드시 클론 후 저장
-            using var clone = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-            lock (_saveLock)
-            {
-                clone.Save(fullPath, ImageFormat.Bmp);
-            }
-        }
-
         protected void SendBitmapForComposition(Bitmap bitmap)
         {
+            return;
+
             CompositeImageService.Instance.ReceiveBitmapGrabbed(
                 GrabbedImageIndexManager.Instance.ManagedImageIndex, Position, bitmap);
         }
@@ -174,18 +152,15 @@ namespace BulbPicker.App.Models
                     _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                     bitmap.UnlockBits(bmpData);
 
+                    var bmpForQueue = (Bitmap)bitmap.Clone();
                     CompositeImageService.Instance.AddToCompositionQueue(
-                        new ImageToCompositeQuqueItem() { Image = bitmap, CameraPosition = Position });
+                        new ImageToCompositeQuqueItem() { Image = bmpForQueue, CameraPosition = Position });
 
                     // IMPT: send bitmap for composition=
                     //SendBitmapForComposition(bitmap);
 
                     // TEST: save bitmap to test folder
-                    SaveGrabbedImageToTestFolder(bitmap);
-
-                    // image saving for test
-                    SaveBitmapToSession(bitmap);
-
+                    SaveGrabbedImageToTestFolder(bitmap, TestIndexManager.Instance.GetStopwatchMilliSecondsNow());
 
                     var source = BitmapToImageSource(bitmap);
                     bitmap.Dispose();
@@ -203,13 +178,13 @@ namespace BulbPicker.App.Models
         }
 
         private int testImageCount = 0;
-        private void SaveGrabbedImageToTestFolder(Bitmap bitmap)
+        private void SaveGrabbedImageToTestFolder(Bitmap bitmap, string name)
         {
 
             string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "camera-image-grab", TestIndexManager.Instance.ManagedDateTime.ToString("yyyyMMdd_HHmmss"), Alias);
             Directory.CreateDirectory(saveDir);
 
-            string savePath = Path.Combine(saveDir, $"{testImageCount}.bmp");
+            string savePath = Path.Combine(saveDir, $"{name}.bmp");
             bitmap.Save(savePath, ImageFormat.Bmp);
 
             testImageCount++;
@@ -247,7 +222,11 @@ namespace BulbPicker.App.Models
         private void Run()
         {
             // TODO: if already grabbing, return
+            if (!Camera.StreamGrabber.IsGrabbing)
+            {
+
             Camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
+            }
             // 
         }
         //// DEPRECATED

@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -153,6 +154,18 @@ namespace BulbPicker.App.Services
             // TODO: 일단은 resize 여기서 함... 바꿔야함..ㅎㅎ
             Bitmap resized = new Bitmap(combinedBitmap, new System.Drawing.Size(640, 640));
             var boxesValue = model.PredictBoxes(resized);
+
+            foreach(var boxValue in boxesValue)
+            {
+                if(boxValue.Y_Center <= 140 || boxValue.Y_Center > 366)
+                {
+                    LogService.Instance.AddLog(new Log("skipped", LogType.FOR_TEST));
+                    continue;
+                }
+
+                // TODO: send coordinates to SCARAs
+                LogService.Instance.AddLog(new Log($"x: {boxValue.X_Center}, y:{boxValue.Y_Center}", LogType.FOR_TEST));
+            }
 
             // Draw boudning box
             var resultImage = ImageVisualizer.DrawBoxes(resized, boxesValue);

@@ -15,7 +15,9 @@
         RobotArmCommunication,
 
         // Robot Arm Offset Settings
-        SettingFileUpdated
+        SettingFileUpdated,
+
+        FOR_TEST
     }
 
     public class Log

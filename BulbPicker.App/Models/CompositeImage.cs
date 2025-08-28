@@ -1,8 +1,10 @@
 ﻿using System.Drawing;
-using System.Windows.Media.Imaging;
 
+// TODO: OLD LOGIC. DELETE
+// CLASS 자체를 삭제해도 됨
 namespace BulbPicker.App.Models
 {
+    // TODO: OLD LOGIC. DELETE
     public class CompositeImageFragment
     {
         public int FragmentIndex { get; init; }
@@ -14,6 +16,7 @@ namespace BulbPicker.App.Models
         }
     }
 
+    // TODO: OLD LOGIC. DELETE
     public class CompositeImage
     {
         public bool IsAllFragmentCollected { get; private set; } = false;
@@ -40,6 +43,7 @@ namespace BulbPicker.App.Models
          *  [3rd][3rd] ------ After
          */
 
+        // TODO: OLD LOGIC. DELETE
         public void AddImage(int newIndex, BaslerCameraPosition position, Bitmap newBitmap)
         {
             // 소유권 문제로 new

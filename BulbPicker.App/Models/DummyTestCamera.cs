@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 
 namespace BulbPicker.App.Models
 {
+    // TODO: 새로운 Image Composition 로직을 반영하기. (토요일에 만든 구 로직을 신 로직으로 대체하기)
     public class DummyTestCamera : BaslerCamera
     {
         public DummyTestCamera(string alias, BaslerCameraPosition position) : base(alias, null, position) { }
@@ -50,44 +51,6 @@ namespace BulbPicker.App.Models
             {
                 // GDI 핸들 릭 방지
                 DeleteObject(hBmp);
-            }
-
-            return;
-
-            try
-            {
-                // For Display test
-                var bi = new BitmapImage();
-                bi.BeginInit();
-                bi.CacheOption = BitmapCacheOption.OnLoad;
-                bi.UriSource = new Uri(bmpFile, UriKind.Absolute);
-                bi.EndInit();
-                bi.Freeze();
-
-                ReceivedBitmapSource = bi;
-
-
-                // For Composition Test
-                using var fs = File.OpenRead(bmpFile);
-                using var temp = new Bitmap(fs);
-                var bmp2 = new Bitmap(temp);
-                try
-                {
-                    SendBitmapForComposition(bmp2);
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-                finally
-                {
-                    bmp2.Dispose();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{Alias} : Failed to load {fileName}.bmp\n{ex.Message}");
-                ReceivedBitmapSource = null;
             }
         }
     }

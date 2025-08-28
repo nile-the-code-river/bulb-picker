@@ -74,7 +74,7 @@ namespace BulbPicker.App.ViewModels
             _dummyTestShotTimer.Start();
         }
 
-        // WARN: TODO: make sure this is conducted in another thread
+        // TODO: Replace with NEW LOGIC
         private void _dummyTestShotTimer_Tick(object? sender, EventArgs e)
         {
             foreach (var camera in Cameras)

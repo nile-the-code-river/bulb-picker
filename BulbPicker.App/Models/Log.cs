@@ -17,6 +17,7 @@
         // Robot Arm Offset Settings
         SettingFileUpdated,
 
+        // TODO: Test 관련 Log는 다 이 타입으로 갈아치우기
         FOR_TEST
     }
 

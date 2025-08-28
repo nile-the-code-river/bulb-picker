@@ -1,7 +1,6 @@
 ﻿using BulbPicker.App.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace BulbPicker.App.Services
 {

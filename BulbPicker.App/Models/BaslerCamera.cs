@@ -18,6 +18,10 @@ namespace BulbPicker.App.Models
 
     public class BaslerCamera : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
         private readonly PixelDataConverter _pixelConverter = new PixelDataConverter();
 
         public string Alias { get; init; }
@@ -26,14 +30,10 @@ namespace BulbPicker.App.Models
         public Camera Camera
         {
             get => _camera;
-            private set
-            {
-                _camera = value;
-            }
+            private set => _camera = value;
         }
 
         public string SerialNumber { get; private set; }
-
         public BaslerCameraPosition Position { get; init; }
 
         private BitmapSource _receivedBitmapsource;
@@ -49,21 +49,16 @@ namespace BulbPicker.App.Models
 
         public RelayCommand TestCommand => new RelayCommand(execute => Run(), canExecute => Camera != null );
 
-        // PropertyChanged
-        // TODO: Separate
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public BaslerCamera(string alias, string serialNumber, BaslerCameraPosition position)
         {
             Alias = alias;
             SerialNumber = serialNumber;
+            Position = position;
 
-            // If SerialNumber is null, it is testing camera dummy
+            // If SerialNumber is null, the app is testing for dummy (there is no real camera)
             if (SerialNumber == null) SerialNumber = "Testing Dummy";
             else SetUpCamera();
-            Position = position;
         }
 
         // TODO: make this async
@@ -78,9 +73,7 @@ namespace BulbPicker.App.Models
 
                 Camera.CameraClosed += Camera_CameraClosed;
 
-                Camera.StreamGrabber.GrabStarted += StreamGrabber_GrabStarted;
                 Camera.StreamGrabber.ImageGrabbed += StreamGrabber_ImageGrabbed;
-                Camera.StreamGrabber.GrabStopped += StreamGrabber_GrabStopped;
 
                 Camera.Open();
             }
@@ -91,42 +84,24 @@ namespace BulbPicker.App.Models
             }
         }
 
-        private void RunDummyImageProcess()
-        {
-            new Task(() =>
-            {
-                // 1초마다 특정 폴더에서 이미지 가져와서 OneShotImage에 넣기
-            });
-        }
-
+        // TODO: can make it better (copy pfs 'once' and set its type as 'content')
         private void Camera_CameraOpened(object? sender, EventArgs e)
         {
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                // bin\Debug\netX → 프로젝트 루트로 올라가기
                 string projectRoot = Path.GetFullPath(Path.Combine(baseDir, @"..\..\.."));
                 string filePath = Path.Combine(projectRoot, "Assets", "Config_Temp", "camera-profile.pfs");
 
                 Camera.Parameters.Load(filePath, ParameterPath.CameraDevice);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                throw;
+                MessageBox.Show(exception.Message);
             }
         }
 
-        private void StreamGrabber_GrabStopped(object? sender, GrabStopEventArgs e)
-        {
-            // empty for now
-        }
-
-
-        private string _sessionDir = null;
-        private int _imageIndex = 0;
-        private readonly object _saveLock = new object();
-
-
+        // TODO: Replace with NEW LOGIC --OR-- DELETE
         protected void SendBitmapForComposition(Bitmap bitmap)
         {
             return;
@@ -143,8 +118,10 @@ namespace BulbPicker.App.Models
             {
                 if (grabResult.GrabSucceeded)
                 {
+                    //
                     TestIndexManager.Instance.LogTestStopwatchNow();
 
+                    // TODO: Check if optimized
                     Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format32bppArgb);
                     BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
                     _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
@@ -152,16 +129,20 @@ namespace BulbPicker.App.Models
                     _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                     bitmap.UnlockBits(bmpData);
 
+                    // Reminder: this solved 'this bitmap is used in elsewhere' problem 
                     var bmpForQueue = (Bitmap)bitmap.Clone();
+                    // TODO: Bitmap 등등 Dispose 잘 하기
                     CompositeImageService.Instance.AddToCompositionQueue(
                         new ImageToCompositeQuqueItem() { Image = bmpForQueue, CameraPosition = Position });
 
-                    // IMPT: send bitmap for composition=
-                    //SendBitmapForComposition(bitmap);
+                    // OLD LOGIC. DEPRECATED
+                    // IMPT: send bitmap for composition
+                    // SendBitmapForComposition(bitmap);
 
                     // TEST: save bitmap to test folder
                     SaveGrabbedImageToTestFolder(bitmap, TestIndexManager.Instance.GetStopwatchMilliSecondsNow());
 
+                    // For displaying in UI
                     var source = BitmapToImageSource(bitmap);
                     bitmap.Dispose();
 
@@ -177,6 +158,7 @@ namespace BulbPicker.App.Models
             }
         }
 
+        // TODO: Centralize this logic, so that with 'string pathName, string fileName' as parameters (input), all should be able to put its file into a designated folder inside the test folder.
         private int testImageCount = 0;
         private void SaveGrabbedImageToTestFolder(Bitmap bitmap, string name)
         {
@@ -190,6 +172,7 @@ namespace BulbPicker.App.Models
             testImageCount++;
         }
 
+        // TODO: Centralize this logic. This logic is used in various places
         private BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
             using (MemoryStream memory = new MemoryStream())
@@ -207,148 +190,24 @@ namespace BulbPicker.App.Models
             }
         }
 
-
-        private void StreamGrabber_GrabStarted(object? sender, EventArgs e)
-        {
-            // empty for now
-        }
-
         private void Camera_CameraClosed(object? sender, EventArgs e)
         {
+            // TODO: 이미 Close 됐을 거 같은데?
+            // TODO: 이거 App 꺼질 때도 다 해야 함. 로봇 팔 Dispose (Close) 관련도 다 처리해서 안전하게 만들어야 함
             Camera.Close();
             Camera.Dispose();
         }
 
         private void Run()
         {
-            // TODO: if already grabbing, return
             if (!Camera.StreamGrabber.IsGrabbing)
             {
-
-            Camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
+                Camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
             }
-            // 
+            else
+            {
+                MessageBox.Show("이미 카메라를 실행하고 있습니다.");
+            }
         }
-        //// DEPRECATED
-        //public async void FireOneShot()
-        //{
-        //    if (Camera == null)
-        //    {
-        //        MessageBox.Show("Camera is null");
-        //        return;
-        //    }
-
-        //    try
-        //    {
-        //        var grabResult = GrabShotResult();
-
-        //        using (grabResult)
-        //        {
-        //            if (grabResult.GrabSucceeded)
-        //            {
-        //                Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-        //                // Lock the bits of the bitmap.
-        //                BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
-        //                // Place the pointer to the buffer of the bitmap.
-        //                _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
-        //                IntPtr ptrBmp = bmpData.Scan0;
-        //                _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
-        //                bitmap.UnlockBits(bmpData);
-
-        //                OneShotImage = bitmap;
-
-
-        //                // TODO: 전에 있던 이미지 데이터 저장하는 기능 구현해야 함
-        //                //Bitmap bitmapOld = pictureBox.Image as Bitmap;
-        //                //pictureBox.Image = bitmap;
-        //                //if (bitmapOld != null)
-        //                //{
-        //                //    // Dispose the bitmap.
-        //                //    bitmapOld.Dispose();
-        //                //}
-
-
-
-        //                //byte[] src = grabResult.PixelData as byte[];
-
-        //                //if(src == null || src.Length == 0)
-        //                //{
-        //                //    MessageBox.Show("Buffer Error");
-        //                //}
-
-        //                //var copy = new byte[src.Length];
-        //                //// Thread Safe
-        //                //Buffer.BlockCopy(src, 0, copy, 0, src.Length);
-
-        //                //// breaks here
-        //                //Application.Current.Dispatcher.Invoke(() =>
-        //                //{
-        //                //    var bmp = BitmapSource.Create(
-        //                //        grabResult.Width, grabResult.Height, 96, 96,
-        //                //        PixelFormats.Gray8, null, copy, grabResult.Width);
-        //                //    OneShotImage = bmp;
-        //                //});
-
-        //                //var conv = new PixelDataConverter { OutputPixelFormat = PixelType.BGRA8packed };
-        //                //int w = grabResult.Width, h = grabResult.Height, stride = w * 4, size = stride * h;
-        //                //var managed = new byte[size];
-        //                //conv.Convert(managed, size, grabResult);
-
-        //                //Application.Current.Dispatcher.Invoke(() =>
-        //                //{
-        //                //    var wb = new WriteableBitmap(w, h, 96, 96, PixelFormats.Bgra32, null);
-        //                //    wb.WritePixels(new Int32Rect(0, 0, w, h), managed, stride, 0);
-        //                //    wb.Freeze();
-        //                //    OneShotImage = wb;
-        //                //});
-
-        //                //byte[] buffer = grabResult.PixelData as byte[];
-        //                //BitmapSource bitmap = BitmapSource.Create(
-        //                //    grabResult.Width,
-        //                //    grabResult.Height,
-        //                //    96, 96,
-        //                //    PixelFormats.Gray8,
-        //                //    null,
-        //                //    buffer,
-        //                //    grabResult.Width);
-
-
-
-        //                //bitmap.Freeze();
-
-        //                // //breaks here
-        //                //Application.Current.Dispatcher.Invoke(() =>
-        //                //{
-        //                //    OneShotImage = bitmap;
-        //                //});
-        //            }
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        if(Camera.IsOpen)
-        //            Camera.Close();
-
-        //        MessageBox.Show("Exception! {0}" + e.Message);
-        //    }
-        //}
-
-        //private IGrabResult GrabShotResult()
-        //{
-        //    Camera.CameraOpened += Configuration.AcquireSingleFrame;
-
-        //    Camera.Open();
-
-        //    // 
-        //    if (Camera.StreamGrabber.IsGrabbing) MessageBox.Show("Already Grabbing");
-
-        //    Camera.StreamGrabber.Start();
-        //    IGrabResult grabResult = Camera.StreamGrabber.RetrieveResult(5000, TimeoutHandling.ThrowException);
-        //    Camera.StreamGrabber.Stop();
-
-        //    Camera.Close();
-
-        //    return grabResult;
-        //}
     }
 }

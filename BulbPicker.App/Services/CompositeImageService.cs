@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -37,15 +36,17 @@ namespace BulbPicker.App.Services
 
         private readonly Dispatcher _dispatcher;
 
-
-        // collected images for test
+        // TODO: 쓸려고 일단 만들었는데 쓸 거면 쓰기
         public ObservableCollection<BitmapSource> TestImages { get; private set; } = new ObservableCollection<BitmapSource>();
-        // TODO: 아이템 늘어나면 set (add_) 될 때 save image 하기
 
-        // TODO: 정리하기. 좀 없애기.
+
+        // TODO: OLD LOGIC. DELETE
         private CompositeImage _compositeImageBuffer = new CompositeImage();
 
+
+
         private readonly ObservableCollection<ImageToCompositeQuqueItem> _firstRowImageToCompositeQuque;
+        // TODO: _secondRowImageToCompositeQueue
 
         private CompositeImageRowBuffer _compositImageRowBuffer = null;
 
@@ -66,6 +67,7 @@ namespace BulbPicker.App.Services
             }, DispatcherPriority.Background);
         }
 
+        // TODO: DONE BY HERE__________________________________
         private DispatcherTimer _firstRowClearTimer;
         private void FirstRowImagesToCombine_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -121,6 +123,7 @@ namespace BulbPicker.App.Services
         }
 
 
+        // TODO 1: 지워도 될 듯. 지워도 문제 없이 돌아가면 지우기
         private static Bitmap Snapshot(Bitmap src)
         {
             using (var ms = new MemoryStream())
@@ -131,6 +134,7 @@ namespace BulbPicker.App.Services
             }
         }
 
+        // TODO: 이름 바꾸고 메인 로직으로 만들기
         private int _rowCount = 0;
         private void CompositeImage_FactoryVerTest(CompositeImageRowBuffer rowImages)
         {
@@ -181,6 +185,7 @@ namespace BulbPicker.App.Services
             _rowCount++;
         }
 
+        // TODO: OLD LOGIC. DELETE
         public void ReceiveBitmapGrabbed(int newIndex, BaslerCameraPosition position, Bitmap newBitmapSource)
         {
             // 
@@ -196,6 +201,7 @@ namespace BulbPicker.App.Services
             }
         }
 
+        // TODO: OLD LOGIC. DELETE
         private void AddToTestImages(Bitmap bitmap)
         {
             // WARN: DUPLICATE LOGIC (BitmapToImageSource exists in BaslerCamera.cs)
@@ -214,10 +220,11 @@ namespace BulbPicker.App.Services
             }
         }
 
+        // TODO: 정돈하기
         private string _testFolderName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         private int _testCombinedImageIndex = 0;
 
-        public Bitmap CombineImages(Bitmap outsideAfter, Bitmap insideAfter, Bitmap outsideBefore, Bitmap insideBefore) // CompositeImage ci
+        public Bitmap CombineImages(Bitmap outsideAfter, Bitmap insideAfter, Bitmap outsideBefore, Bitmap insideBefore)
         {
             int width = outsideAfter.Width;
             int height = insideAfter.Height;

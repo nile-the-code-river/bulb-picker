@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows;
 
+// TODO: 에러 핸들링, 예외 처리, Conn -> Discon -> Conn 때 문제 등 해결하기
 namespace BulbPicker.App.Models
 {
     public enum RobotArmState
@@ -42,7 +44,7 @@ namespace BulbPicker.App.Models
         public RelayCommand ServoOnCommand => new RelayCommand(execute => ServoOn(), canExecute => State == RobotArmState.Connected);
         public RelayCommand RunCommand => new RelayCommand(execute => Run(), canExecute => State == RobotArmState.ServoOn);
 
-        public RelayCommand TestCommand => new RelayCommand(execute => TestMove());
+        public RelayCommand TestCommand => new RelayCommand(execute => TestRobotArmMove());
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -82,13 +84,13 @@ namespace BulbPicker.App.Models
                 State = RobotArmState.Connected;
                 LogService.Instance.AddLog(new Log($"{IP} Connected", LogType.Connected));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                MessageBox.Show($"로봇팔과의 연결을 실패했습니다. 프로그램 또는/및 로봇팔을 재시작 해 주세요.\n{e.Message}");
             }
         }
 
-        private static void SafeClose(Socket? socket)
+        private void SafeClose(Socket? socket)
         {
             if (socket == null) return;
             try { if (socket.Connected) socket.Shutdown(SocketShutdown.Both); } catch { }
@@ -116,9 +118,9 @@ namespace BulbPicker.App.Models
                 State = RobotArmState.ServoOn;
                 LogService.Instance.AddLog(new Log($"{IP} ServoOn", LogType.RobotArmCommunication));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                MessageBox.Show($"로봇팔에게 'ServoOn'을 요청했으나 문제가 발생했습니다. 프로그램 또는/및 로봇팔을 재시작 해 주세요.\n{e.Message}");
             }
         }
 
@@ -128,27 +130,26 @@ namespace BulbPicker.App.Models
             {
                 ProgramSocket.Send(Encoding.ASCII.GetBytes("RN\r"));
                 State = RobotArmState.Running;
-                // TODO: add a property here "Alias" as well as in BaslerCamera
                 LogService.Instance.AddLog(new Log($"{IP} now running", LogType.RobotArmCommunication));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                MessageBox.Show($"로봇팔에게 'Run'을 요청했으나 문제가 발생했습니다. 프로그램 또는/및 로봇팔을 재시작 해 주세요.\n{e.Message}");
             }
         }
 
+        // TODO: Implement. 로봇팔에게 좌표 보내는 메소드
         private void SendPickUpPoint()
         {
             string test = "";
             RobotArmSocket.Send(Encoding.ASCII.GetBytes(test));
         }
 
-        private void TestMove()
+        private void TestRobotArmMove()
         {
-            string test = "1,200.410,-500.000,147.616,1,0,0\r";
-            test = "1," + (116.1641).ToString("0.000") + "," + (-690.9336).ToString("0.000") + "," + (139.1408).ToString("0.000") + ",1,0,0\r";
-            RobotArmSocket.Send(Encoding.ASCII.GetBytes(test));
-            LogService.Instance.AddLog(new Log($"{test} sent to {IP}", LogType.RobotArmPointsSent));
+            string testCoordinates = "1," + (116.1641).ToString("0.000") + "," + (-690.9336).ToString("0.000") + "," + (139.1408).ToString("0.000") + ",1,0,0\r";
+            RobotArmSocket.Send(Encoding.ASCII.GetBytes(testCoordinates));
+            LogService.Instance.AddLog(new Log($"{testCoordinates} sent to {IP}", LogType.RobotArmPointsSent));
         }
     }
 }

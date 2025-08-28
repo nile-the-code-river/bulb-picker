@@ -69,6 +69,7 @@
     <None Remove="Assets\Test\Outside_1st\7.bmp" />
     <None Remove="Assets\Test\Outside_1st\8.bmp" />
     <None Remove="Assets\Test\Outside_1st\9.bmp" />
+    <None Remove="Assets\YoloModel\best_640.onnx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -240,6 +241,9 @@
     <Content Include="Assets\Test\Outside_1st\9.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\YoloModel\best_640.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -247,6 +251,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.22.1" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.8" />
   </ItemGroup>
 

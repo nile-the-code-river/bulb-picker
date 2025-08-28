@@ -166,10 +166,11 @@ namespace BulbPicker.App.Models
                     _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                     bitmap.UnlockBits(bmpData);
 
+                    CompositeImageService.Instance.AddToCompositionQueue(
+                        new ImageToCompositeQuqueItem() { Image = bitmap, CameraPosition = Position });
 
                     // IMPT: send bitmap for composition=
-                    SendBitmapForComposition(bitmap);
-
+                    //SendBitmapForComposition(bitmap);
 
                     // TEST: save bitmap to test folder
                     SaveGrabbedImageToTestFolder(bitmap);

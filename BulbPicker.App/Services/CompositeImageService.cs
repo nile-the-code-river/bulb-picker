@@ -159,23 +159,29 @@ namespace BulbPicker.App.Services
             Bitmap resized = new Bitmap(combinedBitmap, new System.Drawing.Size(640, 640));
             var boxesValue = model.PredictBoxes(resized);
 
-            // TODO: Implement
-            string pickUpPoint = "";
-
-            var firstOutside = RobotArmService.Instance.RobotArms.Where(x => x.Position == RobotArmPosition.FirstRowOutside).FirstOrDefault();
-            firstOutside.SendPickUpPoint(pickUpPoint);
-
-
-            foreach(var boxValue in boxesValue)
+            for (int i = 0; i < boxesValue.Count; i++)
             {
-                if(boxValue.Y_Center <= 140 || boxValue.Y_Center > 366)
+                if (boxesValue[i].Y_Center <= 140 || boxesValue[i].Y_Center > 366)
                 {
                     LogService.Instance.AddLog(new Log("skipped", LogType.FOR_TEST));
                     continue;
                 }
 
-                // TODO: send coordinates to SCARAs
-                LogService.Instance.AddLog(new Log($"x: {boxValue.X_Center}, y:{boxValue.Y_Center}", LogType.FOR_TEST));
+                float yValue = (boxesValue[0].y1 + boxesValue[0].y2);
+                float xValue = (boxesValue[0].x1 + boxesValue[0].x2);
+                //float zValue = (boxesValue[0].y2 - boxesValue[0].y1) / 2.54f;
+
+                float scaraXValue = (yValue) - 121 + 0;
+                float scaraYValue = (xValue) - 837 + 0;
+                float scaraZValue = (boxesValue[0].x2 - boxesValue[0].x1) + 65 + 0;
+
+                // TODO: SCARA 2번 로직도 써야 함
+                string pickUpPoint = "1," + scaraXValue.ToString("0.000") + "," + scaraYValue.ToString("0.000") + "," + (scaraZValue).ToString("0.000") + ",1,0,0\r";
+
+                var firstOutside = RobotArmService.Instance.RobotArms.Where(x => x.Position == RobotArmPosition.FirstRowOutside).FirstOrDefault();
+                firstOutside.SendPickUpPoint(pickUpPoint);
+
+                LogService.Instance.AddLog(new Log($"Coordinates SENT\nx: {scaraXValue}, y:{scaraYValue}, z:{scaraZValue}", LogType.FOR_TEST));
             }
 
             // Draw boudning box

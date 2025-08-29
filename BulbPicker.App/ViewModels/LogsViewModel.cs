@@ -25,6 +25,13 @@ namespace BulbPicker.App.ViewModels
             => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_SettingFileUpdated", LogType.SettingFileUpdated)));
 
         public RelayCommand AddLog_ImageCombined
-            => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Image Combined", LogType.ImageCombined)));
+            => new RelayCommand(execute =>
+            {
+                GrabbedImageIndexManager.Instance.Increment();
+                LogService.Instance.AddLog(new Log("incremented", LogType.ImageCombined));
+            });
+
+        //public RelayCommand AddLog_ImageCombined
+        //    => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Image Combined", LogType.ImageCombined)));
     }
 }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
+             xmlns:ser="clr-namespace:BulbPicker.App.Services"
              xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="940" d:DesignWidth="600">
@@ -57,6 +58,12 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
+            <TextBlock Foreground="White"
+                       Text="{Binding Source={x:Static ser:GrabbedImageIndexManager.Instance},
+                            Path=ManagedImageIndex}"
+                       FontSize="30"
+                       Margin="100" />
         </StackPanel>
     </Border>
 </UserControl>

@@ -128,6 +128,7 @@ namespace BulbPicker.App.Models
                     _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                     bitmap.UnlockBits(bmpData);
 
+                    // TODO: 알맞은 수치 넣기
                     Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
                     // Reminder: this solved 'this bitmap is used in elsewhere' problem 
                     var bmpForQueue = (Bitmap)resized.Clone();

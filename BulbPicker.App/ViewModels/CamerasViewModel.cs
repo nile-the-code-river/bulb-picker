@@ -27,6 +27,8 @@ namespace BulbPicker.App.ViewModels
             set => _cameras = value;
         }
 
+        public int ComnbinedImageCount1 => GrabbedImageIndexManager.Instance.ManagedImageIndex;
+
         public CamerasViewModel()
         {
             // TEST for real env (the factory) with working cameras

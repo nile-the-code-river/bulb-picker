@@ -168,23 +168,48 @@ namespace BulbPicker.App.Services
                     continue;
                 }
 
+                bool isForOutside = boxesValue[i].X_Center < 320;
+                RobotArmPosition firstRowPosition = isForOutside ? RobotArmPosition.FirstRowOutside : RobotArmPosition.FirstRowInside;
+
+
                 float yValue = boxesValue[i].Y_Center;
                 float xValue = boxesValue[i].X_Center;
                 //float zValue = (boxesValue[0].y2 - boxesValue[0].y1) / 2.54f;
 
-                float scaraXValue = (yValue) - 121 + 0;
-                float scaraYValue = (xValue) - 837 + 0;
+                float scaraXValue = 0f;
+                float scaraYValue = 0f;
+
+
+                if (isForOutside) // SCARA 1
+                {
+                    scaraXValue = (yValue) - 121 + 0;
+                    scaraYValue = (xValue) - 837 + 0;
+                }else
+                {
+                    scaraXValue = (yValue) - 71 + 0;
+                    scaraYValue = (xValue) - 1003 + 0;
+
+                }
                 float scaraZValue = (boxesValue[0].x2 - boxesValue[0].x1) + 65 + 0;
+
+                //// SCARA 1
+                ////float scaraXValue = (yValue) - 121 + 0;
+                //// SCARA 2
+                //float scaraXValue = (yValue) - 71 + 0;
+                //// SCARA 1
+                ////float scaraYValue = (xValue) - 837 + 0;
+                //// SCARA 2
+                //float scaraYValue = (xValue) - 1003 + 0;
 
                 string pickUpPoint = "1," + scaraXValue.ToString("0.000") + "," + scaraYValue.ToString("0.000") + "," + (scaraZValue).ToString("0.000") + ",1,0,0\r";
 
-                bool isForOutside = boxesValue[i].X_Center < 320;
-                RobotArmPosition firstRowPosition = isForOutside ? RobotArmPosition.FirstRowOutside : RobotArmPosition.FirstRowInside;
 
                 var firstRowRobotArm = RobotArmService.Instance.RobotArms.Where(x => x.Position == firstRowPosition).FirstOrDefault();
                 firstRowRobotArm.SendPickUpPoint(pickUpPoint);
 
-                LogService.Instance.AddLog(new Log($"Coordinates SENT\nx: {scaraXValue}, y:{scaraYValue}, z:{scaraZValue}", LogType.FOR_TEST));
+                //
+                string testPositionStr = isForOutside ? "OUTSIDE (1)" : "INSIDE (2)";
+                LogService.Instance.AddLog(new Log($"Coordinates SENT to {testPositionStr} \nx: {scaraXValue}, y:{scaraYValue}, z:{scaraZValue}", LogType.FOR_TEST));
             }
 
             // Draw boudning box
@@ -273,6 +298,9 @@ namespace BulbPicker.App.Services
 
             string logMsg = $"Image Combined when ManagedIndex is {GrabbedImageIndexManager.Instance.ManagedImageIndex}";
             LogService.Instance.AddLog(new Log(logMsg, LogType.ImageCombined));
+
+            // Test for CombineImageCount
+            GrabbedImageIndexManager.Instance.Increment();
 
             return combinedBitmap;
         }

@@ -17,6 +17,14 @@ namespace BulbPicker.App.Models
         Running
     }
 
+    public enum RobotArmPosition
+    {
+        FirstRowOutside,
+        FirstRowInside,
+        SecondRowOutside,
+        SecondRowInside
+    }
+
     public class RobotArm : INotifyPropertyChanged
     {
         public string Alias { get; set; } = "Alias Ex.";
@@ -29,7 +37,9 @@ namespace BulbPicker.App.Models
         public int ProgramPort { get; set; } = 0;
         public IPEndPoint ProgramIPEndPoint { get; set; }
         public Socket ProgramSocket;
-        
+
+        public RobotArmPosition Position { get; private set; }
+
         private RobotArmState _state;
         public RobotArmState State
         {
@@ -48,12 +58,13 @@ namespace BulbPicker.App.Models
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public RobotArm(string alias, string ip, int robotArmPort, int programPort)
+        public RobotArm(string alias, string ip, int robotArmPort, int programPort, RobotArmPosition position)
         {
             Alias = alias;
             IP = ip;
             RobotArmPort = robotArmPort;
             ProgramPort = programPort;
+            Position = position;
         }
 
         private void SetUpConnectionConfiguration ()
@@ -139,10 +150,9 @@ namespace BulbPicker.App.Models
         }
 
         // TODO: Implement. 로봇팔에게 좌표 보내는 메소드
-        private void SendPickUpPoint()
+        public void SendPickUpPoint(string pickUpPoint)
         {
-            string test = "";
-            RobotArmSocket.Send(Encoding.ASCII.GetBytes(test));
+            RobotArmSocket.Send(Encoding.ASCII.GetBytes(pickUpPoint));
         }
 
         private void TestRobotArmMove()

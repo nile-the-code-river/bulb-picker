@@ -159,6 +159,13 @@ namespace BulbPicker.App.Services
             Bitmap resized = new Bitmap(combinedBitmap, new System.Drawing.Size(640, 640));
             var boxesValue = model.PredictBoxes(resized);
 
+            // TODO: Implement
+            string pickUpPoint = "";
+
+            var firstOutside = RobotArmService.Instance.RobotArms.Where(x => x.Position == RobotArmPosition.FirstRowOutside).FirstOrDefault();
+            firstOutside.SendPickUpPoint(pickUpPoint);
+
+
             foreach(var boxValue in boxesValue)
             {
                 if(boxValue.Y_Center <= 140 || boxValue.Y_Center > 366)

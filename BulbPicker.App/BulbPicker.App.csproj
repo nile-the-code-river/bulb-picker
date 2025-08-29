@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Etc\FormerProjectAnalysis.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Assets\Images\power-button-active.png" />
     <None Remove="Assets\Images\power-button-inactive.png" />
     <None Remove="Assets\Images\robot-arm-icon.png" />
@@ -244,10 +240,6 @@
     <Content Include="Assets\YoloModel\best_640.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Etc\FormerProjectAnalysis.cs" />
   </ItemGroup>
 
   <ItemGroup>

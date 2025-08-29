@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows;
 
-// TODO: 에러 핸들링, 예외 처리, Conn -> Discon -> Conn 때 문제 등 해결하기
+// 0831 TODO: 에러 핸들링, 예외 처리, Conn -> Discon -> Conn 때 문제 등 해결하기
 namespace BulbPicker.App.Models
 {
     public enum RobotArmState
@@ -97,7 +97,7 @@ namespace BulbPicker.App.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show($"로봇팔과의 연결을 실패했습니다. 프로그램 또는/및 로봇팔을 재시작 해 주세요.\n{e.Message}");
+                MessageBox.Show($"로봇팔과의 연결을 실패했습니다. 프로그램 및 로봇팔을 재시작 해 주세요.\n{e.Message}");
             }
         }
 
@@ -131,7 +131,7 @@ namespace BulbPicker.App.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show($"로봇팔에게 'ServoOn'을 요청했으나 문제가 발생했습니다. 프로그램 또는/및 로봇팔을 재시작 해 주세요.\n{e.Message}");
+                MessageBox.Show($"로봇팔에게 'ServoOn'을 요청했으나 문제가 발생했습니다. 프로그램 및 로봇팔을 재시작 해 주세요.\n{e.Message}");
             }
         }
 
@@ -145,14 +145,16 @@ namespace BulbPicker.App.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show($"로봇팔에게 'Run'을 요청했으나 문제가 발생했습니다. 프로그램 또는/및 로봇팔을 재시작 해 주세요.\n{e.Message}");
+                MessageBox.Show($"로봇팔에게 'Run'을 요청했으나 문제가 발생했습니다. 프로그램 및 로봇팔을 재시작 해 주세요.\n{e.Message}");
             }
         }
 
-        // TODO: Implement. 로봇팔에게 좌표 보내는 메소드
         public void SendPickUpPoint(string pickUpPoint)
         {
-            if(RobotArmSocket != null) RobotArmSocket.Send(Encoding.ASCII.GetBytes(pickUpPoint));
+            if(RobotArmSocket != null)
+            {
+                RobotArmSocket.Send(Encoding.ASCII.GetBytes(pickUpPoint));
+            }
         }
 
         private void TestRobotArmMove()

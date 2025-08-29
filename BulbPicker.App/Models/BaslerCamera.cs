@@ -40,7 +40,7 @@ namespace BulbPicker.App.Models
         public BitmapSource ReceivedBitmapSource
         {
             get => _receivedBitmapsource;
-            set
+            private set
             {
                 _receivedBitmapsource = value;
                 OnPropertyChanged(nameof(ReceivedBitmapSource));
@@ -60,7 +60,18 @@ namespace BulbPicker.App.Models
             else SetUpCamera();
         }
 
-        // TODO: make this async
+        public void DisplayImageGrabbed(BitmapSource source)
+        {
+            // SAVE IMAGE : use FileSaveService instead
+            //SaveGrabbedImageToTestFolder(bitmap, TestIndexManager.Instance.GetStopwatchMilliSecondsNow());
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ReceivedBitmapSource = source;
+            }, System.Windows.Threading.DispatcherPriority.DataBind);
+        }
+
+        // 0830 TODO : make this async
         private void SetUpCamera()
         {
             try
@@ -100,15 +111,7 @@ namespace BulbPicker.App.Models
             }
         }
 
-        // TODO: Replace with NEW LOGIC --OR-- DELETE
-        protected void SendBitmapForComposition(Bitmap bitmap)
-        {
-            return;
-
-            CompositeImageService.Instance.ReceiveBitmapGrabbed(
-                GrabbedImageIndexManager.Instance.ManagedImageIndex, Position, bitmap);
-        }
-
+        // 0830 TODO: Bitmap Clone 하지 말고 그냥 보낸 뒤 Dispose 하지 말기. Bitmap Dispose 관련 테스트 여러 번, 여러 개 하기.
         private void StreamGrabber_ImageGrabbed(object? sender, ImageGrabbedEventArgs e)
         {
             IGrabResult grabResult = e.GrabResult;
@@ -117,10 +120,8 @@ namespace BulbPicker.App.Models
             {
                 if (grabResult.GrabSucceeded)
                 {
-                    //
-                    //TestIndexManager.Instance.LogTestStopwatchNow();
-
-                    // TODO: Check if optimized
+                    // TODO: optimize https://chatgpt.com/c/68b1ad0c-7208-8325-9040-ea499392f20e
+                    // TODO: separate into another method
                     Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format32bppArgb);
                     BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
                     _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
@@ -128,72 +129,30 @@ namespace BulbPicker.App.Models
                     _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                     bitmap.UnlockBits(bmpData);
 
-                    // TODO: 알맞은 수치 넣기
+                    // TODO: 이미지 합성 크기 다시 정하면 구현하기
                     //Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
                     // Reminder: this solved 'this bitmap is used in elsewhere' problem 
                     //var bmpForQueue = (Bitmap)resized.Clone();
                     var bmpForQueue = (Bitmap)bitmap.Clone();
+                    AddToCompositionQueue(bmpForQueue);
 
-                    // TODO: Bitmap 등등 Dispose 잘 하기
+                    var source = BitmapManager.BitmapToImageSource(bitmap);
+                    DisplayImageGrabbed(source);
 
-                    CompositeImageService.Instance.AddToCompositionQueue(
-                        new ImageToCompositeQuqueItem() { Image = bmpForQueue, CameraPosition = Position });
-
-                    // OLD LOGIC. DEPRECATED
-                    // IMPT: send bitmap for composition
-                    // SendBitmapForComposition(bitmap);
-
-                    // TEST: save bitmap to test folder
-                    // SAVE IMAGE
-                    //SaveGrabbedImageToTestFolder(bitmap, TestIndexManager.Instance.GetStopwatchMilliSecondsNow());
-
-                    // For displaying in UI
-                    var source = BitmapToImageSource(bitmap);
                     bitmap.Dispose();
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ReceivedBitmapSource = source;
-                    }, System.Windows.Threading.DispatcherPriority.DataBind);
                 }
                 else
                 {
-
+                    MessageBox.Show("GrabResult was not grabbed succesfully");
                 }
             }
         }
 
-        // TODO: Centralize this logic, so that with 'string pathName, string fileName' as parameters (input), all should be able to put its file into a designated folder inside the test folder.
-        private int testImageCount = 0;
-        private void SaveGrabbedImageToTestFolder(Bitmap bitmap, string name)
-        {
-            string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "camera-image-grab", TestIndexManager.Instance.ManagedDateTimeStr, Alias);
-            Directory.CreateDirectory(saveDir);
+        public void AddToCompositionQueue(Bitmap bitmap)
+            => CompositeImageService.Instance.AddToCompositionQueue(new ImageToCompositeQuqueItem(bitmap, Position));
 
-            string savePath = Path.Combine(saveDir, $"{name}.bmp");
-            bitmap.Save(savePath, ImageFormat.Bmp);
 
-            testImageCount++;
-        }
-
-        // TODO: Centralize this logic. This logic is used in various places
-        private BitmapImage BitmapToImageSource(Bitmap bitmap)
-        {
-            using (MemoryStream memory = new MemoryStream())
-            {
-                bitmap.Save(memory, ImageFormat.Bmp);
-                memory.Position = 0;
-                BitmapImage bitmapimage = new BitmapImage();
-                bitmapimage.BeginInit();
-                bitmapimage.StreamSource = memory;
-                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapimage.EndInit();
-                bitmapimage.Freeze();
-
-                return bitmapimage;
-            }
-        }
-
+        // 0831 TODO
         private void Camera_CameraClosed(object? sender, EventArgs e)
         {
             // TODO: 이미 Close 됐을 거 같은데?

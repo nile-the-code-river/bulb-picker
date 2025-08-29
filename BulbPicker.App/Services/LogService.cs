@@ -1,6 +1,7 @@
 ﻿using BulbPicker.App.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace BulbPicker.App.Services
 {
@@ -8,7 +9,10 @@ namespace BulbPicker.App.Services
     {
         private static readonly LogService _instance = new LogService();
         public static LogService Instance => _instance;
-        private LogService() { }
+        private LogService( )
+        {
+            _dispatcher = Application.Current.Dispatcher;
+        }
 
         private ObservableCollection<Log> _logs = new ObservableCollection<Log>();
         public ObservableCollection<Log> Logs
@@ -17,10 +21,11 @@ namespace BulbPicker.App.Services
             set => _logs = value;
         }
 
+        private readonly Dispatcher _dispatcher;
+
         public void AddLog(Log log)
         {
-            // TODO: Quick fix. Need to improve
-            Application.Current.Dispatcher.Invoke(() =>
+            _dispatcher.Invoke(() =>
             {
                 Logs.Add(log);
             });

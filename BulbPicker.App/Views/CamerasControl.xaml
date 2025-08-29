@@ -21,7 +21,8 @@
                     Command="{Binding RunDummyTestCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Run(Test) Dummy Cameras" />
-                    <TextBlock Text="        Running........."
+                    <TextBlock Text=" Running....."
+                               Foreground="Red"
                                Visibility="{Binding IsTestingInProgress, Converter={StaticResource BoolToVisibility}}" />
                 </StackPanel>
             </Button>
@@ -59,11 +60,15 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <TextBlock Foreground="White"
-                       Text="{Binding Source={x:Static ser:GrabbedImageIndexManager.Instance},
-                            Path=ManagedImageIndex}"
-                       FontSize="30"
-                       Margin="100" />
+            <StackPanel Margin="100" >
+                <TextBlock Foreground="White"
+                           Text="Combined Image Count"
+                           FontSize="32" />
+                <TextBlock Foreground="White"
+                           Text="{Binding Source={x:Static ser:TestIndexManager.Instance},
+                                Path=CombinedImageIndex}"
+                           FontSize="30"/>
+            </StackPanel>
         </StackPanel>
     </Border>
 </UserControl>

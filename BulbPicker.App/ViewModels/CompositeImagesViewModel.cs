@@ -1,14 +1,21 @@
 ﻿using BulbPicker.App.Infrastructures;
-using BulbPicker.App.Models;
-using BulbPicker.App.Services;
 using System.Windows.Media.Imaging;
 
+// 0830 TODO : Implement
 namespace BulbPicker.App.ViewModels
 {
-    public class CompositeImagesViewModel : ViewModelBase
+    public class CompositeImagesViewModel : ObservableObject
     {
         private BitmapSource _firstRowImage;
-        public BitmapSource FirstRowImage => CompositeImageService.Instance.TestImages.FirstOrDefault();
+        public BitmapSource FirstRowImage
+        {
+            get => _firstRowImage;
+            private set
+            {
+                _firstRowImage = value;
+                OnPropertyChanged(nameof(FirstRowImage));
+            }
+        }
 
         private BitmapSource _secondRowImage;
         public BitmapSource SecondRowImage

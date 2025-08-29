@@ -2,12 +2,38 @@
 using BulbPicker.App.Models;
 using BulbPicker.App.Services;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows.Threading;
 
 namespace BulbPicker.App.ViewModels
 {
-    class CamerasViewModel : ViewModelBase
+    class CamerasViewModel : ObservableObject
     {
+        private ObservableCollection<BaslerCamera> _cameras = new ObservableCollection<BaslerCamera>();
+        public ObservableCollection<BaslerCamera> Cameras
+        {
+            get => _cameras;
+            private set => _cameras = value;
+        }
+
+        public CamerasViewModel()
+        {
+#if DEBUG
+            SetUpDummyTest();
+#else
+            // TEST for real env (the factory) with working cameras
+            SetUpFirstRowTest();
+            // SetUpSecondRowTest();
+
+            // TEST for any env with dummy cameras
+            //SetUpDummyTest();
+#endif
+
+        }
+
+        #region For Test Env (when there is no real cameras)
+        public RelayCommand RunDummyTestCommand => new RelayCommand(execute => RunDummyTest());
+
         public bool IsTestingDummyCamera { get; private set; } = false;
         private bool _isTestingInProgress = false;
         public bool IsTestingInProgress
@@ -19,29 +45,6 @@ namespace BulbPicker.App.ViewModels
                 OnPropertyChanged(nameof(IsTestingInProgress));
             }
         }
-
-        private ObservableCollection<BaslerCamera> _cameras = new ObservableCollection<BaslerCamera>();
-        public ObservableCollection<BaslerCamera> Cameras
-        {
-            get => _cameras;
-            set => _cameras = value;
-        }
-
-        public int ComnbinedImageCount1 => GrabbedImageIndexManager.Instance.ManagedImageIndex;
-
-        public CamerasViewModel()
-        {
-            // TEST for real env (the factory) with working cameras
-            SetUpFirstRowTest();
-            // SetUpSecondRowTest();
-
-            // TEST for any env with dummy cameras
-            //SetUpDummyTest();
-
-        }
-
-        #region For Test Env (when there is no real cameras)
-        public RelayCommand RunDummyTestCommand => new RelayCommand(execute => RunDummyTest());
 
         public void SetUpDummyTest()
         {
@@ -75,18 +78,26 @@ namespace BulbPicker.App.ViewModels
             _dummyTestShotTimer.Start();
         }
 
-        // TODO: Replace with NEW LOGIC
         private void _dummyTestShotTimer_Tick(object? sender, EventArgs e)
         {
             foreach (var camera in Cameras)
             {
-                if(camera is DummyTestCamera dummyCamera)
+                if (camera is DummyTestCamera dummyCamera)
                 {
-                    dummyCamera.FetchBitmapFromLocalDirectory(GrabbedImageIndexManager.Instance.ManagedImageIndex);
+                    var bitmap = dummyCamera.FetchBitmapFromLocalDirectory(TestIndexManager.Instance.DummyCameraImageIndex);
+
+                    // 클론 안 하면 Parameter is not valid 등 dispose 된 bitmap을 쓰려고 할 때 관련의 에러 남
+                    var bmpForQueue = (Bitmap)bitmap.Clone();
+                    camera.AddToCompositionQueue(bmpForQueue);
+
+                    var image = BitmapManager.BitmapToImageSource(bitmap);
+                    camera.DisplayImageGrabbed(image);
+
+                    bitmap.Dispose();
                 }
             }
-
-            GrabbedImageIndexManager.Instance.Increment();
+            
+            TestIndexManager.Instance.IncrementDummyCameraImageIndex();
         }
 
         public void SetUpFirstRowTest()

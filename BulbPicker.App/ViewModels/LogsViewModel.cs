@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace BulbPicker.App.ViewModels
 {
+    // 0831 TODO : Implement Color Converter (by Level)
     class LogsViewModel
     {
         public ObservableCollection<Log> Logs => LogService.Instance.Logs;
@@ -25,13 +26,6 @@ namespace BulbPicker.App.ViewModels
             => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_SettingFileUpdated", LogType.SettingFileUpdated)));
 
         public RelayCommand AddLog_ImageCombined
-            => new RelayCommand(execute =>
-            {
-                GrabbedImageIndexManager.Instance.Increment();
-                LogService.Instance.AddLog(new Log("incremented", LogType.ImageCombined));
-            });
-
-        //public RelayCommand AddLog_ImageCombined
-        //    => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Image Combined", LogType.ImageCombined)));
+            => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Image Combined", LogType.ImageCombined)));
     }
 }

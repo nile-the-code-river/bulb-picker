@@ -118,7 +118,7 @@ namespace BulbPicker.App.Models
                 if (grabResult.GrabSucceeded)
                 {
                     //
-                    TestIndexManager.Instance.LogTestStopwatchNow();
+                    //TestIndexManager.Instance.LogTestStopwatchNow();
 
                     // TODO: Check if optimized
                     Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format32bppArgb);
@@ -129,9 +129,10 @@ namespace BulbPicker.App.Models
                     bitmap.UnlockBits(bmpData);
 
                     // TODO: 알맞은 수치 넣기
-                    Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
+                    //Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
                     // Reminder: this solved 'this bitmap is used in elsewhere' problem 
-                    var bmpForQueue = (Bitmap)resized.Clone();
+                    //var bmpForQueue = (Bitmap)resized.Clone();
+                    var bmpForQueue = (Bitmap)bitmap.Clone();
 
                     // TODO: Bitmap 등등 Dispose 잘 하기
 

@@ -74,7 +74,7 @@ namespace BulbPicker.App.Services
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    LogService.Instance.AddLog(new Log($"Added ", LogType.Connected));
+                    //LogService.Instance.AddLog(new Log($"Added ", LogType.Connected));
 
                     if (_firstRowImageToCompositeQuque.Count == 2)
                     {
@@ -162,7 +162,8 @@ namespace BulbPicker.App.Services
 
             for (int i = 0; i < boxesValue.Count; i++)
             {
-                if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
+                //if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
+                if (boxesValue[i].Y_Center <= 68 || boxesValue[i].Y_Center > 240)
                 {
                     LogService.Instance.AddLog(new Log("skipped", LogType.FOR_TEST));
                     continue;
@@ -179,10 +180,12 @@ namespace BulbPicker.App.Services
                 float scaraXValue = 0f;
                 float scaraYValue = 0f;
 
+                int testXOffSet = 30;
 
                 if (isForOutside) // SCARA 1
                 {
-                    scaraXValue = (yValue) - 121 + 0;
+                    // 
+                    scaraXValue = (yValue) - 121 + testXOffSet;
                     scaraYValue = (xValue) - 837 + 0;
                 }else
                 {
@@ -190,16 +193,13 @@ namespace BulbPicker.App.Services
                     scaraYValue = (xValue) - 1003 + 0;
 
                 }
-                float scaraZValue = (boxesValue[0].x2 - boxesValue[0].x1) + 65 + 0;
 
-                //// SCARA 1
-                ////float scaraXValue = (yValue) - 121 + 0;
-                //// SCARA 2
-                //float scaraXValue = (yValue) - 71 + 0;
-                //// SCARA 1
-                ////float scaraYValue = (xValue) - 837 + 0;
-                //// SCARA 2
-                //float scaraYValue = (xValue) - 1003 + 0;
+
+                var zTestValue = Math.Min(boxesValue[i].x2 - boxesValue[i].x1, boxesValue[i].y2 - boxesValue[i].y1);
+
+                float scaraZValue = (zTestValue) + 55 + 0;
+                // Big bulb
+                //float scaraZValue = (zTestValue) + 42 + 0;
 
                 string pickUpPoint = "1," + scaraXValue.ToString("0.000") + "," + scaraYValue.ToString("0.000") + "," + (scaraZValue).ToString("0.000") + ",1,0,0\r";
 
@@ -217,10 +217,11 @@ namespace BulbPicker.App.Services
 
             // Test: Save Images with Boudning Box
             // SAVE IMAGE
-            //string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "bouding-boxes", _testFolderName);
-            //Directory.CreateDirectory(saveDir);
-            //string savePath = Path.Combine(saveDir, $"{_testCombinedImageIndex}.bmp");
-            //resultImage.Save(savePath, ImageFormat.Bmp);
+            string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "bouding-boxes", _testFolderName);
+            Directory.CreateDirectory(saveDir);
+            string savePath = Path.Combine(saveDir, $"{_testCombinedImageIndex}.bmp");
+            resultImage.Save(savePath, ImageFormat.Bmp);
+            _testCombinedImageIndex++;
 
             // after operation is completed
             _compositImageRowBuffer = rowImages;
@@ -271,18 +272,18 @@ namespace BulbPicker.App.Services
             int width = outsideAfter.Width;
             int height = insideAfter.Height;
 
-            int tempArg1 = 230;
-            int tempArg2 = 600;
+            int widthArg1 = 230;
+            int heightArg2 = 300;
             int padding = 1458;
 
-            Bitmap combinedBitmap = new Bitmap(width * 2 - tempArg1, height * 2 + padding);
+            Bitmap combinedBitmap = new Bitmap(width * 2 - widthArg1, height * 2 + padding);
             using (Graphics g = Graphics.FromImage(combinedBitmap))
             {
                 g.Clear(Color.Black);
-                g.DrawImage(outsideAfter, 0, 0, width, height);
-                g.DrawImage(insideAfter, width - tempArg1, 0, width, height);
-                g.DrawImage(outsideBefore, 0, height - tempArg2, width, height);
-                g.DrawImage(insideBefore, width - tempArg1, height - tempArg2, width, height);
+                g.DrawImage(outsideBefore, 0, height - heightArg2, width, height);
+                g.DrawImage(insideBefore, width - widthArg1, height - heightArg2, width, height);
+                g.DrawImage(outsideAfter, 0, 0, width, height - heightArg2);
+                g.DrawImage(insideAfter, width - widthArg1, 0, width, height - heightArg2);
             }
 
             // save to composition dir under test folder
@@ -296,8 +297,9 @@ namespace BulbPicker.App.Services
 
             // WARN: TODO: DISPOSE BITMAP
 
-            string logMsg = $"Image Combined when ManagedIndex is {GrabbedImageIndexManager.Instance.ManagedImageIndex}";
-            LogService.Instance.AddLog(new Log(logMsg, LogType.ImageCombined));
+            // LOG for composition
+            //string logMsg = $"Image Combined when ManagedIndex is {GrabbedImageIndexManager.Instance.ManagedImageIndex}";
+            //LogService.Instance.AddLog(new Log(logMsg, LogType.ImageCombined));
 
             // Test for CombineImageCount
             GrabbedImageIndexManager.Instance.Increment();

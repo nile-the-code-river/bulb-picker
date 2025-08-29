@@ -152,7 +152,7 @@ namespace BulbPicker.App.Models
         // TODO: Implement. 로봇팔에게 좌표 보내는 메소드
         public void SendPickUpPoint(string pickUpPoint)
         {
-            RobotArmSocket.Send(Encoding.ASCII.GetBytes(pickUpPoint));
+            if(RobotArmSocket != null) RobotArmSocket.Send(Encoding.ASCII.GetBytes(pickUpPoint));
         }
 
         private void TestRobotArmMove()

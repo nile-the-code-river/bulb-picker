@@ -155,6 +155,7 @@ namespace BulbPicker.App.Services
             string modelName = "best_640";
             string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", $"{modelName}.onnx");
             var model = new Yolov11Onnx(modelPath);
+
             // TODO: 일단은 resize 여기서 함... 바꿔야함..ㅎㅎ
             Bitmap resized = new Bitmap(combinedBitmap, new System.Drawing.Size(640, 640));
             var boxesValue = model.PredictBoxes(resized);
@@ -175,11 +176,13 @@ namespace BulbPicker.App.Services
                 float scaraYValue = (xValue) - 837 + 0;
                 float scaraZValue = (boxesValue[0].x2 - boxesValue[0].x1) + 65 + 0;
 
-                // TODO: SCARA 2번 로직도 써야 함
                 string pickUpPoint = "1," + scaraXValue.ToString("0.000") + "," + scaraYValue.ToString("0.000") + "," + (scaraZValue).ToString("0.000") + ",1,0,0\r";
 
-                var firstOutside = RobotArmService.Instance.RobotArms.Where(x => x.Position == RobotArmPosition.FirstRowOutside).FirstOrDefault();
-                firstOutside.SendPickUpPoint(pickUpPoint);
+                bool isForOutside = boxesValue[i].X_Center < 320;
+                RobotArmPosition firstRowPosition = isForOutside ? RobotArmPosition.FirstRowOutside : RobotArmPosition.FirstRowInside;
+
+                var firstRowRobotArm = RobotArmService.Instance.RobotArms.Where(x => x.Position == firstRowPosition).FirstOrDefault();
+                firstRowRobotArm.SendPickUpPoint(pickUpPoint);
 
                 LogService.Instance.AddLog(new Log($"Coordinates SENT\nx: {scaraXValue}, y:{scaraYValue}, z:{scaraZValue}", LogType.FOR_TEST));
             }

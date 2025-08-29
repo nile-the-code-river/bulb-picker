@@ -247,11 +247,12 @@ namespace BulbPicker.App.Services
 
             int tempArg1 = 230;
             int tempArg2 = 600;
+            int padding = 1458;
 
-            Bitmap combinedBitmap = new Bitmap(width * 2, height * 2);
+            Bitmap combinedBitmap = new Bitmap(width * 2 - tempArg1, height * 2 + padding);
             using (Graphics g = Graphics.FromImage(combinedBitmap))
             {
-                g.Clear(Color.White);
+                g.Clear(Color.Black);
                 g.DrawImage(outsideAfter, 0, 0, width, height);
                 g.DrawImage(insideAfter, width - tempArg1, 0, width, height);
                 g.DrawImage(outsideBefore, 0, height - tempArg2, width, height);

@@ -128,9 +128,12 @@ namespace BulbPicker.App.Models
                     _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
                     bitmap.UnlockBits(bmpData);
 
+                    Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
                     // Reminder: this solved 'this bitmap is used in elsewhere' problem 
-                    var bmpForQueue = (Bitmap)bitmap.Clone();
+                    var bmpForQueue = (Bitmap)resized.Clone();
+
                     // TODO: Bitmap 등등 Dispose 잘 하기
+
                     CompositeImageService.Instance.AddToCompositionQueue(
                         new ImageToCompositeQuqueItem() { Image = bmpForQueue, CameraPosition = Position });
 

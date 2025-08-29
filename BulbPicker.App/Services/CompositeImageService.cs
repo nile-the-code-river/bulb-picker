@@ -162,7 +162,7 @@ namespace BulbPicker.App.Services
 
             for (int i = 0; i < boxesValue.Count; i++)
             {
-                if (boxesValue[i].Y_Center <= 140 || boxesValue[i].Y_Center > 366)
+                if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
                 {
                     LogService.Instance.AddLog(new Log("skipped", LogType.FOR_TEST));
                     continue;
@@ -191,10 +191,11 @@ namespace BulbPicker.App.Services
             var resultImage = ImageVisualizer.DrawBoxes(resized, boxesValue);
 
             // Test: Save Images with Boudning Box
-            string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "bouding-boxes", _testFolderName);
-            Directory.CreateDirectory(saveDir);
-            string savePath = Path.Combine(saveDir, $"{_testCombinedImageIndex}.bmp");
-            resultImage.Save(savePath, ImageFormat.Bmp);
+            // SAVE IMAGE
+            //string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "bouding-boxes", _testFolderName);
+            //Directory.CreateDirectory(saveDir);
+            //string savePath = Path.Combine(saveDir, $"{_testCombinedImageIndex}.bmp");
+            //resultImage.Save(savePath, ImageFormat.Bmp);
 
             // after operation is completed
             _compositImageRowBuffer = rowImages;
@@ -237,7 +238,7 @@ namespace BulbPicker.App.Services
         }
 
         // TODO: 정돈하기
-        private string _testFolderName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        private string _testFolderName = TestIndexManager.Instance.ManagedDateTimeStr;
         private int _testCombinedImageIndex = 0;
 
         public Bitmap CombineImages(Bitmap outsideAfter, Bitmap insideAfter, Bitmap outsideBefore, Bitmap insideBefore)
@@ -259,13 +260,14 @@ namespace BulbPicker.App.Services
                 g.DrawImage(insideBefore, width - tempArg1, height - tempArg2, width, height);
             }
 
-            string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "image-composition", _testFolderName);
-            Directory.CreateDirectory(saveDir);
+            // save to composition dir under test folder
+            // SAVE IMAGE
+            //string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "image-composition", _testFolderName);
+            //Directory.CreateDirectory(saveDir);
+            //string savePath = Path.Combine(saveDir, $"{_testCombinedImageIndex}.bmp");
+            //combinedBitmap.Save(savePath, ImageFormat.Bmp);
+            //_testCombinedImageIndex++;
 
-            string savePath = Path.Combine(saveDir, $"{_testCombinedImageIndex}.bmp");
-            combinedBitmap.Save(savePath, ImageFormat.Bmp);
-
-            _testCombinedImageIndex++;
 
             // WARN: TODO: DISPOSE BITMAP
 

@@ -2,19 +2,24 @@
 
 namespace BulbPicker.App.Services
 {
+    // TEST: 일단 Test Purpose로 유지해둠
     public class TestIndexManager
     {
         private static readonly TestIndexManager _instance = new TestIndexManager();
         public static TestIndexManager Instance => _instance;
-        public DateTime ManagedDateTime;
+
+
+        public string ManagedDateTimeStr { get; set; }
         public int ManagedIndex1 { get; set; }
         public void IncrementManagedIndex1() => ManagedIndex1++;
+
+
 
         public Stopwatch _testStopWatch = new Stopwatch();
 
         private TestIndexManager()
         {
-            ManagedDateTime = DateTime.Now;
+            ManagedDateTimeStr = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         }
 
         public void StartTestStopwatch()
@@ -29,8 +34,7 @@ namespace BulbPicker.App.Services
 
         public void LogTestStopwatchNow()
         {
-            long elapsedMilliseconds = _testStopWatch.ElapsedMilliseconds;
-            LogService.Instance.AddLog(new Models.Log($"Stopwatch: {elapsedMilliseconds}ms", Models.LogType.ImageCombined));
+            LogService.Instance.AddLog(new Models.Log($"Stopwatch: {GetStopwatchMilliSecondsNow()}ms", Models.LogType.ImageCombined));
         }
 
         public string GetStopwatchMilliSecondsNow() => $"{_testStopWatch.ElapsedMilliseconds}";

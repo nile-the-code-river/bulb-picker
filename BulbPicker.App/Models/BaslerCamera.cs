@@ -49,7 +49,6 @@ namespace BulbPicker.App.Models
 
         public RelayCommand TestCommand => new RelayCommand(execute => Run(), canExecute => Camera != null );
 
-
         public BaslerCamera(string alias, string serialNumber, BaslerCameraPosition position)
         {
             Alias = alias;
@@ -140,7 +139,8 @@ namespace BulbPicker.App.Models
                     // SendBitmapForComposition(bitmap);
 
                     // TEST: save bitmap to test folder
-                    SaveGrabbedImageToTestFolder(bitmap, TestIndexManager.Instance.GetStopwatchMilliSecondsNow());
+                    // SAVE IMAGE
+                    //SaveGrabbedImageToTestFolder(bitmap, TestIndexManager.Instance.GetStopwatchMilliSecondsNow());
 
                     // For displaying in UI
                     var source = BitmapToImageSource(bitmap);
@@ -162,8 +162,7 @@ namespace BulbPicker.App.Models
         private int testImageCount = 0;
         private void SaveGrabbedImageToTestFolder(Bitmap bitmap, string name)
         {
-
-            string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "camera-image-grab", TestIndexManager.Instance.ManagedDateTime.ToString("yyyyMMdd_HHmmss"), Alias);
+            string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_test-result", "camera-image-grab", TestIndexManager.Instance.ManagedDateTimeStr, Alias);
             Directory.CreateDirectory(saveDir);
 
             string savePath = Path.Combine(saveDir, $"{name}.bmp");

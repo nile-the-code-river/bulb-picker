@@ -1,9 +1,7 @@
-﻿using Basler.Pylon;
-using BulbPicker.App.Infrastructures;
+﻿using BulbPicker.App.Infrastructures;
 using BulbPicker.App.Models;
 using BulbPicker.App.Services;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Threading;
 
 namespace BulbPicker.App.ViewModels
@@ -18,11 +16,9 @@ namespace BulbPicker.App.ViewModels
             private set
             {
                 _isTestingInProgress = value;
-                OnPropertyChanged(nameof(IsTestingInProgress));   // notify UI
+                OnPropertyChanged(nameof(IsTestingInProgress));
             }
         }
-        public RelayCommand RunDummyTestCommand => new RelayCommand(execute => RunDummyTest());
-
 
         private ObservableCollection<BaslerCamera> _cameras = new ObservableCollection<BaslerCamera>();
         public ObservableCollection<BaslerCamera> Cameras
@@ -33,13 +29,17 @@ namespace BulbPicker.App.ViewModels
 
         public CamerasViewModel()
         {
-            // TEST for any env with dummy cameras
-            //SetUpDummyTest();
-
             // TEST for real env (the factory) with working cameras
             SetUpFirstRowTest();
             // SetUpSecondRowTest();
+
+            // TEST for any env with dummy cameras
+            //SetUpDummyTest();
+
         }
+
+        #region For Test Env (when there is no real cameras)
+        public RelayCommand RunDummyTestCommand => new RelayCommand(execute => RunDummyTest());
 
         public void SetUpDummyTest()
         {
@@ -51,7 +51,6 @@ namespace BulbPicker.App.ViewModels
         }
 
         private DispatcherTimer _dummyTestShotTimer;
-
         private void RunDummyTest()
         {
             if(!IsTestingInProgress)
@@ -99,5 +98,6 @@ namespace BulbPicker.App.ViewModels
             Cameras.Add(new BaslerCamera("2nd Outside", "40058520", BaslerCameraPosition.Outisde));
             Cameras.Add(new BaslerCamera("2nd Inside", "21914827", BaslerCameraPosition.Inside));
         }
+        #endregion
     }
 }

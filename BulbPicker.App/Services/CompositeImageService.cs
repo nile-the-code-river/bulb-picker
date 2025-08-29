@@ -168,8 +168,8 @@ namespace BulbPicker.App.Services
                     continue;
                 }
 
-                float yValue = (boxesValue[0].y1 + boxesValue[0].y2);
-                float xValue = (boxesValue[0].x1 + boxesValue[0].x2);
+                float yValue = boxesValue[i].Y_Center;
+                float xValue = boxesValue[i].X_Center;
                 //float zValue = (boxesValue[0].y2 - boxesValue[0].y1) / 2.54f;
 
                 float scaraXValue = (yValue) - 121 + 0;

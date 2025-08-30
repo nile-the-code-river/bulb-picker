@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace BulbPicker.App.ViewModels
 {
-    // 0831 TODO : Implement Color Converter (by Level)
+    // TODO 0831 : Implement Color Converter (by Level)
     class LogsViewModel
     {
         public ObservableCollection<Log> Logs => LogService.Instance.Logs;

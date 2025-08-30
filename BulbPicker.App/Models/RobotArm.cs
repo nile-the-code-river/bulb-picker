@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows;
 
-// 0831 TODO: 에러 핸들링, 예외 처리, Conn -> Discon -> Conn 때 문제 등 해결하기
+// TODO 0831: 에러 핸들링, 예외 처리, Conn -> Discon -> Conn 때 문제 등 해결하기
 namespace BulbPicker.App.Models
 {
     public enum RobotArmState
@@ -149,11 +149,12 @@ namespace BulbPicker.App.Models
             }
         }
 
-        public void SendPickUpPoint(string pickUpPoint)
+        public void SendPickUpPoint(string pickUpPoint) // TODO 0830: pickUpPoint string 말고 bulb Pickup Pijt 로 받기 이 함수 내에서 string 변환
         {
             if(RobotArmSocket != null)
             {
                 RobotArmSocket.Send(Encoding.ASCII.GetBytes(pickUpPoint));
+                //LogService.Instance.AddLog(new Log($"Coordinates SENT to {Position} \nx: {scaraXValue}, y:{scaraYValue}, z:{scaraZValue}", LogType.FOR_TEST));
             }
         }
 

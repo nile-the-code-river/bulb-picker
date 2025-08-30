@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 
 namespace BulbPicker.App.ViewModels
 {
-    // 0831 TODO : Implement
+    // TODO 0831 : Implement
     class AppConfigViewModel
     {
         public ObservableCollection<RobotArm> RobotArms => RobotArmService.Instance.RobotArms;
 
-        // 0831 TODO : Write to config file, so that input from the user can be saved and be retrieved next time the app is opened
-        // 0831 TODO : add 'Save Button' to UI and implement the function
+        // TODO 0831 : Write to config file, so that input from the user can be saved and be retrieved next time the app is opened
+        // TODO 0831 : add 'Save Button' to UI and implement the function
     }
 }

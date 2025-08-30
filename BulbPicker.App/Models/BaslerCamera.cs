@@ -71,7 +71,7 @@ namespace BulbPicker.App.Models
             }, System.Windows.Threading.DispatcherPriority.DataBind);
         }
 
-        // 0830 TODO : make this async
+        // TODO 0830 : make this async
         private void SetUpCamera()
         {
             try
@@ -111,7 +111,7 @@ namespace BulbPicker.App.Models
             }
         }
 
-        // 0830 TODO: Bitmap Clone 하지 말고 그냥 보낸 뒤 Dispose 하지 말기. Bitmap Dispose 관련 테스트 여러 번, 여러 개 하기.
+        // TODO 0830: Bitmap Clone 하지 말고 그냥 보낸 뒤 Dispose 하지 말기. Bitmap Dispose 관련 테스트 여러 번, 여러 개 하기.
         private void StreamGrabber_ImageGrabbed(object? sender, ImageGrabbedEventArgs e)
         {
             IGrabResult grabResult = e.GrabResult;
@@ -152,7 +152,7 @@ namespace BulbPicker.App.Models
             => CompositeImageService.Instance.AddToCompositionQueue(new ImageToCompositeQuqueItem(bitmap, Position));
 
 
-        // 0831 TODO
+        // TODO 0831
         private void Camera_CameraClosed(object? sender, EventArgs e)
         {
             // TODO: 이미 Close 됐을 거 같은데?

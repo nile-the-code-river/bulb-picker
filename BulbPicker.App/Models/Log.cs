@@ -8,7 +8,7 @@
         Disconnected,
 
         // Camera Image Composition
-        ImageCombined, // TODO: and saved when testing!
+        ImageCombined,
 
         // Robot Arm Commands & Data Sending
         RobotArmPointsSent,

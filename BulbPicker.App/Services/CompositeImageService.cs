@@ -32,7 +32,7 @@ namespace BulbPicker.App.Services
         }
     }
 
-    // 0830 TODO: LOCK elements used in multiple threads
+    // TODO 0830: LOCK elements used in multiple threads
     public class CompositeImageService
     {
         private static readonly CompositeImageService _instance = new CompositeImageService();
@@ -63,7 +63,7 @@ namespace BulbPicker.App.Services
             }, DispatcherPriority.Background);
         }
 
-        // 0830 TODO 1st : Refactor
+        // TODO 0830 1st : Refactor
         private void FirstRowImagesToCombine_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -88,11 +88,7 @@ namespace BulbPicker.App.Services
                         }
 
                         CompositeImageRowBuffer row = new CompositeImageRowBuffer(new Bitmap(outside), new Bitmap(inside));
-                        CompositeImage_FactoryVerTest(row);
-
-
-                        // 0830 TODO 1st : 여기에 관련 로직 차례 차례 넣어야 할 듯
-
+                        FireBulbPickingSequence(row);
                     }
                     // fire deleting sequence
                     else if (_firstRowImageToCompositeQuque.Count == 1)
@@ -115,7 +111,7 @@ namespace BulbPicker.App.Services
         }
 
 
-        // 0830 TODO 1: 지워도 될 듯. 지워도 문제 없이 돌아가면 지우기
+        // TODO 0830 1st: 지워도 될 듯. 지워도 문제 없이 돌아가면 지우기
         private static Bitmap Snapshot(Bitmap src)
         {
             using (var ms = new MemoryStream())
@@ -126,18 +122,18 @@ namespace BulbPicker.App.Services
             }
         }
 
-        // 0830 TODO 1st : Refactor
-        private int _rowCount = 0;
-        private void CompositeImage_FactoryVerTest(CompositeImageRowBuffer rowImages)
+        // TODO 0830 1st : Make this async
+        private void FireBulbPickingSequence(CompositeImageRowBuffer rowImages)
         {
-
-            if (_rowCount == 0)
+            // first ever row of images
+            if (_compositImageRowBuffer == null)
             {
                 _compositImageRowBuffer = rowImages;
-                _rowCount++;
                 return;
             }
 
+
+            // TODO 0830 : 안 쓸 수 있는 기능 전부 다 쓰지 말기
             using var outsideAfter = Snapshot(rowImages.Outside);
             using var insideAfter = Snapshot(rowImages.Inside);
             using var outsideBefore = Snapshot(_compositImageRowBuffer.Outside);
@@ -145,7 +141,6 @@ namespace BulbPicker.App.Services
 
             // COMBINE
             var combinedBitmap = Combine2x2Images(outsideAfter, insideAfter, outsideBefore, insideBefore);
-
 
             // AI
             string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", "best_640.onnx");
@@ -155,11 +150,14 @@ namespace BulbPicker.App.Services
             var boxesValue = model.PredictBoxes(resized);
 
 
-            // SEND TO SCARA LOGIC
-            // sep to another method
+            // TODO 0830 1st: sep to another method
+            // Define the pick up point and send it to corresponding robot arm
             for (int i = 0; i < boxesValue.Count; i++)
             {
                 //if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
+
+                //var pickUpPoint = GetBulbPickUpPoint(boxesValue[i]);
+
                 if (boxesValue[i].Y_Center <= 68 || boxesValue[i].Y_Center > 240)
                 {
                     LogService.Instance.AddLog(new Log($"skipped (y: {boxesValue[i].Y_Center})", LogType.FOR_TEST));
@@ -198,6 +196,11 @@ namespace BulbPicker.App.Services
                 // Big bulb
                 //float scaraZValue = (zTestValue) + 42 + 0;
 
+
+
+
+                //
+
                 string pickUpPoint = "1," + scaraXValue.ToString("0.000") + "," + scaraYValue.ToString("0.000") + "," + (scaraZValue).ToString("0.000") + ",1,0,0\r";
 
 
@@ -219,7 +222,7 @@ namespace BulbPicker.App.Services
             TestIndexManager.Instance.IncrementCombinedImageIndex();
         }
 
-        public Bitmap Combine2x2Images(Bitmap outsideAfter, Bitmap insideAfter, Bitmap outsideBefore, Bitmap insideBefore)
+        private Bitmap Combine2x2Images(Bitmap outsideAfter, Bitmap insideAfter, Bitmap outsideBefore, Bitmap insideBefore)
         {
             int width = outsideAfter.Width;
             int height = insideAfter.Height;
@@ -241,6 +244,59 @@ namespace BulbPicker.App.Services
             FileSaveService.SaveBitmapTo(combinedBitmap, FolderName.ImageComposition, TestIndexManager.Instance.CombinedImageIndex.ToString());
 
             return combinedBitmap;
+        }
+
+        /// <returns>Null if bulb should not be picked up (out of 'safe area')</returns>
+        private BulbPickUpPoint? GetBulbPickUpPoint(BulbBoundingBox boundingBox)
+        {
+            // out of safe area
+            if (boundingBox.YCenter <= 68 || boundingBox.YCenter > 240)
+            {
+                LogService.Instance.AddLog(new Log($"skipped (y: {boundingBox.YCenter})", LogType.FOR_TEST));
+                return null;
+            }
+
+
+            BulbPickUpPoint pickUpPoint = new BulbPickUpPoint();
+
+            float defaultRobotArmOffset_X = 0;
+            float defaultRobotArmOffset_Y = 0;
+            float defaultRobotArmOffset_Z = 55;
+
+            float manualRobotArmOffset_X = 30;
+            float manualRobotArmOffset_Y = 0;
+            float manualRobotArmOffset_Z = 0;
+
+
+            RobotArmPosition correspondingRobotArmPosition =
+                boundingBox.XCenter < 320 ? RobotArmPosition.FirstRowOutside : RobotArmPosition.FirstRowInside;
+
+            // retrieve default robot arm offset X & Y
+            switch (correspondingRobotArmPosition)
+            {
+                case RobotArmPosition.FirstRowOutside:
+                    defaultRobotArmOffset_X = -121;
+                    defaultRobotArmOffset_Y = -837;
+                    break;
+                case RobotArmPosition.FirstRowInside:
+                    defaultRobotArmOffset_X = -71;
+                    defaultRobotArmOffset_Y = -1003;
+                    break;
+                case RobotArmPosition.SecondRowOutside:
+                case RobotArmPosition.SecondRowInside:
+                default:
+                    MessageBox.Show("Unexpected Corresponding Robot Arm Position");
+                    break;
+            }
+
+            // x is set using YCenter, and y is set using XCenter
+            pickUpPoint.SetX(boundingBox.YCenter + defaultRobotArmOffset_X + manualRobotArmOffset_X);
+            pickUpPoint.SetY(boundingBox.XCenter + defaultRobotArmOffset_Y + manualRobotArmOffset_Y);
+            // shortest line(s) of the bounding box
+            pickUpPoint.SetZ(Math.Min(boundingBox.X2 - boundingBox.X1, boundingBox.Y2 - boundingBox.Y1) + defaultRobotArmOffset_Z + manualRobotArmOffset_Z);
+            pickUpPoint.SetCorrespondingRobotArm(correspondingRobotArmPosition);
+
+            return pickUpPoint;
         }
     }
 }

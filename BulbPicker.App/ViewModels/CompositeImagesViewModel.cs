@@ -1,7 +1,7 @@
 ﻿using BulbPicker.App.Infrastructures;
 using System.Windows.Media.Imaging;
 
-// 0830 TODO : Implement
+// TODO 0830 : Implement
 namespace BulbPicker.App.ViewModels
 {
     public class CompositeImagesViewModel : ObservableObject

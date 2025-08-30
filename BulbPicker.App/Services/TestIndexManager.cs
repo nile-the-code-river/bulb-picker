@@ -40,6 +40,9 @@ namespace BulbPicker.App.Services
         }
         public void IncrementCombinedImageIndex() => CombinedImageIndex++;
 
+        //
+        public int SentPickUpPointIndex { get; private set; }
+        public void IncrementSentPickUpPointIndex() => SentPickUpPointIndex++;
 
         //
         private Stopwatch _testStopWatch = new Stopwatch();

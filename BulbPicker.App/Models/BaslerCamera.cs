@@ -102,7 +102,7 @@ namespace BulbPicker.App.Models
             }, DispatcherPriority.DataBind);
         }
 
-        // TODO: can make it better (copy pfs 'once' and set its type as 'content')
+        // TODO later: can make it better (copy pfs 'once' and set its type as 'content')
         private void Camera_CameraOpened(object? sender, EventArgs e)
         {
             try

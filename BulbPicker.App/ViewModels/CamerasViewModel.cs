@@ -2,9 +2,6 @@
 using BulbPicker.App.Models;
 using BulbPicker.App.Services;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Threading;
 
 namespace BulbPicker.App.ViewModels

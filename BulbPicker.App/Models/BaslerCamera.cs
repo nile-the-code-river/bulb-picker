@@ -153,7 +153,7 @@ namespace BulbPicker.App.Models
         }
 
         public void AddToCompositionQueue(Bitmap bitmap)
-            => CompositeImageService.Instance.AddToCompositionQueue(new ImageToCompositeQuqueItem(bitmap, Position));
+            => CompositeImageService.Instance.AddToCompositionQueue(new CompositeImageFragment(bitmap, Position));
 
 
         // TODO 0831

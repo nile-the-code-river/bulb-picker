@@ -10,17 +10,18 @@ using WindowsFormsApp1;
 
 namespace BulbPicker.App.Services
 {
-    public class ImageToCompositeQuqueItem
+    public class CompositeImageFragment
     {
         public Bitmap Image { get; init; }
         public BaslerCameraPosition CameraPosition { get; init; }
-        public ImageToCompositeQuqueItem(Bitmap image, BaslerCameraPosition cameraPosition)
+        public CompositeImageFragment(Bitmap image, BaslerCameraPosition cameraPosition)
         {
             Image = image;
             CameraPosition = cameraPosition;
         }
     }
 
+    // 이게 꼭 있어야 하나 싶긴 한데 일단 급하니 유지하고 사용한다.
     public class CompositeImageRowBuffer
     {
         public Bitmap Outside { get; set; }
@@ -43,7 +44,7 @@ namespace BulbPicker.App.Services
 
         private CompositeImageRowBuffer _compositImageRowBuffer = null;
 
-        private readonly ObservableCollection<ImageToCompositeQuqueItem> _firstRowImageToCompositeQuque;
+        private readonly ObservableCollection<CompositeImageFragment> _firstRowCompositeImageQuque;
         private DispatcherTimer _firstRowClearTimer;
 
 
@@ -51,35 +52,35 @@ namespace BulbPicker.App.Services
         {
             _dispatcher = Application.Current.Dispatcher;
 
-            _firstRowImageToCompositeQuque = new ObservableCollection<ImageToCompositeQuqueItem>();
-            _firstRowImageToCompositeQuque.CollectionChanged += FirstRowImagesToCombine_CollectionChanged;
+            _firstRowCompositeImageQuque = new ObservableCollection<CompositeImageFragment>();
+            _firstRowCompositeImageQuque.CollectionChanged += FirstRowImagesToCombine_CollectionChanged;
         }
 
-        public void AddToCompositionQueue(ImageToCompositeQuqueItem queueItem)
+        public void AddToCompositionQueue(CompositeImageFragment fragment)
         {
             _dispatcher.BeginInvoke(() =>
             {
-                _firstRowImageToCompositeQuque.Add(queueItem);
+                _firstRowCompositeImageQuque.Add(fragment);
             }, DispatcherPriority.Background);
         }
 
-        // TODO 0830 1st : Refactor - 조금 걸릴 듯
+        // TODO 0831: Ensure Thread Safety
         private void FirstRowImagesToCombine_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     // combine the two
-                    if (_firstRowImageToCompositeQuque.Count == 2)
+                    if (_firstRowCompositeImageQuque.Count == 2)
                     {
                         Bitmap outside = null;
                         Bitmap inside = null;
 
-                        ImageToCompositeQuqueItem formerItem = _firstRowImageToCompositeQuque.FirstOrDefault();
-                        ImageToCompositeQuqueItem newItem = e.NewItems[0] as ImageToCompositeQuqueItem;
+                        CompositeImageFragment firstFragment = _firstRowCompositeImageQuque[0];
+                        CompositeImageFragment secondFragment = _firstRowCompositeImageQuque[1];
 
-                        outside = formerItem.CameraPosition == BaslerCameraPosition.Outisde ? formerItem.Image : newItem.Image;
-                        inside = formerItem.CameraPosition == BaslerCameraPosition.Inside ? formerItem.Image : newItem.Image;
+                        outside = firstFragment.CameraPosition == BaslerCameraPosition.Outisde ? firstFragment.Image : secondFragment.Image;
+                        inside = firstFragment.CameraPosition == BaslerCameraPosition.Inside ? firstFragment.Image : secondFragment.Image;
 
                         if(outside == null || inside == null)
                         {
@@ -87,18 +88,19 @@ namespace BulbPicker.App.Services
                             return;
                         }
 
-                        CompositeImageRowBuffer row = new CompositeImageRowBuffer(new Bitmap(outside), new Bitmap(inside));
+                        CompositeImageRowBuffer row = new CompositeImageRowBuffer(outside, inside);
                         FireBulbPickingSequence(row);
                     }
-                    // fire deleting sequence
-                    else if (_firstRowImageToCompositeQuque.Count == 1)
+                    // clear queue items
+                    else if (_firstRowCompositeImageQuque.Count == 1)
                     {
                         _firstRowClearTimer?.Stop();
+                        // 500ms
                         _firstRowClearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
                         _firstRowClearTimer.Tick += (_, __) =>
                         {
                             _firstRowClearTimer.Stop();
-                            _firstRowImageToCompositeQuque.Clear();
+                            _firstRowCompositeImageQuque.Clear();
                         };
                         _firstRowClearTimer.Start();
                     }
@@ -107,18 +109,6 @@ namespace BulbPicker.App.Services
                         MessageBox.Show($"Unexpected Number of Items in _firstRowImageToCompositeQuque. Stopwatch is now {TestIndexManager.Instance.GetStopwatchMilliSecondsNow()}");
                     }
                 break;
-            }
-        }
-
-
-        // TODO 0830 1st: 지워도 될 듯. 지워도 문제 없이 돌아가면 지우기
-        private static Bitmap Snapshot(Bitmap src)
-        {
-            using (var ms = new MemoryStream())
-            {
-                src.Save(ms, ImageFormat.Bmp);
-                ms.Position = 0;
-                return new Bitmap(ms);
             }
         }
 
@@ -132,20 +122,13 @@ namespace BulbPicker.App.Services
                 return;
             }
 
-
-            // TODO 0830 : 안 쓸 수 있는 기능 전부 다 쓰지 말기
-            using var outsideAfter = Snapshot(rowImages.Outside);
-            using var insideAfter = Snapshot(rowImages.Inside);
-            using var outsideBefore = Snapshot(_compositImageRowBuffer.Outside);
-            using var insideBefore = Snapshot(_compositImageRowBuffer.Inside);
-
             // COMBINE
-            var combinedBitmap = Combine2x2Images(outsideAfter, insideAfter, outsideBefore, insideBefore);
+            var combinedBitmap = Combine2x2Images(rowImages.Outside, rowImages.Inside, _compositImageRowBuffer.Outside, _compositImageRowBuffer.Inside);
 
             // AI
             string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", "best_640.onnx");
             var model = new Yolov11Onnx(modelPath);
-            // TODO: 일단은 resize 여기서 함... 바꿔야함..ㅎㅎ
+            // TODO 0831: 일단은 resize 여기서 함... 바꿔야함..ㅎㅎ
             Bitmap resized = new Bitmap(combinedBitmap, new System.Drawing.Size(640, 640));
             var boxesValue = model.PredictBoxes(resized);
 
@@ -172,7 +155,11 @@ namespace BulbPicker.App.Services
             FileSaveService.SaveBitmapTo(resultImage, FolderName.BoundingBoxImage, TestIndexManager.Instance.CombinedImageIndex.ToString());
 
             // after operation is completed
+            _compositImageRowBuffer.Inside.Dispose();
+            _compositImageRowBuffer.Outside.Dispose();
+            
             _compositImageRowBuffer = rowImages;
+
             TestIndexManager.Instance.IncrementCombinedImageIndex();
         }
 

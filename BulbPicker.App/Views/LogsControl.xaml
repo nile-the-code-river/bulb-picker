@@ -19,8 +19,18 @@
             </Grid.RowDefinitions>
 
             <StackPanel>
-                <TextBlock Text="Logs"
-                           Style="{StaticResource CardTitleStyle}"/>
+                <Grid>
+                    <TextBlock Text="Logs"
+                       Style="{StaticResource CardTitleStyle}"/>
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Width="35"
+                            Height="35"
+                            HorizontalAlignment="Right"
+                            Command="{Binding DownloadLogsCommand}">
+                        <Image Source="pack://application:,,,/Assets/Images/download-button.png" />
+                    </Button>
+                </Grid>
                 <Border Style="{StaticResource CardSeparatorStyle}"/>
 
                 <StackPanel Orientation="Horizontal">

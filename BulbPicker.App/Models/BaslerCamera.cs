@@ -68,27 +68,29 @@ namespace BulbPicker.App.Models
 
         async private Task SetUpCameraAsync()
         {
-            try
+            await Task.Run(() =>
             {
-                await Task.Run(() =>
+                try
                 {
                     Camera = new Camera(SerialNumber);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"{SerialNumber} is not found.\n{e.Message}");
+                    SerialNumber = "NOT FOUND";
 
-                    Camera.CameraOpened += Configuration.AcquireContinuous;
-                    Camera.CameraOpened += Camera_CameraOpened;
+                    return;
+                }
 
-                    Camera.CameraClosed += Camera_CameraClosed;
+                Camera.CameraOpened += Configuration.AcquireContinuous;
+                Camera.CameraOpened += Camera_CameraOpened;
 
-                    Camera.StreamGrabber.ImageGrabbed += StreamGrabber_ImageGrabbed;
+                Camera.CameraClosed += Camera_CameraClosed;
 
-                    Camera.Open();
-                });
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(SerialNumber + " " + e.Message);
-                SerialNumber = "NOT FOUND";
-            }
+                Camera.StreamGrabber.ImageGrabbed += StreamGrabber_ImageGrabbed;
+
+                Camera.Open();
+            });
         }
 
         public void DisplayImageGrabbed(BitmapSource source)

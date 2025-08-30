@@ -2,6 +2,7 @@
 using BulbPicker.App.Models;
 using BulbPicker.App.Services;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace BulbPicker.App.ViewModels
 {
@@ -10,8 +11,27 @@ namespace BulbPicker.App.ViewModels
     {
         public ObservableCollection<Log> Logs => LogService.Instance.Logs;
 
+        public AsyncCommand DownloadLogsCommand => new AsyncCommand(async () => await DownloadLogsAsync());
+        private async Task DownloadLogsAsync()
+        {
+            if (Logs == null || Logs.Count == 0) return;
+
+            await FileSaveService.SaveLogsAsync(Logs);
+        }
+
+        #region Test Logging
         public RelayCommand AddLog_Connected
-            => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Connected", LogType.Connected)));
+            => new RelayCommand(execute =>
+            {
+                int i= 0;
+                while (i < 100)
+                {
+                    LogService.Instance.AddLog(new Log("BULK_TEST", LogType.Connected));
+                    i++;
+                }
+            });
+        //public RelayCommand AddLog_Connected
+        //    => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Connected", LogType.Connected)));
 
         public RelayCommand AddLog_Disconnected
             => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Disconnected", LogType.Disconnected)));
@@ -27,5 +47,6 @@ namespace BulbPicker.App.ViewModels
 
         public RelayCommand AddLog_ImageCombined
             => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Image Combined", LogType.ImageCombined)));
+        #endregion
     }
 }

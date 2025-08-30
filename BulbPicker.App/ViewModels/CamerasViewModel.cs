@@ -21,11 +21,11 @@ namespace BulbPicker.App.ViewModels
             //#if DEBUG
             //#else
             // TEST for real env (the factory) with working cameras
-            //SetUpFirstRowTest();
+            SetUpFirstRowTest();
             // SetUpSecondRowTest();
 
             // TEST for any env with dummy cameras
-            SetUpDummyTest();
+            //SetUpDummyTest();
             //#endif
 
         }

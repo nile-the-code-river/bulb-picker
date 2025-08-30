@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
              xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
+             xmlns:ser="clr-namespace:BulbPicker.App.Services"
              mc:Ignorable="d" 
              d:DesignHeight="470" d:DesignWidth="600">
     <UserControl.DataContext>
@@ -23,10 +24,11 @@
                                Style="{StaticResource MainTitleStyle}" />
                     <TextBlock Text="1st Inside + 1st Outside"
                                Style="{StaticResource SubTitleStyle}" />
-                    <Border Background="Black"
+                    <Border Background="{StaticResource BackgroundGray}"
                             Width="250"
                             Height="250">
-                        <Image Source="{Binding FirstRowImage}"
+                        <Image Source="{Binding Source={x:Static ser:CompositeImageService.Instance},
+                                Path=FirstRowCompositeImageSource}"
                                Stretch="Uniform"/>
                     </Border>
                 </StackPanel>
@@ -37,11 +39,11 @@
                                Style="{StaticResource MainTitleStyle}" />
                     <TextBlock Text="2nd Inside + 2nd Outside"
                                Style="{StaticResource SubTitleStyle}" />
-                    <Border Background="Black"
+                    <Border Background="{StaticResource BackgroundGray}"
                             Width="250"
                             Height="250">
-                        <Image Source="{Binding SecondRowImage}"
-                               Stretch="Uniform"/>
+                        <!--<Image Source="{Binding SecondRowImage}"
+                               Stretch="Uniform"/>-->
                     </Border>
                 </StackPanel>
             </UniformGrid>

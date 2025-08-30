@@ -1,12 +1,9 @@
 ﻿using BulbPicker.App.Infrastructures;
-using BulbPicker.App.Services;
-using System.Windows.Media.Imaging;
 
 namespace BulbPicker.App.ViewModels
 {
+    // TODO later: 당장은 쓸모가 없지만 일단 남겨둠
     public class CompositeImagesViewModel : ObservableObject
     {
-        public BitmapSource FirstRowImage => CompositeImageService.Instance.FirstRowCompositeImageSource;
-        public BitmapSource SecondRowImage => null;
     }
 }

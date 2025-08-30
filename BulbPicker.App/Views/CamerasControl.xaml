@@ -49,7 +49,7 @@
                                         Command="{Binding TestCommand}"/>
                             </DockPanel>
 
-                            <Border Background="Black"
+                            <Border Background="{StaticResource BackgroundGray}"
                                     Height="250"
                                     Width="250">
                                 <Image Source="{Binding ReceivedBitmapSource}"

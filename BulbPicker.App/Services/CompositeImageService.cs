@@ -203,41 +203,50 @@ namespace BulbPicker.App.Services
 
         private Bitmap Combine2x2Images(Bitmap outsideAfter, Bitmap insideAfter, Bitmap outsideBefore, Bitmap insideBefore)
         {
-            int width = outsideAfter.Width;
-            int height = insideAfter.Height;
+            int singleWidth = outsideAfter.Width;
+            int singleHeight = insideAfter.Height;
 
-            Bitmap combinedBitmap = new Bitmap(width * 2, height * 2);
-            using (Graphics g = Graphics.FromImage(combinedBitmap))
+            int X_offset = 115;
+            int Y_offset = 310;
+            int Padding = singleWidth - X_offset - singleHeight + Y_offset;
+            int new_width = singleWidth - X_offset;
+            int new_height = singleHeight - Y_offset;
+
+            Bitmap CombinedImage = new Bitmap(new_width * 2, (new_height + Padding) * 2);
+
+            using (Graphics g = Graphics.FromImage(CombinedImage))
             {
-                int X_offset = 110;
-                int Y_offset = 310;
 
-                Rectangle srcRectOA = new Rectangle(0, 0, 2596 - X_offset, 2048 - Y_offset);
-                Rectangle srcRectIA = new Rectangle(X_offset, 0, 2596 - X_offset, 2048 - Y_offset);
-                Rectangle srcRectOB = new Rectangle(0, Y_offset, 2596 - X_offset, 2048 - Y_offset);
-                Rectangle srcRectIB = new Rectangle(X_offset, Y_offset, 2596 - X_offset, 2048 - Y_offset);
-                Rectangle destRectOA = new Rectangle(0, Y_offset, 2596 - X_offset, 2048 - Y_offset);
-                Rectangle destRectIA = new Rectangle(2596 - X_offset, Y_offset, 2596 - X_offset, 2048 - Y_offset);
-                Rectangle destRectOB = new Rectangle(0, 2048, 2596 - X_offset, 2048 - Y_offset);
-                Rectangle destRectIB = new Rectangle(2596 - X_offset, 2048, 2596 - X_offset, 2048 - Y_offset);
+                g.Clear(Color.Black);
+                Rectangle srcRectOA = new Rectangle(0, 0, new_width, new_height);
+                Rectangle srcRectIA = new Rectangle(X_offset, 0, new_width, new_height);
+                Rectangle srcRectOB = new Rectangle(0, Y_offset, new_width, new_height);
+                Rectangle srcRectIB = new Rectangle(X_offset, Y_offset, new_width, new_height);
+                Rectangle destRectOA = new Rectangle(0, Padding, new_width, new_height);
+                Rectangle destRectIA = new Rectangle(new_width, Padding, new_width, new_height);
+                Rectangle destRectOB = new Rectangle(0, new_height + Padding, new_width, new_height);
+                Rectangle destRectIB = new Rectangle(new_width, new_height + Padding, new_width, new_height);
+
                 g.DrawImage(outsideAfter, destRectOA, srcRectOA, GraphicsUnit.Pixel);
                 g.DrawImage(insideAfter, destRectIA, srcRectIA, GraphicsUnit.Pixel);
                 g.DrawImage(outsideBefore, destRectOB, srcRectOB, GraphicsUnit.Pixel);
                 g.DrawImage(insideBefore, destRectIB, srcRectIB, GraphicsUnit.Pixel);
             }
-
             //FileSaveService.SaveBitmapTo(combinedBitmap, FolderName.ImageComposition, TestIndexManager.Instance.CombinedImageIndex.ToString());
 
-            return combinedBitmap;
+            return CombinedImage;
         }
 
 
         /// <returns>Null if bulb should not be picked up (out of 'safe area')</returns>
         private BulbPickUpPoint? GetBulbPickUpPoint(BulbBoundingBox boundingBox)
         {
+            // temporary fix
+            float paddingOffset = 95.47f;
+
             // out of safe area
             //if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
-            if (boundingBox.YCenter <= 68 || boundingBox.YCenter > 240)
+            if (boundingBox.YCenter <= 65 + paddingOffset || boundingBox.YCenter > 252 + paddingOffset) // 160.5 , 347.5
             {
                 LogService.Instance.AddLog(new Log($"skipped (y: {boundingBox.YCenter})", LogType.FOR_TEST));
                 return null;
@@ -246,7 +255,7 @@ namespace BulbPicker.App.Services
 
             BulbPickUpPoint pickUpPoint = new BulbPickUpPoint();
 
-            float defaultRobotArmOffset_X = 0;
+            float defaultRobotArmOffset_X = 0 - paddingOffset;
             float defaultRobotArmOffset_Y = 0;
             float defaultRobotArmOffset_Z = 55;
 

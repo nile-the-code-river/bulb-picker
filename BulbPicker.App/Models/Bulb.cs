@@ -30,7 +30,7 @@ namespace BulbPicker.App.Models
         public float X2 { get; init; }
         public float Y2 { get; init; }
         public float XCenter { get; init; }
-        public float YCenter { get; init; }
+        public float YCenter { get; set; }
         public BulbBoundingBox(float x1, float y1, float x2, float y2, float xCenter, float yCenter)
         {
             X1 = x1;

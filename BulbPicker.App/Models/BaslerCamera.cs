@@ -138,7 +138,7 @@ namespace BulbPicker.App.Models
                 }
                 else
                 {
-                    LogService.Instance.AddLog(new Log($"An image was not grabbed succesfully. This could be due to the camera or the environment.\nwidth: {grabResult.Width}, height:{grabResult.Height}", LogType.ERROR));
+                    LogService.Instance.AddLog(new Log($"카메라 문제: An image was not grabbed succesfully.\n{grabResult.ErrorDescription}", LogType.ERROR));
 
                     Bitmap errorBitmap = null;
                     try

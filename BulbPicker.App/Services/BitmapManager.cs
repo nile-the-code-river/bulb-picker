@@ -9,7 +9,7 @@ namespace BulbPicker.App.Services
     {
         public static BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
-            // TODO Low: understand the logic later
+            // TODO later: understand the logic later
             using (MemoryStream memory = new MemoryStream())
             {
                 bitmap.Save(memory, ImageFormat.Bmp);

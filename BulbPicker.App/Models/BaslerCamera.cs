@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace BulbPicker.App.Models
 {
@@ -68,7 +69,7 @@ namespace BulbPicker.App.Models
             Application.Current.Dispatcher.Invoke(() =>
             {
                 ReceivedBitmapSource = source;
-            }, System.Windows.Threading.DispatcherPriority.DataBind);
+            }, DispatcherPriority.DataBind);
         }
 
         // TODO 0830 : make this async
@@ -120,26 +121,10 @@ namespace BulbPicker.App.Models
             {
                 if (grabResult.GrabSucceeded)
                 {
-                    // TODO: optimize https://chatgpt.com/c/68b1ad0c-7208-8325-9040-ea499392f20e
-                    // TODO: separate into another method
-                    Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format32bppArgb);
-                    BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
-                    _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
-                    IntPtr ptrBmp = bmpData.Scan0;
-                    _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
-                    bitmap.UnlockBits(bmpData);
+                    Bitmap bitmap = RetrieveBitmapFromGrabResult(grabResult);
 
-                    // TODO: 이미지 합성 크기 다시 정하면 구현하기
-                    //Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
-                    // Reminder: this solved 'this bitmap is used in elsewhere' problem 
-                    //var bmpForQueue = (Bitmap)resized.Clone();
-                    var bmpForQueue = (Bitmap)bitmap.Clone();
-                    AddToCompositionQueue(bmpForQueue);
+                    ProcessBitmap(bitmap);
 
-                    var source = BitmapManager.BitmapToImageSource(bitmap);
-                    DisplayImageGrabbed(source);
-
-                    //FileSaveService.SaveBitmapTo(bitmap, FolderName.SingleImageGrabbed, $"{TestIndexManager.Instance.GrabbedSingleImageGrabbedIndex}_{Position}");
                     FileSaveService.SaveBitmapTo(bitmap, FolderName.SingleImageGrabbed, $"{grabResult.Timestamp}_{Position}");
                     TestIndexManager.Instance.IncrementSingleImageGrabbedIndex();
 
@@ -152,9 +137,36 @@ namespace BulbPicker.App.Models
             }
         }
 
-        public void AddToCompositionQueue(Bitmap bitmap)
-            => CompositeImageService.Instance.AddToCompositionQueue(new CompositeImageFragment(bitmap, Position));
+        private Bitmap RetrieveBitmapFromGrabResult(IGrabResult grabResult)
+        {
+            // TODO later: optimize https://chatgpt.com/c/68b1ad0c-7208-8325-9040-ea499392f20e
+            Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format32bppArgb);
+            BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+            _pixelConverter.OutputPixelFormat = PixelType.BGRA8packed;
+            IntPtr ptrBmp = bmpData.Scan0;
+            _pixelConverter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
+            bitmap.UnlockBits(bmpData);
 
+            return bitmap;
+        }
+
+        // TODO later: find a better name
+        protected void ProcessBitmap(Bitmap bitmap)
+        {
+            var image = BitmapManager.BitmapToImageSource(bitmap);
+            DisplayImageGrabbed(image);
+
+            // TODO: 이미지 합성 크기 다시 정하면 구현하기
+            //Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
+            // Reminder: this solved 'this bitmap is used in elsewhere' problem 
+            //var bmpForQueue = (Bitmap)resized.Clone();
+
+            var clone = (Bitmap)bitmap.Clone();
+
+            // hand in ownership
+            CompositeImageFragment fragment = new CompositeImageFragment(clone, Position);
+            CompositeImageService.Instance.AddToCompositionQueue(fragment);
+        }
 
         // TODO 0831
         private void Camera_CameraClosed(object? sender, EventArgs e)

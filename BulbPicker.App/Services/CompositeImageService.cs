@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
@@ -76,6 +75,8 @@ namespace BulbPicker.App.Services
                         Bitmap outside = null;
                         Bitmap inside = null;
 
+                        // DO NOT use for loop. Explicitly specify index like it does now. (ex. _firstRowCompositeImageQuque[0])
+                        // Items might be added while in this function because camera runs on multi threads.
                         CompositeImageFragment firstFragment = _firstRowCompositeImageQuque[0];
                         CompositeImageFragment secondFragment = _firstRowCompositeImageQuque[1];
 
@@ -84,12 +85,23 @@ namespace BulbPicker.App.Services
 
                         if(outside == null || inside == null)
                         {
+                            // Images might be both outside or both inside in this case, which can happen due to the camera(s)' instability.
+                            // or another thread might have operated _firstRowCompositeImageQuque.Clear() just before this line was called, which is also due to the camera(s)' instability.
                             MessageBox.Show("Unexpected Error Occurred in CompositeImageService.");
                             return;
                         }
 
-                        CompositeImageRowBuffer row = new CompositeImageRowBuffer(outside, inside);
+                        // Clone bitmap becuase it should dispose all bitmaps in _firstRowCompositeImageQuque before Clear().
+                        // Calling Dispose() after successful image composition might lead to potential GDI lick for SOME bitmaps if the camera(s) is/are unstable.
+                        Bitmap outsideClone = (Bitmap)outside.Clone();
+                        Bitmap insideClone = (Bitmap)inside.Clone();
+                        
+                        CompositeImageRowBuffer row = new CompositeImageRowBuffer(outsideClone, insideClone);
+                        // should be async
                         FireBulbPickingSequence(row);
+
+                        outside.Dispose();
+                        inside.Dispose();
                     }
                     // clear queue items
                     else if (_firstRowCompositeImageQuque.Count == 1)
@@ -100,13 +112,19 @@ namespace BulbPicker.App.Services
                         _firstRowClearTimer.Tick += (_, __) =>
                         {
                             _firstRowClearTimer.Stop();
+
+                            foreach (var item in _firstRowCompositeImageQuque)
+                            {
+                                item.Image.Dispose();
+                            }
+
                             _firstRowCompositeImageQuque.Clear();
                         };
                         _firstRowClearTimer.Start();
                     }
                     else
                     {
-                        MessageBox.Show($"Unexpected Number of Items in _firstRowImageToCompositeQuque. Stopwatch is now {TestIndexManager.Instance.GetStopwatchMilliSecondsNow()}");
+                        MessageBox.Show($"Unexpected Number of Items in _firstRowImageToCompositeQuque.");
                     }
                 break;
             }

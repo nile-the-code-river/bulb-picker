@@ -18,15 +18,15 @@ namespace BulbPicker.App.ViewModels
 
         public CamerasViewModel()
         {
-//#if DEBUG
-//#else
+            //#if DEBUG
+            //#else
             // TEST for real env (the factory) with working cameras
-            SetUpFirstRowTest();
+            //SetUpFirstRowTest();
             // SetUpSecondRowTest();
 
             // TEST for any env with dummy cameras
-            //SetUpDummyTest();
-//#endif
+            SetUpDummyTest();
+            //#endif
 
         }
 
@@ -83,16 +83,7 @@ namespace BulbPicker.App.ViewModels
             {
                 if (camera is DummyTestCamera dummyCamera)
                 {
-                    var bitmap = dummyCamera.FetchBitmapFromLocalDirectory(TestIndexManager.Instance.DummyCameraImageIndex);
-
-                    // 클론 안 하면 Parameter is not valid 등 dispose 된 bitmap을 쓰려고 할 때 관련의 에러 남
-                    var bmpForQueue = (Bitmap)bitmap.Clone();
-                    camera.AddToCompositionQueue(bmpForQueue);
-
-                    var image = BitmapManager.BitmapToImageSource(bitmap);
-                    camera.DisplayImageGrabbed(image);
-
-                    bitmap.Dispose();
+                    ((DummyTestCamera)camera).SimulateImageGrabbedEvent();
                 }
             }
             

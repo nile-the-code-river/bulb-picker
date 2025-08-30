@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using BulbPicker.App.Services;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 
@@ -8,7 +9,7 @@ namespace BulbPicker.App.Models
     {
         public DummyTestCamera(string alias, BaslerCameraPosition position) : base(alias, null, position) { }
 
-        public Bitmap FetchBitmapFromLocalDirectory(int fileName)
+        private Bitmap FetchBitmapFromLocalDirectory(int fileName)
         {
             string folder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Test", Alias);
 
@@ -30,6 +31,15 @@ namespace BulbPicker.App.Models
             {
                 return new Bitmap(retrievedBitmap);
             }
+        }
+
+        public void SimulateImageGrabbedEvent()
+        {
+            var bitmap = FetchBitmapFromLocalDirectory(TestIndexManager.Instance.DummyCameraImageIndex);
+
+            ProcessBitmap(bitmap);
+
+            bitmap.Dispose();
         }
     }
 }

@@ -9,7 +9,8 @@ namespace BulbPicker.App.Services
     {
         ImageComposition,
         SingleImageGrabbed,
-        BoundingBoxImage
+        BoundingBoxImage,
+        ERROR
     }
 
     public static class FileSaveService
@@ -37,6 +38,9 @@ namespace BulbPicker.App.Services
                     break;
                 case FolderName.BoundingBoxImage:
                     folderNameStr = "bounding-box";
+                    break;
+                case FolderName.ERROR:
+                    folderNameStr = "_ERROR";
                     break;
                 default:
                     MessageBox.Show("ERROR: Invalid Folder Name Chosen");

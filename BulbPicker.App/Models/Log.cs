@@ -17,7 +17,8 @@
         // Robot Arm Offset Settings
         SettingFileUpdated,
 
-        FOR_TEST
+        FOR_TEST,
+        ERROR
     }
 
     public class Log

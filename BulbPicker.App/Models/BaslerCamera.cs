@@ -138,7 +138,22 @@ namespace BulbPicker.App.Models
                 }
                 else
                 {
-                    MessageBox.Show("GrabResult was not grabbed succesfully. " + grabResult.Width);
+                    LogService.Instance.AddLog(new Log($"An image was not grabbed succesfully. This could be due to the camera or the environment.\nwidth: {grabResult.Width}, height:{grabResult.Height}", LogType.ERROR));
+
+                    Bitmap errorBitmap = null;
+                    try
+                    {
+                        errorBitmap = RetrieveBitmapFromGrabResult(grabResult);
+                        FileSaveService.SaveBitmapTo(errorBitmap, FolderName.ERROR, grabResult.Timestamp.ToString());
+                    }
+                    catch (Exception err)
+                    {
+                        LogService.Instance.AddLog(new Log($"Could not save the failed image. {err.Message}", LogType.ERROR));
+                    }
+                    finally
+                    {
+                        errorBitmap?.Dispose();
+                    }
                 }
             }
         }

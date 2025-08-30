@@ -61,19 +61,8 @@ namespace BulbPicker.App.Models
             else SetUpCamera();
         }
 
-        public void DisplayImageGrabbed(BitmapSource source)
-        {
-            // SAVE IMAGE : use FileSaveService instead
-            //SaveGrabbedImageToTestFolder(bitmap, TestIndexManager.Instance.GetStopwatchMilliSecondsNow());
 
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ReceivedBitmapSource = source;
-            }, DispatcherPriority.DataBind);
-        }
-
-        // TODO 0830 : make this async
-        private void SetUpCamera()
+        private async void SetUpCamera()
         {
             try
             {
@@ -95,6 +84,44 @@ namespace BulbPicker.App.Models
             }
         }
 
+        // TODO 0830: use 
+
+        private async void SetUpCameraAsync()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    Camera = new Camera(SerialNumber);
+
+                    Camera.CameraOpened += Configuration.AcquireContinuous;
+                    Camera.CameraOpened += Camera_CameraOpened;
+
+                    Camera.CameraClosed += Camera_CameraClosed;
+
+                    Camera.StreamGrabber.ImageGrabbed += StreamGrabber_ImageGrabbed;
+
+                    Camera.Open();
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(SerialNumber + " " + e.Message);
+                SerialNumber = "NOT FOUND";
+            }
+        }
+
+        public void DisplayImageGrabbed(BitmapSource source)
+        {
+            // SAVE IMAGE : use FileSaveService instead
+            //SaveGrabbedImageToTestFolder(bitmap, TestIndexManager.Instance.GetStopwatchMilliSecondsNow());
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ReceivedBitmapSource = source;
+            }, DispatcherPriority.DataBind);
+        }
+
         // TODO: can make it better (copy pfs 'once' and set its type as 'content')
         private void Camera_CameraOpened(object? sender, EventArgs e)
         {
@@ -112,7 +139,6 @@ namespace BulbPicker.App.Models
             }
         }
 
-        // TODO 0830: Bitmap Clone 하지 말고 그냥 보낸 뒤 Dispose 하지 말기. Bitmap Dispose 관련 테스트 여러 번, 여러 개 하기.
         private void StreamGrabber_ImageGrabbed(object? sender, ImageGrabbedEventArgs e)
         {
             IGrabResult grabResult = e.GrabResult;

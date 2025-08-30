@@ -206,24 +206,31 @@ namespace BulbPicker.App.Services
             int width = outsideAfter.Width;
             int height = insideAfter.Height;
 
-            int widthArg1 = 230;
-            int heightArg2 = 300;
-            int padding = 1458;
-
-            Bitmap combinedBitmap = new Bitmap(width * 2 - widthArg1, height * 2 + padding);
+            Bitmap combinedBitmap = new Bitmap(width * 2, height * 2);
             using (Graphics g = Graphics.FromImage(combinedBitmap))
             {
-                g.Clear(Color.Black);
-                g.DrawImage(outsideBefore, 0, height - heightArg2, width, height);
-                g.DrawImage(insideBefore, width - widthArg1, height - heightArg2, width, height);
-                g.DrawImage(outsideAfter, 0, 0, width, height - heightArg2);
-                g.DrawImage(insideAfter, width - widthArg1, 0, width, height - heightArg2);
+                int X_offset = 110;
+                int Y_offset = 310;
+
+                Rectangle srcRectOA = new Rectangle(0, 0, 2596 - X_offset, 2048 - Y_offset);
+                Rectangle srcRectIA = new Rectangle(X_offset, 0, 2596 - X_offset, 2048 - Y_offset);
+                Rectangle srcRectOB = new Rectangle(0, Y_offset, 2596 - X_offset, 2048 - Y_offset);
+                Rectangle srcRectIB = new Rectangle(X_offset, Y_offset, 2596 - X_offset, 2048 - Y_offset);
+                Rectangle destRectOA = new Rectangle(0, Y_offset, 2596 - X_offset, 2048 - Y_offset);
+                Rectangle destRectIA = new Rectangle(2596 - X_offset, Y_offset, 2596 - X_offset, 2048 - Y_offset);
+                Rectangle destRectOB = new Rectangle(0, 2048, 2596 - X_offset, 2048 - Y_offset);
+                Rectangle destRectIB = new Rectangle(2596 - X_offset, 2048, 2596 - X_offset, 2048 - Y_offset);
+                g.DrawImage(outsideAfter, destRectOA, srcRectOA, GraphicsUnit.Pixel);
+                g.DrawImage(insideAfter, destRectIA, srcRectIA, GraphicsUnit.Pixel);
+                g.DrawImage(outsideBefore, destRectOB, srcRectOB, GraphicsUnit.Pixel);
+                g.DrawImage(insideBefore, destRectIB, srcRectIB, GraphicsUnit.Pixel);
             }
 
             //FileSaveService.SaveBitmapTo(combinedBitmap, FolderName.ImageComposition, TestIndexManager.Instance.CombinedImageIndex.ToString());
 
             return combinedBitmap;
         }
+
 
         /// <returns>Null if bulb should not be picked up (out of 'safe area')</returns>
         private BulbPickUpPoint? GetBulbPickUpPoint(BulbBoundingBox boundingBox)

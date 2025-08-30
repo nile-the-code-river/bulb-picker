@@ -1,9 +1,11 @@
-﻿using BulbPicker.App.Models;
+﻿using BulbPicker.App.Infrastructures;
+using BulbPicker.App.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using WindowsFormsApp1;
 
@@ -33,7 +35,7 @@ namespace BulbPicker.App.Services
     }
 
     // TODO 0830: LOCK elements used in multiple threads
-    public class CompositeImageService
+    public class CompositeImageService : ObservableObject
     {
         private static readonly CompositeImageService _instance = new CompositeImageService();
         public static CompositeImageService Instance => _instance;
@@ -46,6 +48,16 @@ namespace BulbPicker.App.Services
         private readonly ObservableCollection<CompositeImageFragment> _firstRowCompositeImageQuque;
         private DispatcherTimer _firstRowClearTimer;
 
+        private BitmapSource _firstRowCompositeImageSource;
+        public BitmapSource FirstRowCompositeImageSource
+        {
+            get => _firstRowCompositeImageSource;
+            private set
+            {
+                _firstRowCompositeImageSource = value;
+                OnPropertyChanged(nameof(FirstRowCompositeImageSource));
+            }
+        }
 
         private CompositeImageService ( )
         {
@@ -171,6 +183,14 @@ namespace BulbPicker.App.Services
             // TEST
             var resultImage = ImageVisualizer.DrawBoxes(resized, boxesValue);
             FileSaveService.SaveBitmapTo(resultImage, FolderName.BoundingBoxImage, TestIndexManager.Instance.CombinedImageIndex.ToString());
+
+            // bounding box 사진을 내보내야 하나, 정사각형으로 하나 safe area만 보이게 하나, 합성만 된 사진을 보내야하나 고민이지만 일단 합성만 된 사진 보여줌
+            var displayCompositeImage = BitmapManager.BitmapToImageSource(combinedBitmap);
+            _dispatcher.Invoke(() =>
+            {
+                FirstRowCompositeImageSource = displayCompositeImage;
+            }, DispatcherPriority.DataBind);
+
 
             // after operation is completed
             _compositImageRowBuffer.Inside.Dispose();

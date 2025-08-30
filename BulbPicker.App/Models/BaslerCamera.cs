@@ -153,6 +153,7 @@ namespace BulbPicker.App.Models
         // TODO later: find a better name
         protected void ProcessBitmap(Bitmap bitmap)
         {
+            // should (1) show image on UI & (2) send to composition queue to enable test cameras to work as same
             var image = BitmapManager.BitmapToImageSource(bitmap);
             DisplayImageGrabbed(image);
 

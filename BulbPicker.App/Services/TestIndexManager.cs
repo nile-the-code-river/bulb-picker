@@ -24,6 +24,10 @@ namespace BulbPicker.App.Services
         public void IncrementDummyCameraImageIndex() => DummyCameraImageIndex++;
 
         //
+        public int GrabbedSingleImageGrabbedIndex { get; private set; }
+        public void IncrementSingleImageGrabbedIndex() => GrabbedSingleImageGrabbedIndex++;
+
+        //
         private int _combinedImageIndex = 0;
         public int CombinedImageIndex
         {

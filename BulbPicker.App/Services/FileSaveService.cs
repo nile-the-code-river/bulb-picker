@@ -23,7 +23,7 @@ namespace BulbPicker.App.Services
             bitmap.Save(filePath, ImageFormat.Bmp);
         }
 
-        public static string GetTestFolderPath(FolderName folderName)
+        private static string GetTestFolderPath(FolderName folderName)
         {
             string folderNameStr = "default-folder-name";
 

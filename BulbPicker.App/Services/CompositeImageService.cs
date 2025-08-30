@@ -63,7 +63,7 @@ namespace BulbPicker.App.Services
             }, DispatcherPriority.Background);
         }
 
-        // TODO 0830 1st : Refactor
+        // TODO 0830 1st : Refactor - 조금 걸릴 듯
         private void FirstRowImagesToCombine_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -150,66 +150,21 @@ namespace BulbPicker.App.Services
             var boxesValue = model.PredictBoxes(resized);
 
 
-            // TODO 0830 1st: sep to another method
             // Define the pick up point and send it to corresponding robot arm
             for (int i = 0; i < boxesValue.Count; i++)
             {
-                //if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
+                var tempBoxValue = boxesValue[i];
 
-                //var pickUpPoint = GetBulbPickUpPoint(boxesValue[i]);
+                BulbPickUpPoint pickUpPoint = GetBulbPickUpPoint(new BulbBoundingBox(tempBoxValue.x1, tempBoxValue.y1, tempBoxValue.x2, tempBoxValue.y2, tempBoxValue.X_Center, tempBoxValue.Y_Center));
 
-                if (boxesValue[i].Y_Center <= 68 || boxesValue[i].Y_Center > 240)
-                {
-                    LogService.Instance.AddLog(new Log($"skipped (y: {boxesValue[i].Y_Center})", LogType.FOR_TEST));
-                    continue;
-                }
+                // detected bulb is out of the safe area
+                if (pickUpPoint == null) continue;
 
-                bool isForOutside = boxesValue[i].X_Center < 320;
-                RobotArmPosition firstRowPosition = isForOutside ? RobotArmPosition.FirstRowOutside : RobotArmPosition.FirstRowInside;
+                var firstRowRobotArm = RobotArmService.Instance.RobotArms.Where(x => x.Position == pickUpPoint.CorrespondingRobotArm).FirstOrDefault();
 
+                if (firstRowRobotArm == null) MessageBox.Show("ERROR: There is no such robot arm");
 
-                float yValue = boxesValue[i].Y_Center;
-                float xValue = boxesValue[i].X_Center;
-                //float zValue = (boxesValue[0].y2 - boxesValue[0].y1) / 2.54f;
-
-                float scaraXValue = 0f;
-                float scaraYValue = 0f;
-
-                int testXOffSet = 30;
-
-                if (isForOutside) // SCARA 1
-                {
-                    // 
-                    scaraXValue = (yValue) - 121 + testXOffSet;
-                    scaraYValue = (xValue) - 837 + 0;
-                }else
-                {
-                    scaraXValue = (yValue) - 71 + 0;
-                    scaraYValue = (xValue) - 1003 + 0;
-
-                }
-
-
-                var zTestValue = Math.Min(boxesValue[i].x2 - boxesValue[i].x1, boxesValue[i].y2 - boxesValue[i].y1);
-
-                float scaraZValue = (zTestValue) + 55 + 0;
-                // Big bulb
-                //float scaraZValue = (zTestValue) + 42 + 0;
-
-
-
-
-                //
-
-                string pickUpPoint = "1," + scaraXValue.ToString("0.000") + "," + scaraYValue.ToString("0.000") + "," + (scaraZValue).ToString("0.000") + ",1,0,0\r";
-
-
-                var firstRowRobotArm = RobotArmService.Instance.RobotArms.Where(x => x.Position == firstRowPosition).FirstOrDefault();
                 firstRowRobotArm.SendPickUpPoint(pickUpPoint);
-
-                //
-                string testPositionStr = isForOutside ? "OUTSIDE (1)" : "INSIDE (2)";
-                LogService.Instance.AddLog(new Log($"Coordinates SENT to {testPositionStr} \nx: {scaraXValue}, y:{scaraYValue}, z:{scaraZValue}", LogType.FOR_TEST));
             }
 
             // TEST
@@ -218,7 +173,6 @@ namespace BulbPicker.App.Services
 
             // after operation is completed
             _compositImageRowBuffer = rowImages;
-            _rowCount++;
             TestIndexManager.Instance.IncrementCombinedImageIndex();
         }
 
@@ -241,7 +195,7 @@ namespace BulbPicker.App.Services
                 g.DrawImage(insideAfter, width - widthArg1, 0, width, height - heightArg2);
             }
 
-            FileSaveService.SaveBitmapTo(combinedBitmap, FolderName.ImageComposition, TestIndexManager.Instance.CombinedImageIndex.ToString());
+            //FileSaveService.SaveBitmapTo(combinedBitmap, FolderName.ImageComposition, TestIndexManager.Instance.CombinedImageIndex.ToString());
 
             return combinedBitmap;
         }
@@ -250,6 +204,7 @@ namespace BulbPicker.App.Services
         private BulbPickUpPoint? GetBulbPickUpPoint(BulbBoundingBox boundingBox)
         {
             // out of safe area
+            //if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
             if (boundingBox.YCenter <= 68 || boundingBox.YCenter > 240)
             {
                 LogService.Instance.AddLog(new Log($"skipped (y: {boundingBox.YCenter})", LogType.FOR_TEST));

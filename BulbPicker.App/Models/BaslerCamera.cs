@@ -139,6 +139,10 @@ namespace BulbPicker.App.Models
                     var source = BitmapManager.BitmapToImageSource(bitmap);
                     DisplayImageGrabbed(source);
 
+                    //FileSaveService.SaveBitmapTo(bitmap, FolderName.SingleImageGrabbed, $"{TestIndexManager.Instance.GrabbedSingleImageGrabbedIndex}_{Position}");
+                    FileSaveService.SaveBitmapTo(bitmap, FolderName.SingleImageGrabbed, $"{grabResult.Timestamp}_{Position}");
+                    TestIndexManager.Instance.IncrementSingleImageGrabbedIndex();
+
                     bitmap.Dispose();
                 }
                 else

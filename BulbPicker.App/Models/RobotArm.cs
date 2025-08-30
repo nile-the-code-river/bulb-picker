@@ -149,12 +149,14 @@ namespace BulbPicker.App.Models
             }
         }
 
-        public void SendPickUpPoint(string pickUpPoint) // TODO 0830: pickUpPoint string 말고 bulb Pickup Pijt 로 받기 이 함수 내에서 string 변환
+        public void SendPickUpPoint(BulbPickUpPoint pickUpPoint) // TODO 0830: pickUpPoint string 말고 bulb Pickup Pijt 로 받기 이 함수 내에서 string 변환
         {
-            if(RobotArmSocket != null)
+
+            if (RobotArmSocket != null)
             {
-                RobotArmSocket.Send(Encoding.ASCII.GetBytes(pickUpPoint));
-                //LogService.Instance.AddLog(new Log($"Coordinates SENT to {Position} \nx: {scaraXValue}, y:{scaraYValue}, z:{scaraZValue}", LogType.FOR_TEST));
+                string cmd = "1," + pickUpPoint.X.ToString("0.000") + "," + pickUpPoint.Y.ToString("0.000") + "," + pickUpPoint.Z.ToString("0.000") + ",1,0,0\r";
+                RobotArmSocket.Send(Encoding.ASCII.GetBytes(cmd));
+                LogService.Instance.AddLog(new Log($"Coordinates SENT to {Position} \nx: {pickUpPoint.X}, y:{pickUpPoint.Y}, z:{pickUpPoint.Z}", LogType.FOR_TEST));
             }
         }
 

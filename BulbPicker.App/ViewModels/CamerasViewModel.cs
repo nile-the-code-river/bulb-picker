@@ -3,6 +3,8 @@ using BulbPicker.App.Models;
 using BulbPicker.App.Services;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Threading;
 
 namespace BulbPicker.App.ViewModels
@@ -16,18 +18,45 @@ namespace BulbPicker.App.ViewModels
             private set => _cameras = value;
         }
 
-        public CamerasViewModel()
+        private bool _loadingCameras = true;
+        public bool LoadingCameras
         {
-            //#if DEBUG
-            //#else
-            // TEST for real env (the factory) with working cameras
-            SetUpFirstRowTest();
-            // SetUpSecondRowTest();
+            get => _loadingCameras;
+            private set
+            {
+                _loadingCameras = value;
+                OnPropertyChanged(nameof(LoadingCameras));
+            }
+        }
 
-            // TEST for any env with dummy cameras
-            //SetUpDummyTest();
-            //#endif
+        public async void OnLoadedAsync()
+        {
+            await SetUpCamerasAsync();
+        }
 
+        public async Task SetUpCamerasAsync()
+        {
+            //
+            bool isTestingWithDummies = false;
+            if (isTestingWithDummies)
+            {
+                SetUpDummyTest();
+                return;
+            }
+
+            var cam1 = await BaslerCamera.CreateAsync("Camera 1", "40007011", BaslerCameraPosition.Outisde);
+            var cam2 = await BaslerCamera.CreateAsync("Camera 2", "40012243", BaslerCameraPosition.Inside);
+            Cameras.Add(cam1);
+            Cameras.Add(cam2);
+
+            // only testing 1st row of cameras
+            LoadingCameras = false;
+            return;
+
+            var cam3 = await BaslerCamera.CreateAsync("Camera 3", "40058520", BaslerCameraPosition.Outisde);
+            var cam4 = await BaslerCamera.CreateAsync("Camera 4", "21914827", BaslerCameraPosition.Inside);
+            Cameras.Add(cam3);
+            Cameras.Add(cam4);
         }
 
         #region For Test Env (when there is no real cameras)
@@ -88,18 +117,6 @@ namespace BulbPicker.App.ViewModels
             }
             
             TestIndexManager.Instance.IncrementDummyCameraImageIndex();
-        }
-
-        public void SetUpFirstRowTest()
-        {
-            Cameras.Add(new BaslerCamera("1st Outside", "40007011", BaslerCameraPosition.Outisde));
-            Cameras.Add(new BaslerCamera("1st Inside", "40012243", BaslerCameraPosition.Inside));
-        }
-
-        public void SetUpSecondRowTest()
-        {
-            Cameras.Add(new BaslerCamera("2nd Outside", "40058520", BaslerCameraPosition.Outisde));
-            Cameras.Add(new BaslerCamera("2nd Inside", "21914827", BaslerCameraPosition.Inside));
         }
         #endregion
     }

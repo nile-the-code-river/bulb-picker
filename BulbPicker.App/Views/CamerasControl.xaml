@@ -7,6 +7,7 @@
              xmlns:ser="clr-namespace:BulbPicker.App.Services"
              xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
              mc:Ignorable="d"
+             Loaded="UserControl_Loaded"
              d:DesignHeight="940" d:DesignWidth="600">
     <UserControl.DataContext>
         <vm:CamerasViewModel />
@@ -26,7 +27,7 @@
                                Visibility="{Binding IsTestingInProgress, Converter={StaticResource BoolToVisibility}}" />
                 </StackPanel>
             </Button>
-
+            
             <!--Camera-->
             <ItemsControl ItemsSource="{Binding Cameras}">
                 <ItemsControl.ItemsPanel>
@@ -60,7 +61,16 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <StackPanel Margin="100" >
+            <!--Async Loading Text-->
+            <TextBlock Foreground="LightGray"
+                       Margin="100"
+                       HorizontalAlignment="Center"
+                       FontSize="20"
+                       Text="Loading Cameras..."
+                       Visibility="{Binding LoadingCameras, Converter={StaticResource BoolToVisibility}}"/>
+
+            <!--Combined Image Index Count Display-->
+            <!--<StackPanel Margin="100" >
                 <TextBlock Foreground="White"
                            Text="Combined Image Count"
                            FontSize="32" />
@@ -68,7 +78,7 @@
                            Text="{Binding Source={x:Static ser:TestIndexManager.Instance},
                                 Path=CombinedImageIndex}"
                            FontSize="30"/>
-            </StackPanel>
+            </StackPanel>-->
         </StackPanel>
     </Border>
 </UserControl>

@@ -50,43 +50,23 @@ namespace BulbPicker.App.Models
 
         public RelayCommand TestCommand => new RelayCommand(execute => Run(), canExecute => Camera != null );
 
-        public BaslerCamera(string alias, string serialNumber, BaslerCameraPosition position)
+        protected BaslerCamera(string alias, string serialNumber, BaslerCameraPosition position)
         {
             Alias = alias;
             SerialNumber = serialNumber;
             Position = position;
-
-            // If SerialNumber is null, the app is testing for dummy (there is no real camera)
-            if (SerialNumber == null) SerialNumber = "Testing Dummy";
-            else SetUpCamera();
         }
 
-
-        private async void SetUpCamera()
+        async public static Task<BaslerCamera> CreateAsync(string alias, string serialNumber, BaslerCameraPosition position)
         {
-            try
-            {
-                Camera = new Camera(SerialNumber);
+            var camera = new BaslerCamera(alias, serialNumber, position);
 
-                Camera.CameraOpened += Configuration.AcquireContinuous;
-                Camera.CameraOpened += Camera_CameraOpened;
+            if (camera.SerialNumber != null) await camera.SetUpCameraAsync();
 
-                Camera.CameraClosed += Camera_CameraClosed;
-
-                Camera.StreamGrabber.ImageGrabbed += StreamGrabber_ImageGrabbed;
-
-                Camera.Open();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(SerialNumber + " " + e.Message);
-                SerialNumber = "NOT FOUND";
-            }
+            return camera;
         }
 
-        // TODO 0830: use 
-
-        private async void SetUpCameraAsync()
+        async private Task SetUpCameraAsync()
         {
             try
             {
@@ -158,7 +138,7 @@ namespace BulbPicker.App.Models
                 }
                 else
                 {
-                    MessageBox.Show("GrabResult was not grabbed succesfully");
+                    MessageBox.Show("GrabResult was not grabbed succesfully. " + grabResult.Width);
                 }
             }
         }

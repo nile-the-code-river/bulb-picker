@@ -6,9 +6,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\Images\bulb-picker-icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\bulb-picker-icon.ico" />
     <None Remove="Assets\Images\power-button-active.png" />
     <None Remove="Assets\Images\power-button-inactive.png" />
     <None Remove="Assets\Images\robot-arm-icon.png" />
@@ -69,6 +71,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\bulb-picker-icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Assets\Images\power-button-active.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

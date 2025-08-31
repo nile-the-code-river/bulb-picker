@@ -26,15 +26,24 @@ namespace BulbPicker.App.Models
     }
 
     // 실제 config 파일에서 처음 값을 가져오지만, 유저가 조작할 수 있는 Text Box의 Value. 저장 전까지는 반영되지 않는다.
-    public class DisplayedOffset : ObservableObject
+    public class RobotArmOffsets : ObservableObject
     {
-        public RobotArm RobotArm { get; init; }
+        private string _ip;
+        public string IP
+        {
+            get => _ip;
+            private set
+            {
+                _ip = value;
+                OnPropertyChanged(nameof(IP));
+            }
+        }
 
         private int _x;
         public int X
         {
             get => _x;
-            private set
+            set
             {
                 _x = value;
                 OnPropertyChanged(nameof(X));
@@ -45,7 +54,7 @@ namespace BulbPicker.App.Models
         public int Y
         {
             get => _y;
-            private set
+             set
             {
                 _y = value;
                 OnPropertyChanged(nameof(Y));
@@ -56,7 +65,7 @@ namespace BulbPicker.App.Models
         public int Z
         {
             get => _z;
-            private set
+            set
             {
                 _z = value;
                 OnPropertyChanged(nameof(Z));
@@ -92,6 +101,9 @@ namespace BulbPicker.App.Models
             }
         }
 
+        // TODO
+        public RobotArmOffsets Offsets { get; private set; }
+
         public RelayCommand ConnectButtonCommand => new RelayCommand(execute => ReverseConnectionState());
         public RelayCommand ServoOnCommand => new RelayCommand(execute => ServoOn(), canExecute => State == RobotArmState.Connected);
         public RelayCommand RunCommand => new RelayCommand(execute => Run(), canExecute => State == RobotArmState.ServoOn);
@@ -110,12 +122,12 @@ namespace BulbPicker.App.Models
         // called when...
         // (1) initializing robot arms when the app starts
         // (2) user modifies offsets & save them
-        private void SetUpOffsets()
+        public void SetUpOffsets(int x, int y, int z) // or use offset class
         {
-            // Retrieve from config json via ConfigService
+            // called by robot arm service which is called by config service
 
         }
-        
+
         private void SetUpConnectionConfiguration ()
         {
             // Robot Arm : connecting, sending coordinates

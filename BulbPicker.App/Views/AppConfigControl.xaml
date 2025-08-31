@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BulbPicker.App.Views"
              xmlns:vm="clr-namespace:BulbPicker.App.ViewModels"
+             xmlns:ser="clr-namespace:BulbPicker.App.Services"
              mc:Ignorable="d" 
              d:DesignHeight="470" d:DesignWidth="600">
     <UserControl.DataContext>
@@ -15,14 +16,19 @@
         <StackPanel>
             <Grid>
                 <TextBlock Text="Application Configuration" Style="{StaticResource CardTitleStyle}"/>
-                <Button Content="save" Width="100" HorizontalAlignment="right" />
+                <Button Content="save"
+                        Width="100"
+                        HorizontalAlignment="right"
+                        Command="{Binding SaveOffsetsCommand}"/>
             </Grid>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 
             <StackPanel Margin="10 0">
-                <TextBlock Text="Robot Arm Position Offsets" Style="{StaticResource MainTitleStyle}" />
+                <TextBlock Text="Robot Arm Position Offsets"
+                           Style="{StaticResource MainTitleStyle}" />
 
-                <ItemsControl ItemsSource="{Binding DisplayedOffsets}">
+                <ItemsControl ItemsSource="{Binding Source={x:Static ser:ConfigService.Instance},
+                    Path=DisplayedOffsets}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="2" />
@@ -45,6 +51,7 @@
                                                FontWeight="SemiBold"
                                                Margin="0 0 20 0"/>
                                     <TextBox Width="80"
+                                             Text="{Binding X, Mode=TwoWay, UpdateSourceTrigger=Default}"
                                              VerticalContentAlignment="Center"
                                              Foreground="White"
                                              FontSize="16"
@@ -62,6 +69,7 @@
                                                FontWeight="SemiBold"
                                                Margin="0 0 20 0"/>
                                     <TextBox Width="80"
+                                             Text="{Binding Y, Mode=TwoWay}"
                                              VerticalContentAlignment="Center"
                                              Foreground="White"
                                              FontSize="16"
@@ -79,6 +87,7 @@
                                                FontWeight="SemiBold"
                                                Margin="0 0 20 0"/>
                                     <TextBox Width="80"
+                                             Text="{Binding Z, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              VerticalContentAlignment="Center"
                                              Foreground="White"
                                              FontSize="16"

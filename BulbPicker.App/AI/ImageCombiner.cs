@@ -38,7 +38,7 @@ namespace BulbPicker.App.AI
             int new_width = singleWidth - X_offset;
             int new_height = singleHeight - Y_offset;
 
-            Bitmap CombinedImage = new Bitmap(new_width * 2, (new_height + Padding) * 2, PixelFormat.Format24bppRgb);
+            Bitmap CombinedImage = new Bitmap(new_width * 2, (new_height + Padding) * 2, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
             using (Graphics g = Graphics.FromImage(CombinedImage))
             {

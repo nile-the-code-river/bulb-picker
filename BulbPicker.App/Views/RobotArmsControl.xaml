@@ -92,7 +92,7 @@
                                             Orientation="Horizontal"
                                             HorizontalAlignment="Right">
                                         <Button Style="{StaticResource RobotArmConnectButtonStyle}"
-                                            Command="{Binding PowerButtonCommand}"/>
+                                            Command="{Binding ConnectButtonCommand}"/>
                                         <Button Style="{StaticResource RobotArmServoOnButtonStyle}"
                                             Command="{Binding ServoOnCommand}"
                                             Margin="35 0"/>

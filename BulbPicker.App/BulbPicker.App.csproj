@@ -11,9 +11,9 @@
 
   <ItemGroup>
     <None Remove="Assets\Images\bulb-picker-icon.ico" />
+    <None Remove="Assets\Images\connect-button-active.png" />
+    <None Remove="Assets\Images\connect-button-inactive.png" />
     <None Remove="Assets\Images\download-button.png" />
-    <None Remove="Assets\Images\power-button-active.png" />
-    <None Remove="Assets\Images\power-button-inactive.png" />
     <None Remove="Assets\Images\robot-arm-icon.png" />
     <None Remove="Assets\Images\run-button-active.png" />
     <None Remove="Assets\Images\run-button-inactive.png" />
@@ -78,11 +78,11 @@
     <Content Include="Assets\Images\download-button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Images\power-button-active.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Assets\Images\servoon-button-active.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Images\power-button-inactive.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Assets\Images\servoon-button-inactive.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Images\robot-arm-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -93,10 +93,10 @@
     <Content Include="Assets\Images\run-button-inactive.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Images\servoon-button-active.png">
+    <Content Include="Assets\Images\connect-button-active.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Images\servoon-button-inactive.png">
+    <Content Include="Assets\Images\connect-button-inactive.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\MEMO.md">

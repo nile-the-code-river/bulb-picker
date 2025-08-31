@@ -50,7 +50,7 @@ namespace BulbPicker.App.Models
             }
         }
 
-        public RelayCommand PowerButtonCommand => new RelayCommand(execute => Power());
+        public RelayCommand ConnectButtonCommand => new RelayCommand(execute => ReverseConnectionState());
         public RelayCommand ServoOnCommand => new RelayCommand(execute => ServoOn(), canExecute => State == RobotArmState.Connected);
         public RelayCommand RunCommand => new RelayCommand(execute => Run(), canExecute => State == RobotArmState.ServoOn);
 
@@ -78,7 +78,7 @@ namespace BulbPicker.App.Models
             ProgramSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
-        private void Power()
+        private void ReverseConnectionState()
         {
             if(State == RobotArmState.Disconnected) Connect();
             else Disconnect();

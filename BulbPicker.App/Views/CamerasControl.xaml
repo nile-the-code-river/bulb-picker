@@ -47,7 +47,7 @@
                                                Style="{StaticResource SubTitleStyle}"/>
                                 </StackPanel>
                                 <Button Style="{StaticResource RunButtonStyle}"
-                                        Command="{Binding TestCommand}"/>
+                                        Command="{Binding RunCommand}"/>
                             </DockPanel>
 
                             <Border Background="{StaticResource BackgroundGray}"

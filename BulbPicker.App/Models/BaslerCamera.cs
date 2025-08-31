@@ -48,7 +48,7 @@ namespace BulbPicker.App.Models
             }
         }
 
-        public RelayCommand TestCommand => new RelayCommand(execute => Run(), canExecute => Camera != null );
+        public RelayCommand RunCommand => new RelayCommand(execute => Run(), canExecute => Camera != null );
 
         protected BaslerCamera(string alias, string serialNumber, BaslerCameraPosition position)
         {
@@ -76,9 +76,8 @@ namespace BulbPicker.App.Models
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show($"{SerialNumber} is not found.\n{e.Message}");
                     SerialNumber = "NOT FOUND";
-
+                    MessageBox.Show($"{SerialNumber} is not found.\n{e.Message}");
                     return;
                 }
 

@@ -35,14 +35,14 @@
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}">
                         <Image x:Name="Icon"
-                           Source="pack://application:,,,/Assets/Images/power-button-inactive.png"/>
+                           Source="pack://application:,,,/Assets/Images/connect-button-inactive.png"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed"
                              Value="True">
                             <Setter TargetName="Icon"
                                 Property="Source"
-                                Value="pack://application:,,,/Assets/Images/power-button-active.png"/>
+                                Value="pack://application:,,,/Assets/Images/connect-button-active.png"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

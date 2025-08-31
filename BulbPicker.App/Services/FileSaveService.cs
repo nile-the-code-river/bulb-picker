@@ -28,7 +28,7 @@ namespace BulbPicker.App.Services
 
             using var writer = new StreamWriter(filePath, false, Encoding.UTF8);
             foreach (var log in logs)
-                await writer.WriteLineAsync($"[{log.LoggedAt:yyyy-MM-dd HH:mm:ss}]\t{log.Type}\t\t{log.Message}");
+                await writer.WriteLineAsync($"[{log.LoggedAt:yyyy-MM-dd HH:mm:ss}]\t{log.Type}\t\t\t{log.Message}");
 
             MessageBox.Show($"Logs saved at {dirPath}");
         }

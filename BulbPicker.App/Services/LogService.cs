@@ -9,6 +9,9 @@ namespace BulbPicker.App.Services
     {
         private static readonly LogService _instance = new LogService();
         public static LogService Instance => _instance;
+
+        private readonly Dispatcher _dispatcher;
+
         private LogService( )
         {
             _dispatcher = Application.Current.Dispatcher;
@@ -20,8 +23,6 @@ namespace BulbPicker.App.Services
             get => _logs;
             set => _logs = value;
         }
-
-        private readonly Dispatcher _dispatcher;
 
         public void AddLog(Log log)
         {

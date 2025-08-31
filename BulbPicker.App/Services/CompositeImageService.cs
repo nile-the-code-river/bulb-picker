@@ -180,7 +180,7 @@ namespace BulbPicker.App.Services
             }
 
             var resultImage = ImageVisualizer.DrawBoxes(combinedMat, boxesValue);
-            FileSaveService.SaveBitmapTo(resultImage, FolderName.BoundingBoxImage, TestIndexManager.Instance.CombinedImageIndex.ToString());
+            FileSaveService.SaveBitmapTo(resultImage, FolderName.BoundingBoxImage, DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
             // TODO: Cut areas out of the safe
 

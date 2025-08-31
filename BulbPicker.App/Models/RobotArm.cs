@@ -157,7 +157,7 @@ namespace BulbPicker.App.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show($"로봇팔과의 연결을 실패했습니다. 프로그램 및 로봇팔을 재시작 해 주세요.\n{e.Message}");
+                MessageBox.Show($"로봇팔과의 연결을 실패했습니다. 프로그램 및 로봇팔을 재시작 해 주세요. {e.Message}");
             }
         }
 
@@ -191,7 +191,7 @@ namespace BulbPicker.App.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show($"로봇팔에게 'ServoOn'을 요청했으나 문제가 발생했습니다. 프로그램 및 로봇팔을 재시작 해 주세요.\n{e.Message}");
+                MessageBox.Show($"로봇팔에게 'ServoOn'을 요청했으나 문제가 발생했습니다. 프로그램 및 로봇팔을 재시작 해 주세요. {e.Message}");
             }
         }
 
@@ -205,7 +205,7 @@ namespace BulbPicker.App.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show($"로봇팔에게 'Run'을 요청했으나 문제가 발생했습니다. 프로그램 및 로봇팔을 재시작 해 주세요.\n{e.Message}");
+                MessageBox.Show($"로봇팔에게 'Run'을 요청했으나 문제가 발생했습니다. 프로그램 및 로봇팔을 재시작 해 주세요. {e.Message}");
             }
         }
 
@@ -216,12 +216,12 @@ namespace BulbPicker.App.Models
             if (RobotArmSocket != null)
             {
                 RobotArmSocket.Send(Encoding.ASCII.GetBytes(cmd));
-                LogService.Instance.AddLog(new Log($"[{TestIndexManager.Instance.SentPickUpPointIndex}] Coordinates SENT to {Position} \nx: {pickUpPoint.X}, y:{pickUpPoint.Y}, z:{pickUpPoint.Z}", LogType.FOR_TEST));
+                LogService.Instance.AddLog(new Log($"[{TestIndexManager.Instance.SentPickUpPointIndex}] Coordinates SENT to {Position} x: {pickUpPoint.X}, y:{pickUpPoint.Y}, z:{pickUpPoint.Z}", LogType.FOR_TEST));
                 TestIndexManager.Instance.IncrementSentPickUpPointIndex();
             }
             else
             {
-                LogService.Instance.AddLog(new Log($"Robot Arm Socket is null. Cannot send coordianates.\n{cmd}", LogType.FOR_TEST));
+                LogService.Instance.AddLog(new Log($"Robot Arm Socket is null. Cannot send coordianates. {cmd}", LogType.FOR_TEST));
             }
         }
 

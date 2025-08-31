@@ -48,12 +48,6 @@ namespace BulbPicker.App.ViewModels
 
             // only testing 1st row of cameras
             LoadingCameras = false;
-            return;
-
-            var cam3 = await BaslerCamera.CreateAsync("Camera 3", "40058520", BaslerCameraPosition.Outisde);
-            var cam4 = await BaslerCamera.CreateAsync("Camera 4", "21914827", BaslerCameraPosition.Inside);
-            Cameras.Add(cam3);
-            Cameras.Add(cam4);
         }
 
         #region For Test Env (when there is no real cameras)

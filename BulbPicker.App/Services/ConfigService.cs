@@ -56,7 +56,7 @@ namespace BulbPicker.App.Services
             string filePath = Path.Combine(projectRoot, "Assets", "Config", "robotarm-config.json");
             if (!File.Exists(filePath))
             {
-                MessageBox.Show("NO CONFIG FILE for Robot arms");
+                MessageBox.Show($"NO CONFIG FILE for Robot arms. Expected: {filePath}");
                 return string.Empty;
             }
             return filePath;

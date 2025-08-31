@@ -1,4 +1,5 @@
-﻿using BulbPicker.App.Infrastructures;
+﻿using BulbPicker.App.AI;
+using BulbPicker.App.Infrastructures;
 using BulbPicker.App.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -153,15 +154,13 @@ namespace BulbPicker.App.Services
             }
 
             // COMBINE
-            var combinedBitmap = Combine2x2Images(rowImages.Outside, rowImages.Inside, _compositImageRowBuffer.Outside, _compositImageRowBuffer.Inside);
+            //var combinedBitmap = Combine2x2Images(rowImages.Outside, rowImages.Inside, _compositImageRowBuffer.Outside, _compositImageRowBuffer.Inside);
 
-            // AI
+            OpenCvSharp.Mat combinedMat = ImageCombiner.Combine2x2WithScale(rowImages.Outside, rowImages.Inside, _compositImageRowBuffer.Outside, _compositImageRowBuffer.Inside);
+
             string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", "best_640.onnx");
             var model = new Yolov11Onnx(modelPath);
-            // TODO 0831: 일단은 resize 여기서 함... 바꿔야함..ㅎㅎ
-            Bitmap resized = new Bitmap(combinedBitmap, new System.Drawing.Size(640, 640));
-            var boxesValue = model.PredictBoxes(resized);
-
+            var boxesValue = model.PredictBoxes(combinedMat);
 
             // Define the pick up point and send it to corresponding robot arm
             for (int i = 0; i < boxesValue.Count; i++)
@@ -180,8 +179,7 @@ namespace BulbPicker.App.Services
                 firstRowRobotArm.SendPickUpPoint(pickUpPoint);
             }
 
-            // TEST
-            var resultImage = ImageVisualizer.DrawBoxes(resized, boxesValue);
+            var resultImage = ImageVisualizer.DrawBoxes(combinedMat, boxesValue);
             FileSaveService.SaveBitmapTo(resultImage, FolderName.BoundingBoxImage, TestIndexManager.Instance.CombinedImageIndex.ToString());
 
             // TODO: Cut areas out of the safe
@@ -203,41 +201,41 @@ namespace BulbPicker.App.Services
             TestIndexManager.Instance.IncrementCombinedImageIndex();
         }
 
-        private Bitmap Combine2x2Images(Bitmap outsideAfter, Bitmap insideAfter, Bitmap outsideBefore, Bitmap insideBefore)
-        {
-            int singleWidth = outsideAfter.Width;
-            int singleHeight = insideAfter.Height;
+        //private Bitmap Combine2x2Images(Bitmap outsideAfter, Bitmap insideAfter, Bitmap outsideBefore, Bitmap insideBefore)
+        //{
+        //    int singleWidth = outsideAfter.Width;
+        //    int singleHeight = insideAfter.Height;
 
-            int X_offset = 115;
-            int Y_offset = 310;
-            int Padding = singleWidth - X_offset - singleHeight + Y_offset;
-            int new_width = singleWidth - X_offset;
-            int new_height = singleHeight - Y_offset;
+        //    int X_offset = 115;
+        //    int Y_offset = 310;
+        //    int Padding = singleWidth - X_offset - singleHeight + Y_offset;
+        //    int new_width = singleWidth - X_offset;
+        //    int new_height = singleHeight - Y_offset;
 
-            Bitmap CombinedImage = new Bitmap(new_width * 2, (new_height + Padding) * 2);
+        //    Bitmap CombinedImage = new Bitmap(new_width * 2, (new_height + Padding) * 2);
 
-            using (Graphics g = Graphics.FromImage(CombinedImage))
-            {
+        //    using (Graphics g = Graphics.FromImage(CombinedImage))
+        //    {
 
-                g.Clear(Color.Black);
-                Rectangle srcRectOA = new Rectangle(0, 0, new_width, new_height);
-                Rectangle srcRectIA = new Rectangle(X_offset, 0, new_width, new_height);
-                Rectangle srcRectOB = new Rectangle(0, Y_offset, new_width, new_height);
-                Rectangle srcRectIB = new Rectangle(X_offset, Y_offset, new_width, new_height);
-                Rectangle destRectOA = new Rectangle(0, Padding, new_width, new_height);
-                Rectangle destRectIA = new Rectangle(new_width, Padding, new_width, new_height);
-                Rectangle destRectOB = new Rectangle(0, new_height + Padding, new_width, new_height);
-                Rectangle destRectIB = new Rectangle(new_width, new_height + Padding, new_width, new_height);
+        //        g.Clear(Color.Black);
+        //        Rectangle srcRectOA = new Rectangle(0, 0, new_width, new_height);
+        //        Rectangle srcRectIA = new Rectangle(X_offset, 0, new_width, new_height);
+        //        Rectangle srcRectOB = new Rectangle(0, Y_offset, new_width, new_height);
+        //        Rectangle srcRectIB = new Rectangle(X_offset, Y_offset, new_width, new_height);
+        //        Rectangle destRectOA = new Rectangle(0, Padding, new_width, new_height);
+        //        Rectangle destRectIA = new Rectangle(new_width, Padding, new_width, new_height);
+        //        Rectangle destRectOB = new Rectangle(0, new_height + Padding, new_width, new_height);
+        //        Rectangle destRectIB = new Rectangle(new_width, new_height + Padding, new_width, new_height);
 
-                g.DrawImage(outsideAfter, destRectOA, srcRectOA, GraphicsUnit.Pixel);
-                g.DrawImage(insideAfter, destRectIA, srcRectIA, GraphicsUnit.Pixel);
-                g.DrawImage(outsideBefore, destRectOB, srcRectOB, GraphicsUnit.Pixel);
-                g.DrawImage(insideBefore, destRectIB, srcRectIB, GraphicsUnit.Pixel);
-            }
-            //FileSaveService.SaveBitmapTo(combinedBitmap, FolderName.ImageComposition, TestIndexManager.Instance.CombinedImageIndex.ToString());
+        //        g.DrawImage(outsideAfter, destRectOA, srcRectOA, GraphicsUnit.Pixel);
+        //        g.DrawImage(insideAfter, destRectIA, srcRectIA, GraphicsUnit.Pixel);
+        //        g.DrawImage(outsideBefore, destRectOB, srcRectOB, GraphicsUnit.Pixel);
+        //        g.DrawImage(insideBefore, destRectIB, srcRectIB, GraphicsUnit.Pixel);
+        //    }
+        //    //FileSaveService.SaveBitmapTo(combinedBitmap, FolderName.ImageComposition, TestIndexManager.Instance.CombinedImageIndex.ToString());
 
-            return CombinedImage;
-        }
+        //    return CombinedImage;
+        //}
 
 
         /// <returns>Null if bulb should not be picked up (out of 'safe area')</returns>

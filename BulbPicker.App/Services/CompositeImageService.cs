@@ -167,7 +167,11 @@ namespace BulbPicker.App.Services
             {
                 var tempBoxValue = boxesValue[i];
 
-                BulbPickUpPoint pickUpPoint = GetBulbPickUpPoint(new BulbBoundingBox(tempBoxValue.x1, tempBoxValue.y1, tempBoxValue.x2, tempBoxValue.y2, tempBoxValue.X_Center, tempBoxValue.Y_Center));
+                BulbBoundingBox box = new BulbBoundingBox(tempBoxValue.x1, tempBoxValue.y1, tempBoxValue.x2, tempBoxValue.y2, tempBoxValue.X_Center, tempBoxValue.Y_Center);
+
+                var correspondingRobotArm = DecideRobotArm(box);
+
+                BulbPickUpPoint pickUpPoint = GetBulbPickUpPoint(correspondingRobotArm);
 
                 // detected bulb is out of the safe area
                 if (pickUpPoint == null) continue;
@@ -237,46 +241,48 @@ namespace BulbPicker.App.Services
         //    return CombinedImage;
         //}
 
+        // temp fix
+        private float _paddingOffset = 95.47f;
+
+        private RobotArm DecideRobotArm(BulbBoundingBox boundingBox)
+        {
+            RobotArmPosition correspondingRobotArmPosition =
+                boundingBox.XCenter < 320 ? RobotArmPosition.FirstRowOutside : RobotArmPosition.FirstRowInside;
+
+            var firstRowRobotArm = RobotArmService.Instance.RobotArms.Where(x => x.Position == correspondingRobotArmPosition).FirstOrDefault();
+
+            if (firstRowRobotArm == null) MessageBox.Show("ERROR: There is no such robot arm");
+
+            return firstRowRobotArm;
+        }
 
         /// <returns>Null if bulb should not be picked up (out of 'safe area')</returns>
-        private BulbPickUpPoint? GetBulbPickUpPoint(BulbBoundingBox boundingBox)
+        private BulbPickUpPoint? GetBulbPickUpPoint(BulbBoundingBox boundingBox, RobotArm robotArm)
         {
-            // temporary fix
-            float paddingOffset = 95.47f;
-
             // out of safe area
             //if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
-            if (boundingBox.YCenter <= 65 + paddingOffset || boundingBox.YCenter > 252 + paddingOffset) // 160.5 , 347.5
+            if (boundingBox.YCenter <= 65 + _paddingOffset || boundingBox.YCenter > 252 + _paddingOffset) // 160.5 , 347.5
             {
                 LogService.Instance.AddLog(new Log($"skipped (y: {boundingBox.YCenter})", LogType.FOR_TEST));
                 return null;
             }
 
-
             BulbPickUpPoint pickUpPoint = new BulbPickUpPoint();
 
-            float defaultRobotArmOffset_X = 0 - paddingOffset;
-            float defaultRobotArmOffset_Y = 0;
-            float defaultRobotArmOffset_Z = 55;
-
-            float manualRobotArmOffset_X = 30;
+            float manualRobotArmOffset_X = 30 - _paddingOffset;
             float manualRobotArmOffset_Y = 0;
-            float manualRobotArmOffset_Z = 0;
-
-
-            RobotArmPosition correspondingRobotArmPosition =
-                boundingBox.XCenter < 320 ? RobotArmPosition.FirstRowOutside : RobotArmPosition.FirstRowInside;
+            float manualRobotArmOffset_Z = 55;
 
             // retrieve default robot arm offset X & Y
-            switch (correspondingRobotArmPosition)
+            switch (robotArm.Position)
             {
                 case RobotArmPosition.FirstRowOutside:
-                    defaultRobotArmOffset_X = -121;
-                    defaultRobotArmOffset_Y = -837;
+                    manualRobotArmOffset_X += -121;
+                    manualRobotArmOffset_Y += -837;
                     break;
                 case RobotArmPosition.FirstRowInside:
-                    defaultRobotArmOffset_X = -71;
-                    defaultRobotArmOffset_Y = -1003;
+                    manualRobotArmOffset_X += -71;
+                    manualRobotArmOffset_Y += -1003;
                     break;
                 case RobotArmPosition.SecondRowOutside:
                 case RobotArmPosition.SecondRowInside:
@@ -286,11 +292,19 @@ namespace BulbPicker.App.Services
             }
 
             // x is set using YCenter, and y is set using XCenter
-            pickUpPoint.SetX(boundingBox.YCenter + defaultRobotArmOffset_X + manualRobotArmOffset_X);
-            pickUpPoint.SetY(boundingBox.XCenter + defaultRobotArmOffset_Y + manualRobotArmOffset_Y);
+            float finalX = boundingBox.YCenter + robotArm.Offsets.X + manualRobotArmOffset_X;
+            float finalY = boundingBox.XCenter + robotArm.Offsets.Y + manualRobotArmOffset_Y;
             // shortest line(s) of the bounding box
-            pickUpPoint.SetZ(Math.Min(boundingBox.X2 - boundingBox.X1, boundingBox.Y2 - boundingBox.Y1) + defaultRobotArmOffset_Z + manualRobotArmOffset_Z);
-            pickUpPoint.SetCorrespondingRobotArm(correspondingRobotArmPosition);
+            float finalZ = Math.Min(boundingBox.X2 - boundingBox.X1, boundingBox.Y2 - boundingBox.Y1) + robotArm.Offsets.Z + manualRobotArmOffset_Z;
+
+            LogService.Instance.AddLog(new Log($"finalX = {boundingBox.YCenter} + {robotArm.Offsets.X} + {manualRobotArmOffset_X}"
+                                                + $"\nfinalY = {boundingBox.XCenter} + {robotArm.Offsets.Y} + {manualRobotArmOffset_Y}"
+                                                + $"\nfinalZ = {Math.Min(boundingBox.X2 - boundingBox.X1, boundingBox.Y2 - boundingBox.Y1)} + {robotArm.Offsets.Z} + {manualRobotArmOffset_Z}", LogType.FOR_TEST));
+
+            pickUpPoint.SetX(finalX);
+            pickUpPoint.SetY(finalY);
+            pickUpPoint.SetZ(finalZ);
+            pickUpPoint.SetCorrespondingRobotArm(robotArm.Position);
 
             return pickUpPoint;
         }

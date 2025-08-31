@@ -254,7 +254,7 @@
 
   <ItemGroup>
     <Content Include="Assets\Config\robotarm-config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

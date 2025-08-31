@@ -52,14 +52,18 @@ namespace BulbPicker.App.Services
         public string GetRobotArmConfigFilePath()
         {
             string filePath  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Config", "robotarm-config.json");
-            if (!File.Exists(filePath)) throw new FileNotFoundException(filePath);
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show("NO CONFIG FILE for Robot arms");
+                return string.Empty;
+            }
             return filePath;
         }
 
         // return도 하고 (robot arm을 위해)
         // display offsets도 설정하고
         // TODO later: 정돈하기
-        public RobotArmOffsets FetchOffsetsFromConfig(string ip)
+        private RobotArmOffsets FetchOffsetsFromConfig(string ip)
         {
             string filePath = GetRobotArmConfigFilePath();
 
@@ -72,25 +76,23 @@ namespace BulbPicker.App.Services
             if (map == null || !map.TryGetValue(ip, out var dto))
                 throw new KeyNotFoundException($"Offsets for IP '{ip}' not found.");
 
-            var presetOffsets = new RobotArmOffsets(ip, dto.X, dto.Y, dto.Z);
+            return new RobotArmOffsets(ip, dto.X, dto.Y, dto.Z);
+        }
 
+        // 일단 이렇게 코딩함..
+        public RobotArmOffsets InitializeOffsetSetUps(string ip)
+        {
+            var presetOffsets = FetchOffsetsFromConfig(ip);
             DisplayedOffsets.Add(presetOffsets);
             return presetOffsets;
         }
 
         async public Task UpdateRobotArmOffsetsAsync()
         {
-
-            //
-
-
-
-
-
-
             string filePath = GetRobotArmConfigFilePath();
-            // update config file
-            SetUpRobotArmOffsets(); // -> RobotService에 가서 수정하는 거
+            
+            // update 된 config file에서 값 가져와서 쓰게 하는 게 이상적이지만 일단 유저가 바꾼 값을 바로 사용하여 수정하는 걸로 구현한다
+            SetUpRobotArmOffsets();
 
             var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, WriteIndented = true };
 
@@ -100,9 +102,8 @@ namespace BulbPicker.App.Services
             map = JsonSerializer.Deserialize<Dictionary<string, OffsetDto>>(text, jsonOptions) ?? new();
 
             // UI 컬렉션 스냅샷
-            var disp = Application.Current?.Dispatcher;
-            var snapshot = (disp != null && !disp.CheckAccess())
-                ? await disp.InvokeAsync(() => DisplayedOffsets.ToList())
+            var snapshot = (_dispatcher != null && !_dispatcher.CheckAccess())
+                ? await _dispatcher.InvokeAsync(() => DisplayedOffsets.ToList())
                 : DisplayedOffsets.ToList();
 
             // IP를 키로 병합/갱신
@@ -120,8 +121,19 @@ namespace BulbPicker.App.Services
         // (1) initializing robot arms when the app starts
         // -> (2) user modifies offsets & save them
         private void SetUpRobotArmOffsets()
-        {// -> RobotService에 가서 수정하는 거
-            // call 'SetUpOffsets' inside robotarm
+        {
+            // -> RobotService에 가서 수정하는 거
+            foreach (var robotArm in RobotArmService.Instance.RobotArms)
+            {
+                var newOffset = DisplayedOffsets.Where(x => x.IP == robotArm.IP).FirstOrDefault();
+
+                if (newOffset == null)
+                {
+                    throw new Exception("Unexpected Error when setting new offset for robot arms");
+                }
+
+                robotArm.UpdateOffsets(new RobotArmOffsets(robotArm.IP, newOffset.X, newOffset.Y, newOffset.Z));
+            }
         }
 
     }

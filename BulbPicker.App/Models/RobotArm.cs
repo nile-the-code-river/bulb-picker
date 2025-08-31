@@ -115,7 +115,8 @@ namespace BulbPicker.App.Models
         public RelayCommand ServoOnCommand => new RelayCommand(execute => ServoOn(), canExecute => State == RobotArmState.Connected);
         public RelayCommand RunCommand => new RelayCommand(execute => Run(), canExecute => State == RobotArmState.ServoOn);
 
-        public RelayCommand TestCommand => new RelayCommand(execute => TestRobotArmMove());
+        //public RelayCommand TestCommand => new RelayCommand(execute => TestRobotArmMove());
+        public RelayCommand TestCommand => new RelayCommand(execute => TestOffsetsNow());
 
         public RobotArm(string alias, string ip, int robotArmPort, int programPort, RobotArmPosition position)
         {
@@ -124,7 +125,12 @@ namespace BulbPicker.App.Models
             RobotArmPort = robotArmPort;
             ProgramPort = programPort;
             Position = position;
-            Offsets = ConfigService.Instance.FetchOffsetsFromConfig(IP);
+            Offsets = ConfigService.Instance.InitializeOffsetSetUps(IP);
+        }
+
+        public void UpdateOffsets(RobotArmOffsets newOffsets)
+        {
+            Offsets = newOffsets;
         }
 
         private void SetUpConnectionConfiguration ()
@@ -230,6 +236,11 @@ namespace BulbPicker.App.Models
             string testCoordinates = "1," + (116.1641).ToString("0.000") + "," + (-690.9336).ToString("0.000") + "," + (139.1408).ToString("0.000") + ",1,0,0\r";
             RobotArmSocket.Send(Encoding.ASCII.GetBytes(testCoordinates));
             LogService.Instance.AddLog(new Log($"{testCoordinates} sent to {IP}", LogType.RobotArmPointsSent));
+        }
+
+        private void TestOffsetsNow()
+        {
+            LogService.Instance.AddLog(new Log($"{IP}: offset is x:{Offsets.X}, y:{Offsets.Y}, z:{Offsets.Z}", LogType.FOR_TEST));
         }
     }
 }

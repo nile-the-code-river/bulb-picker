@@ -102,13 +102,12 @@
                                             Height="24"
                                             Margin="0 0 25 0"/>
 
-                                        <!-- To Test Robot Arm Move Control-->
-                                        <!--<Button Content="Test"
+                                        <Button Content="Test"
                                             Foreground="White"
                                             Background="Green"
                                             Command="{Binding TestCommand}"
                                             Width="50"
-                                            Height="30" />-->
+                                            Height="30" />
                                     </StackPanel>
                                 </Grid>
                             </Border>

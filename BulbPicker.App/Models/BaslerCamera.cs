@@ -128,6 +128,8 @@ namespace BulbPicker.App.Models
             {
                 if (grabResult.GrabSucceeded)
                 {
+                    return;
+
                     Bitmap bitmap = RetrieveBitmapFromGrabResult(grabResult);
 
                     ProcessBitmap(bitmap);
@@ -139,7 +141,7 @@ namespace BulbPicker.App.Models
                 }
                 else
                 {
-                    LogService.Instance.AddLog(new Log($"카메라 문제: An image was not grabbed succesfully.\n{grabResult.ErrorDescription}", LogType.ERROR));
+                    LogService.Instance.AddLog(new Log($"Basler 카메라 측 에러가 발생했습니다. '_ERROR'폴더에 해당 이미지를 저장합니다.\n에러 메시지:{grabResult.ErrorDescription}", LogType.ERROR));
 
                     Bitmap errorBitmap = null;
                     try
@@ -149,7 +151,7 @@ namespace BulbPicker.App.Models
                     }
                     catch (Exception err)
                     {
-                        LogService.Instance.AddLog(new Log($"Could not save the failed image. {err.Message}", LogType.ERROR));
+                        LogService.Instance.AddLog(new Log($"'_ERROR'폴더에 해당 이미지를 저장하려고 했으나 에러가 발생하여 저장하지 못했습니다.\n에러 메시지:{err.Message}", LogType.ERROR));
                     }
                     finally
                     {
@@ -180,9 +182,9 @@ namespace BulbPicker.App.Models
             DisplayImageGrabbed(image);
 
             // TODO: 이미지 합성 크기 다시 정하면 구현하기
-            //Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
             // Reminder: this solved 'this bitmap is used in elsewhere' problem 
-            //var bmpForQueue = (Bitmap)resized.Clone();
+            //Bitmap resized = new Bitmap(bitmap, new System.Drawing.Size(640, 640));
+            //var clone = (Bitmap)resized.Clone();
 
             var clone = (Bitmap)bitmap.Clone();
 

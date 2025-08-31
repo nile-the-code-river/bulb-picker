@@ -60,7 +60,6 @@
                      Grid.Row="1"
                      BorderThickness="0"
                      Background="Transparent"
-                     FontSize="14"
                      Foreground="White"
                      ItemsSource="{Binding Logs}">
                 <ListBox.ItemTemplate>
@@ -68,8 +67,13 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding LoggedAt, StringFormat='[ {0:yyyy/MM/dd HH:mm:ss} ]'}"
                                        Margin="0 0 10 0"
-                                       FontWeight="SemiBold" />
-                            <TextBlock Text="{Binding Message}"/>
+                                       FontWeight="SemiBold"
+                                       FontSize="12"
+                                       MaxWidth="140"/>
+                            <TextBlock Text="{Binding Message}"
+                                       FontSize="14"
+                                       Width="380"
+                                       TextWrapping="Wrap"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

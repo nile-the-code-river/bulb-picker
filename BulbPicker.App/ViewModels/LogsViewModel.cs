@@ -34,7 +34,7 @@ namespace BulbPicker.App.ViewModels
         //    => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Connected", LogType.Connected)));
 
         public RelayCommand AddLog_Disconnected
-            => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Disconnected", LogType.Disconnected)));
+            => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_Discon asdsad ecated TESd T_Disconneasdeted TEST_Di assconnectedasd aasdasd asd TEST_asdDisconnected TEST_Disconnected", LogType.Disconnected)));
 
         public RelayCommand AddLog_RobotArmPointSent
             => new RelayCommand(execute => LogService.Instance.AddLog(new Log("TEST_RobotArmPointSent", LogType.RobotArmPointsSent)));

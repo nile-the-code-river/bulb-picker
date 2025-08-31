@@ -167,11 +167,11 @@ namespace BulbPicker.App.Services
             {
                 var tempBoxValue = boxesValue[i];
 
-                BulbBoundingBox box = new BulbBoundingBox(tempBoxValue.x1, tempBoxValue.y1, tempBoxValue.x2, tempBoxValue.y2, tempBoxValue.X_Center, tempBoxValue.Y_Center);
+                BulbBoundingBox boundingBox = new BulbBoundingBox(tempBoxValue.x1, tempBoxValue.y1, tempBoxValue.x2, tempBoxValue.y2, tempBoxValue.X_Center, tempBoxValue.Y_Center);
 
-                var correspondingRobotArm = DecideRobotArm(box);
+                var correspondingRobotArm = DecideRobotArm(boundingBox);
 
-                BulbPickUpPoint pickUpPoint = GetBulbPickUpPoint(correspondingRobotArm);
+                BulbPickUpPoint pickUpPoint = GetBulbPickUpPoint(boundingBox, correspondingRobotArm);
 
                 // detected bulb is out of the safe area
                 if (pickUpPoint == null) continue;

@@ -254,7 +254,7 @@
 
   <ItemGroup>
     <Content Include="Assets\Config\robotarm-config.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

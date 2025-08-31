@@ -51,7 +51,9 @@ namespace BulbPicker.App.Services
 
         public string GetRobotArmConfigFilePath()
         {
-            string filePath  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Config", "robotarm-config.json");
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string projectRoot = Path.GetFullPath(Path.Combine(baseDir, @"..\..\.."));
+            string filePath = Path.Combine(projectRoot, "Assets", "Config", "robotarm-config.json");
             if (!File.Exists(filePath))
             {
                 MessageBox.Show("NO CONFIG FILE for Robot arms");

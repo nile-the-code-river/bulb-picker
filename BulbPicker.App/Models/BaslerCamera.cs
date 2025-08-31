@@ -76,8 +76,8 @@ namespace BulbPicker.App.Models
                 }
                 catch (Exception e)
                 {
-                    SerialNumber = "NOT FOUND";
-                    MessageBox.Show($"{SerialNumber} is not found.\n{e.Message}");
+                    LogService.Instance.AddLog(new Log($"카메라 {SerialNumber}에 연결을 실패했습니다. 카메라를 확인하고 프로그램을 재시작 해 주세요.\n{e.Message}", LogType.ERROR));
+                    SerialNumber = "연결 실패";
                     return;
                 }
 

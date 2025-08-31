@@ -162,6 +162,7 @@ namespace BulbPicker.App.Services
             Bitmap resized = new Bitmap(combinedBitmap, new System.Drawing.Size(640, 640));
             var boxesValue = model.PredictBoxes(resized);
 
+
             // Define the pick up point and send it to corresponding robot arm
             for (int i = 0; i < boxesValue.Count; i++)
             {
@@ -183,7 +184,7 @@ namespace BulbPicker.App.Services
             var resultImage = ImageVisualizer.DrawBoxes(resized, boxesValue);
             FileSaveService.SaveBitmapTo(resultImage, FolderName.BoundingBoxImage, TestIndexManager.Instance.CombinedImageIndex.ToString());
 
-            // Cut areas out of the safe area
+            // TODO: Cut areas out of the safe
 
             // bounding box 사진을 내보내야 하나, 정사각형으로 하나 safe area만 보이게 하나, 합성만 된 사진을 보내야하나 고민이지만 일단 합성만 된 사진 보여줌
             var displayImage = BitmapManager.BitmapToImageSource(resultImage);

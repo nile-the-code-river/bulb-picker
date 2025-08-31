@@ -1,5 +1,6 @@
 ﻿using BulbPicker.App.Infrastructures;
 using BulbPicker.App.Services;
+using System.CodeDom;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
@@ -25,7 +26,6 @@ namespace BulbPicker.App.Models
         SecondRowInside
     }
 
-    // 실제 config 파일에서 처음 값을 가져오지만, 유저가 조작할 수 있는 Text Box의 Value. 저장 전까지는 반영되지 않는다.
     public class RobotArmOffsets : ObservableObject
     {
         private string _ip;
@@ -71,12 +71,20 @@ namespace BulbPicker.App.Models
                 OnPropertyChanged(nameof(Z));
             }
         }
+
+        public RobotArmOffsets(string ip, int x, int y, int z)
+        {
+            IP = ip;
+            X = x;
+            Y = y;
+            Z = z;
+        }
     }
 
     public class RobotArm : INotifyPropertyChanged
     {
-        public string Alias { get; set; } = "Alias Ex.";
-        public string IP { get; set; } = "IP Ex.";
+        public string Alias { get; set; }
+        public string IP { get; set; }
 
         public int RobotArmPort { get; set; } = 0;
         public IPEndPoint RobotArmIPEndPoint { get; set; }
@@ -101,7 +109,6 @@ namespace BulbPicker.App.Models
             }
         }
 
-        // TODO
         public RobotArmOffsets Offsets { get; private set; }
 
         public RelayCommand ConnectButtonCommand => new RelayCommand(execute => ReverseConnectionState());
@@ -117,15 +124,7 @@ namespace BulbPicker.App.Models
             RobotArmPort = robotArmPort;
             ProgramPort = programPort;
             Position = position;
-        }
-
-        // called when...
-        // (1) initializing robot arms when the app starts
-        // (2) user modifies offsets & save them
-        public void SetUpOffsets(int x, int y, int z) // or use offset class
-        {
-            // called by robot arm service which is called by config service
-
+            Offsets = ConfigService.Instance.FetchOffsetsFromConfig(IP);
         }
 
         private void SetUpConnectionConfiguration ()

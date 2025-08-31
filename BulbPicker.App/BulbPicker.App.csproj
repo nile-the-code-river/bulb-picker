@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Config\robotarm-config.json" />
     <None Remove="Assets\Images\bulb-picker-icon.ico" />
     <None Remove="Assets\Images\connect-button-active.png" />
     <None Remove="Assets\Images\connect-button-inactive.png" />
@@ -247,6 +248,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\YoloModel\best_640.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Config\robotarm-config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

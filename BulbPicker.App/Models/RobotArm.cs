@@ -103,6 +103,7 @@ namespace BulbPicker.App.Models
             private set
             {
                 _state = value;
+                OnPropertyChanged(nameof(State));
             }
         }
 

@@ -18,7 +18,6 @@
     <None Remove="Assets\Images\robot-arm-icon.png" />
     <None Remove="Assets\Images\run-button-active.png" />
     <None Remove="Assets\Images\run-button-inactive.png" />
-    <None Remove="Assets\Images\save-button.png" />
     <None Remove="Assets\Images\servoon-button-active.png" />
     <None Remove="Assets\Images\servoon-button-inactive.png" />
     <None Remove="Assets\MEMO.md" />
@@ -71,6 +70,7 @@
     <None Remove="Assets\Test\Outside_1st\8.bmp" />
     <None Remove="Assets\Test\Outside_1st\9.bmp" />
     <None Remove="Assets\YoloModel\best_640.onnx" />
+    <None Remove="Assets\YoloModel\new_best_640.onnx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,9 +78,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Assets\Images\download-button.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Images\save-button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Images\servoon-button-active.png">
@@ -259,6 +256,9 @@
   <ItemGroup>
     <Content Include="Assets\Config\robotarm-config.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\YoloModel\new_best_640.onnx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

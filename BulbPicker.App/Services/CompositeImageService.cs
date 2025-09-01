@@ -158,8 +158,9 @@ namespace BulbPicker.App.Services
 
             OpenCvSharp.Mat combinedMat = ImageCombiner.Combine2x2WithScale(rowImages.Outside, rowImages.Inside, _compositImageRowBuffer.Outside, _compositImageRowBuffer.Inside);
 
-            string modelName = "new_best_640.onnx";
-            string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", modelName);
+            string modelName = "best_640";
+            //string modelName = "new_best_640.onnx";
+            string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", $"{modelName}.onnx");
             var model = new Yolov11Onnx(modelPath);
             var boxesValue = model.PredictBoxes(combinedMat);
 
@@ -185,7 +186,7 @@ namespace BulbPicker.App.Services
             }
 
             var resultImage = ImageVisualizer.DrawBoxes(combinedMat, boxesValue);
-            FileSaveService.SaveBitmapTo(resultImage, FolderName.BoundingBoxImage, DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+            FileSaveService.SaveBitmapTo(resultImage, FolderName.BoundingBoxImage, modelName + "__" + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
             // TODO: Cut areas out of the safe
 

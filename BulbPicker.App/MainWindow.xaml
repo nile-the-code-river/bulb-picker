@@ -10,6 +10,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         Title="Bulb Picker"
+        Closed="Window_Closed"
         Height="1080" Width="1920">
 
     <Border CornerRadius="5"

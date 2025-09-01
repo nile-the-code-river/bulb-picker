@@ -173,7 +173,7 @@ namespace BulbPicker.App.Models
             try { socket.Dispose(); } catch { }
         }
 
-        private void Disconnect()
+        public void Disconnect()
         {
             SafeClose(RobotArmSocket);
             SafeClose(ProgramSocket);

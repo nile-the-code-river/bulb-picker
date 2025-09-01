@@ -38,5 +38,10 @@ namespace BulbPicker.App
             else DragMove();
         }
         private void Close_Click(object sender, RoutedEventArgs e) => Close();
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            RobotArmService.Instance.DisconnectFromAll();
+        }
     }
 }

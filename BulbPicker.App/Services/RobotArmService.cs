@@ -1,5 +1,6 @@
 ﻿using BulbPicker.App.Models;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace BulbPicker.App.Services
 {
@@ -18,6 +19,14 @@ namespace BulbPicker.App.Services
             // LATER TODO : get data from config file & initialize
             RobotArms.Add(new RobotArm("SCARA 1", "192.168.0.11", ROBOT_ARM_PORT, PROGRAM_PORT, RobotArmPosition.FirstRowOutside));
             RobotArms.Add(new RobotArm("SCARA 2", "192.168.0.12", ROBOT_ARM_PORT, PROGRAM_PORT, RobotArmPosition.FirstRowInside));
+        }
+
+        public void DisconnectFromAll()
+        {
+            foreach (var ra in RobotArms)
+            {
+                if (ra.State != RobotArmState.Disconnected) ra.Disconnect();
+            }
         }
     }
 }

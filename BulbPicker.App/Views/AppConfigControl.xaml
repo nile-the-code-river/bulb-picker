@@ -16,10 +16,14 @@
         <StackPanel>
             <Grid>
                 <TextBlock Text="Application Configuration" Style="{StaticResource CardTitleStyle}"/>
-                <Button Content="save"
-                        Width="100"
+                <Button Width="30"
+                        Background="Transparent"
+                        BorderThickness="0"
                         HorizontalAlignment="right"
-                        Command="{Binding SaveOffsetsCommand}"/>
+                        Command="{Binding SaveOffsetsCommand}">
+                    <Image Source="pack://application:,,,/Assets/Images/save-button.png" />
+                </Button>
+                
             </Grid>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
 

@@ -81,7 +81,7 @@ namespace BulbPicker.App.Models
         }
     }
 
-    public class RobotArm : INotifyPropertyChanged
+    public class RobotArm : ObservableObject
     {
         public string Alias { get; set; }
         public string IP { get; set; }
@@ -97,9 +97,6 @@ namespace BulbPicker.App.Models
         public RobotArmPosition Position { get; private set; }
 
         private RobotArmState _state;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public RobotArmState State
         {
             get => _state;

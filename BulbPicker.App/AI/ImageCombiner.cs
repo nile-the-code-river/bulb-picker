@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BulbPicker.App.Services;
 
 namespace BulbPicker.App.AI
 {
@@ -71,6 +72,10 @@ namespace BulbPicker.App.AI
             }
             //string path = @"D:\c#\combined.png";                  // 建议用 .png
             //CombinedImage.Save(path, ImageFormat.Png);
+
+            // 트레이닝을 위한 합성 이미지 데이터 저장 기능 
+            FileSaveService.SaveBitmapTo(CombinedImage, FolderName.ImageComposition, TestIndexManager.Instance.CombinedImageIndex.ToString());
+
 
             Mat mat = BitmapConverter.ToMat(CombinedImage);
 

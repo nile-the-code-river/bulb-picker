@@ -133,8 +133,8 @@ namespace BulbPicker.App.Models
 
                     ProcessBitmap(bitmap);
 
-                    FileSaveService.SaveBitmapTo(bitmap, FolderName.SingleImageGrabbed, $"{grabResult.Timestamp}_{Position}");
-                    TestIndexManager.Instance.IncrementSingleImageGrabbedIndex();
+                    //FileSaveService.SaveBitmapTo(bitmap, FolderName.SingleImageGrabbed, $"{grabResult.Timestamp}_{Position}");
+                    //TestIndexManager.Instance.IncrementSingleImageGrabbedIndex();
 
                     bitmap.Dispose();
                 }

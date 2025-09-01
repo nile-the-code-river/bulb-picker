@@ -45,8 +45,8 @@ namespace WindowsFormsApp1
                 // 两条参考横线（按需修改）
                 int yLine1 = 330;
                 int yLine2 = 500;
-                g.DrawLine(Pens.Yellow, 0, yLine1, result.Width - 1, yLine1);
-                g.DrawLine(Pens.Yellow, 0, yLine2, result.Width - 1, yLine2);
+                //g.DrawLine(Pens.Yellow, 0, yLine1, result.Width - 1, yLine1);
+                //g.DrawLine(Pens.Yellow, 0, yLine2, result.Width - 1, yLine2);
 
                 foreach (var (x1, y1, x2, y2, conf, cls) in boxes)
                 {

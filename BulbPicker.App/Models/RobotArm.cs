@@ -227,7 +227,7 @@ namespace BulbPicker.App.Models
             }
             else
             {
-                LogService.Instance.AddLog(new Log($"Robot Arm Socket is null. Cannot send coordianates. {cmd}", LogType.FOR_TEST));
+                LogService.Instance.AddLog(new Log($"로봇팔 연결에 문제가 있습니다. Robot Arm Socket is null. Cannot send coordianates. {cmd}", LogType.FOR_TEST));
             }
         }
 

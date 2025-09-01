@@ -33,7 +33,7 @@
                 </Grid>
                 <Border Style="{StaticResource CardSeparatorStyle}"/>
 
-                <StackPanel Orientation="Horizontal">
+                <!--<StackPanel Orientation="Horizontal">
                     <Button Background="Green"
                             Content="Con."
                             Command="{Binding AddLog_Connected}" />
@@ -53,7 +53,7 @@
                             Content="ImageCombined"
                             Command="{Binding AddLog_ImageCombined}" />
 
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
 
             <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible"

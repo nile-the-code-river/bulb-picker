@@ -17,7 +17,7 @@
         <StackPanel>
             <TextBlock Text="Cameras" Style="{StaticResource CardTitleStyle}"/>
             <Border Style="{StaticResource CardSeparatorStyle}"/>
-            <Button Background="DarkRed"
+            <!--<Button Background="DarkRed"
                     Foreground="White"
                     Command="{Binding RunDummyTestCommand}">
                 <StackPanel Orientation="Horizontal">
@@ -26,7 +26,7 @@
                                Foreground="Red"
                                Visibility="{Binding IsTestingInProgress, Converter={StaticResource BoolToVisibility}}" />
                 </StackPanel>
-            </Button>
+            </Button>-->
             
             <!--Camera-->
             <ItemsControl ItemsSource="{Binding Cameras}">

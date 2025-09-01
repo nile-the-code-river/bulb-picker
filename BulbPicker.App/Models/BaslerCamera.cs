@@ -192,11 +192,10 @@ namespace BulbPicker.App.Models
             CompositeImageService.Instance.AddToCompositionQueue(fragment);
         }
 
-        // TODO 0831
+        // TODO: 이미 Close 됐을 거 같은데?
+        // TODO: 이거 App 꺼질 때도 다 해야 함. 로봇 팔 Dispose (Close) 관련도 다 처리해서 안전하게 만들어야 함
         private void Camera_CameraClosed(object? sender, EventArgs e)
         {
-            // TODO: 이미 Close 됐을 거 같은데?
-            // TODO: 이거 App 꺼질 때도 다 해야 함. 로봇 팔 Dispose (Close) 관련도 다 처리해서 안전하게 만들어야 함
             Camera.Close();
             Camera.Dispose();
         }

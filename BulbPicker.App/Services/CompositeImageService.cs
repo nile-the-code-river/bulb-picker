@@ -263,7 +263,7 @@ namespace BulbPicker.App.Services
             //if (boxesValue[i].Y_Center <= 78 || boxesValue[i].Y_Center > 266)
             if (boundingBox.YCenter <= 65 + _paddingOffset || boundingBox.YCenter > 252 + _paddingOffset) // 160.5 , 347.5
             {
-                LogService.Instance.AddLog(new Log($"skipped (y: {boundingBox.YCenter})", LogType.FOR_TEST));
+                //LogService.Instance.AddLog(new Log($"skipped (y: {boundingBox.YCenter})", LogType.FOR_TEST));
                 return null;
             }
 
@@ -297,9 +297,9 @@ namespace BulbPicker.App.Services
             // shortest line(s) of the bounding box
             float finalZ = Math.Min(boundingBox.X2 - boundingBox.X1, boundingBox.Y2 - boundingBox.Y1) + robotArm.Offsets.Z + manualRobotArmOffset_Z;
 
-            LogService.Instance.AddLog(new Log($"finalX = {boundingBox.YCenter} + {robotArm.Offsets.X} + {manualRobotArmOffset_X}"
-                                                + $"\nfinalY = {boundingBox.XCenter} + {robotArm.Offsets.Y} + {manualRobotArmOffset_Y}"
-                                                + $"\nfinalZ = {Math.Min(boundingBox.X2 - boundingBox.X1, boundingBox.Y2 - boundingBox.Y1)} + {robotArm.Offsets.Z} + {manualRobotArmOffset_Z}", LogType.FOR_TEST));
+            //LogService.Instance.AddLog(new Log($"finalX = {boundingBox.YCenter} + {robotArm.Offsets.X} + {manualRobotArmOffset_X}"
+            //                                    + $"\nfinalY = {boundingBox.XCenter} + {robotArm.Offsets.Y} + {manualRobotArmOffset_Y}"
+            //                                    + $"\nfinalZ = {Math.Min(boundingBox.X2 - boundingBox.X1, boundingBox.Y2 - boundingBox.Y1)} + {robotArm.Offsets.Z} + {manualRobotArmOffset_Z}", LogType.FOR_TEST));
 
             pickUpPoint.SetX(finalX);
             pickUpPoint.SetY(finalY);

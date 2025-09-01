@@ -89,6 +89,7 @@ namespace BulbPicker.App.Services
             return presetOffsets;
         }
 
+        // TODO later: Understand the logic & refactor
         async public Task UpdateRobotArmOffsetsAsync()
         {
             string filePath = GetRobotArmConfigFilePath();
@@ -116,7 +117,7 @@ namespace BulbPicker.App.Services
             var output = JsonSerializer.Serialize(map, jsonOptions);
             await File.WriteAllTextAsync(filePath, output, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
 
-            LogService.Instance.AddLog(new Log("New offsets saved to the config file.", LogType.SettingFileUpdated));
+            LogService.Instance.AddLog(new Log("저장 완료. New offsets saved to the config file.", LogType.SettingFileUpdated));
         }
 
         // called when...

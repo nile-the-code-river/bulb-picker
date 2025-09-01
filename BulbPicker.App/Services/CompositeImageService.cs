@@ -158,8 +158,11 @@ namespace BulbPicker.App.Services
 
             OpenCvSharp.Mat combinedMat = ImageCombiner.Combine2x2WithScale(rowImages.Outside, rowImages.Inside, _compositImageRowBuffer.Outside, _compositImageRowBuffer.Inside);
 
+            // 0831
             string modelName = "best_640";
-            //string modelName = "new_best_640.onnx";
+            // 0901
+            //string modelName = "new_best_640";
+            
             string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", $"{modelName}.onnx");
             var model = new Yolov11Onnx(modelPath);
             var boxesValue = model.PredictBoxes(combinedMat);

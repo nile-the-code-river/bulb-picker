@@ -71,6 +71,7 @@
     <None Remove="Assets\Test\Outside_1st\8.bmp" />
     <None Remove="Assets\Test\Outside_1st\9.bmp" />
     <None Remove="Assets\YoloModel\best_640.onnx" />
+    <None Remove="Assets\YoloModel\best_gray_final6.onnx" />
     <None Remove="Assets\YoloModel\new_best_640.onnx" />
   </ItemGroup>
 
@@ -260,6 +261,9 @@
   <ItemGroup>
     <Content Include="Assets\Config\robotarm-config.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\YoloModel\best_gray_final6.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\YoloModel\new_best_640.onnx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

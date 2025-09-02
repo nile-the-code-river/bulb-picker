@@ -34,10 +34,11 @@ namespace BulbPicker.App.ViewModels
         public async Task SetUpCamerasAsync()
         {
             //
-            bool isTestingWithDummies = false;
+            bool isTestingWithDummies = true;
             if (isTestingWithDummies)
             {
                 SetUpDummyTest();
+                LoadingCameras = false;
                 return;
             }
 

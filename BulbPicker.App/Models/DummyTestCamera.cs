@@ -7,7 +7,7 @@ namespace BulbPicker.App.Models
 {
     public class DummyTestCamera : BaslerCamera
     {
-        public DummyTestCamera(string alias, BaslerCameraPosition position) : base(alias, null, position) { }
+        public DummyTestCamera(string alias, BaslerCameraPosition position) : base(alias, "Testing", position) { }
 
         private Bitmap FetchBitmapFromLocalDirectory(int fileName)
         {

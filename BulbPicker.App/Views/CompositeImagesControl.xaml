@@ -22,7 +22,7 @@
                 <StackPanel Margin="15">
                     <TextBlock Text="First Row"
                                Style="{StaticResource MainTitleStyle}" />
-                    <TextBlock Text="1st Inside + 1st Outside"
+                    <TextBlock Text="Camera 1 + Camera 2"
                                Style="{StaticResource SubTitleStyle}" />
                     <Border Background="{StaticResource BackgroundGray}"
                             Width="250"
@@ -37,7 +37,7 @@
                 <StackPanel Margin="15">
                     <TextBlock Text="Second Row"
                                Style="{StaticResource MainTitleStyle}" />
-                    <TextBlock Text="2nd Inside + 2nd Outside"
+                    <TextBlock Text="Camera 3 + Camera 4"
                                Style="{StaticResource SubTitleStyle}" />
                     <Border Background="{StaticResource BackgroundGray}"
                             Width="250"

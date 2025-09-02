@@ -71,8 +71,8 @@ namespace BulbPicker.App.ViewModels
             IsTestingDummyCamera = true;
 
             // using DummyTestCamera.cs
-            Cameras.Add(new DummyTestCamera("Outside_1st", BaslerCameraPosition.Outisde));
-            Cameras.Add(new DummyTestCamera("Inside_1st", BaslerCameraPosition.Inside));
+            Cameras.Add(new DummyTestCamera("Dummy Cam 1", BaslerCameraPosition.Outisde));
+            Cameras.Add(new DummyTestCamera("Dummy Cam 2", BaslerCameraPosition.Inside));
         }
 
         private DispatcherTimer _dummyTestShotTimer;
@@ -80,7 +80,7 @@ namespace BulbPicker.App.ViewModels
         {
             if(!IsTestingInProgress)
             {
-                InitializeDummtTestTimer();
+                InitializeDummyTestTimer();
             }
             else
             {
@@ -90,7 +90,7 @@ namespace BulbPicker.App.ViewModels
             IsTestingInProgress = !IsTestingInProgress;
         }
 
-        private void InitializeDummtTestTimer()
+        private void InitializeDummyTestTimer()
         {
             _dummyTestShotTimer = new DispatcherTimer();
             _dummyTestShotTimer.Interval = TimeSpan.FromSeconds(1);

@@ -165,7 +165,9 @@ namespace BulbPicker.App.Services
             // 0901_2
             //string modelName = "best_gray_final6";
             // 0902_1
-            string modelName = "latest_best";
+            //string modelName = "latest_best";
+            // 0902_2
+            string modelName = "final_best_gray_8";
 
             string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "YoloModel", $"{modelName}.onnx");
             var model = new Yolov11Onnx(modelPath);

@@ -100,7 +100,7 @@ namespace BulbPicker.App.Services
                         {
                             // Images might be both outside or both inside in this case, which can happen due to the camera(s)' instability.
                             // or another thread might have operated _firstRowCompositeImageQuque.Clear() just before this line was called, which is also due to the camera(s)' instability.
-                            MessageBox.Show("Unexpected Error Occurred in CompositeImageService.");
+                            MessageBox.Show("카메라가 불안정하여 이미지 데이터를 처리하는 데에 문제가 생겼습니다. Unexpected Error Occurred in CompositeImageService.");
                             return;
                         }
 
@@ -137,7 +137,7 @@ namespace BulbPicker.App.Services
                     }
                     else
                     {
-                        MessageBox.Show($"Unexpected Number of Items in _firstRowImageToCompositeQuque.");
+                        MessageBox.Show($"카메라가 불안정하여 이미지 데이터를 처리하는 데에 문제가 생겼습니다. Unexpected Number of Items in _firstRowImageToCompositeQuque.");
                     }
                 break;
             }
@@ -187,7 +187,7 @@ namespace BulbPicker.App.Services
 
                 var firstRowRobotArm = RobotArmService.Instance.RobotArms.Where(x => x.Position == pickUpPoint.CorrespondingRobotArm).FirstOrDefault();
 
-                if (firstRowRobotArm == null) MessageBox.Show("ERROR: There is no such robot arm");
+                if (firstRowRobotArm == null) MessageBox.Show("로봇팔 관련 문제 발생. ERROR: There is no such robot arm");
 
                 firstRowRobotArm.SendPickUpPoint(pickUpPoint);
             }
@@ -260,7 +260,7 @@ namespace BulbPicker.App.Services
 
             var firstRowRobotArm = RobotArmService.Instance.RobotArms.Where(x => x.Position == correspondingRobotArmPosition).FirstOrDefault();
 
-            if (firstRowRobotArm == null) MessageBox.Show("ERROR: There is no such robot arm");
+            if (firstRowRobotArm == null) MessageBox.Show("로봇팔 연결 및 상태를 확인해주세요. ERROR: There is no such robot arm");
 
             return firstRowRobotArm;
         }

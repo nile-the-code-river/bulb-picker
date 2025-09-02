@@ -205,10 +205,11 @@ namespace BulbPicker.App.Models
             if (!Camera.StreamGrabber.IsGrabbing)
             {
                 Camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
+                LogService.Instance.AddLog(new Log($"{Alias} 카메라가 연결되었습니다.", LogType.Connected));
             }
             else
             {
-                MessageBox.Show("이미 카메라를 실행하고 있습니다.");
+                MessageBox.Show("이미 해당 카메라는 실행되고 있습니다.");
             }
         }
     }

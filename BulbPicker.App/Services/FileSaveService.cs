@@ -30,7 +30,7 @@ namespace BulbPicker.App.Services
             foreach (var log in logs)
                 await writer.WriteLineAsync($"[{log.LoggedAt:yyyy-MM-dd HH:mm:ss}]\t{log.Type}\t\t\t{log.Message}");
 
-            MessageBox.Show($"Logs saved at {dirPath}");
+            MessageBox.Show($"로그 저장 완료. \n저장 위치: {dirPath}");
         }
 
         public static void SaveBitmapTo(Bitmap bitmap, FolderName folderName, string fileName)

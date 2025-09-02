@@ -72,6 +72,7 @@
     <None Remove="Assets\Test\Outside_1st\9.bmp" />
     <None Remove="Assets\YoloModel\best_640.onnx" />
     <None Remove="Assets\YoloModel\best_gray_final6.onnx" />
+    <None Remove="Assets\YoloModel\latest_best.onnx" />
     <None Remove="Assets\YoloModel\new_best_640.onnx" />
   </ItemGroup>
 
@@ -263,6 +264,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\YoloModel\best_gray_final6.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\YoloModel\latest_best.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\YoloModel\new_best_640.onnx">
